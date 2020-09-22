@@ -2,3 +2,22 @@ body {
     margin: 0;
     padding: 0;
 }
+#wrapper {
+    max-width: 100vw;
+    max-height: 100vh;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: auto 1fr auto;
+}
+header {
+    grid-column: 1 / 13;
+    grid-row: 1;
+}
+#main {
+    grid-column: 2 / 12;
+    grid-row: 2;
+}
+footer {
+    grid-column: 2 / 11;
+    grid-row: 3;
+}
