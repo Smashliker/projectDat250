@@ -11,7 +11,7 @@ body {
     grid-gap: 3vh;
 }
 header {
-    grid-column: 1 / 12;
+    grid-column: 1 / 13;
     grid-row: 1;
 }
 #posts {
