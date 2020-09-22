@@ -8,16 +8,21 @@ body {
     display: grid;
     grid-template-columns: repeat(12, 1fr);
     grid-template-rows: auto 1fr auto;
+    grid-gap: 3vh;
 }
 header {
-    grid-column: 1 / 13;
+    grid-column: 1 / 12;
     grid-row: 1;
 }
-#main {
-    grid-column: 3 / 10;
+#posts {
+    grid-column: 2 / 10;
     grid-row: 2;
 }
+#friendlist {
+    grid-column: 11 / 13;
+    grid-row: 2 / 3;
+}
 footer {
-    grid-column: 2 / 11;
+    grid-column: 3 / 10;
     grid-row: 3;
 }

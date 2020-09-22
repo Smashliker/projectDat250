@@ -1,5 +1,6 @@
 {% extends 'layout.html' %}
 
+
 {% block head %}
 <title>Index.html</title>
 {% endblock %}
@@ -8,9 +9,14 @@
 <div id="wrapper">
     <header>
         AntiRepost
+        {% block login %}{% endblock %}
     </header>
-    <div id="main">
-        bruh
+    <div id="posts">
+        posts
+    </div>
+
+    <div id="friendlist">
+        friendlist
     </div>
    <footer>
        Made by Ove Oftedal and Benjamin Mydland
