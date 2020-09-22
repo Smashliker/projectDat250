@@ -6,12 +6,20 @@ body {
     max-width: 100vw;
     min-height: 100vh;
     display: grid;
+    /*Divide columns into 12 equally large parts*/
     grid-template-columns: repeat(12, 1fr);
+    /*Divide rows into footer being auto large, the main row 
+    with posts and friendlist being 1fr (fraction)
+    and the footer being auto large (exactly large enough to
+    fit the content)
+    */
     grid-template-rows: auto 1fr auto;
     grid-gap: 3vh;
 }
 header {
+    /*Span across 1 till 12/13 columns*/
     grid-column: 1 / 13;
+    /*Be in row 1*/
     grid-row: 1;
 }
 #posts {
