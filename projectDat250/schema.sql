@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS "users"
 
 CREATE TABLE "users" (
 	"id"	    TEXT UNIQUE NOT NULL,
-	"username", TEXT NOT NULL
+	"username", TEXT NOT NULL,
 	"password"	TEXT NOT NULL,
 	PRIMARY KEY("user_id")
 );
