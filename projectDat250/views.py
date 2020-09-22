@@ -1,12 +1,12 @@
 from projectDat250 import app
 from flask import Flask, render_template, redirect, url_for, request, session
-
+import os
 @app.route('/')
 def index():
     return render_template('index.html')
 
 # Set the secret key to some random bytes. Keep this really secret!
-app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
+app.secret_key = os.urandom(16)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
