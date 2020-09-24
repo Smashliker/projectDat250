@@ -9,9 +9,16 @@
 <div id="wrapper">
     <header>
         AntiRepost
+        
+        {% if session.get("username") != None %}
         Logged in as: {{session['username']}}
-        <a href="login">login</a>
         <a href="logout">logout</a>
+        {% endif %}
+
+        {% if session.get("username") == None %}
+        <a href="login">login</a>
+        {% endif %}
+
         <a href="aboutUs">about us</a>
     </header>
     <div id="posts">
