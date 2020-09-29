@@ -15,10 +15,12 @@ app.secret_key = os.urandom(16)
 def login():
     if request.method == 'POST':
         session['username'] = request.form['username']
+        session['password'] = request.form['password']
         return redirect(url_for('index'))
     return '''
         <form method="post">
-            <p><input type=text name=username>
+            <p><input type=text name=username placeholder="Username">
+            <p><input type=password name=password placeholder=Password>
             <p><input type=submit value=Login>
         </form>
     '''
