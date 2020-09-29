@@ -1,8 +1,9 @@
 from flask_sqlalchemy import SQLAlchemy
 import bcrypt
 import random, string
+from projectDat250.__init__ import app
 
-db = SQLAlchemy()
+db = SQLAlchemy(app)
 
 class User(db.Model):
     userid = db.Column(db.String, primary_key=True)
