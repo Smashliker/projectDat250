@@ -1,4 +1,5 @@
 from projectDat250 import app
+from projectDat250 import query_db
 from flask import Flask, render_template, redirect, url_for, request, session
 from flask_wtf import FlaskForm
 from wtforms import StringField
@@ -6,7 +7,8 @@ from wtforms.validators import DataRequired
 import os
 @app.route('/')
 def index():
-    return render_template('index.html')
+    test = query_db('SELECT * FROM users')
+    return render_template('index.html', test=test)
 
 # Set the secret key to some random bytes. Keep this really secret!
 app.secret_key = os.urandom(16)
