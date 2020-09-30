@@ -33,4 +33,4 @@ def logout():
 
 @app.route('/aboutUs')
 def aboutUs():
-        return render_template('aboutUs.html')
+    return render_template('aboutUs.html')
