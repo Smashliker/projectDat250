@@ -7,9 +7,6 @@ from flask import current_app, g
 from flask.cli import with_appcontext
 
 app = Flask(__name__)
-#from . import db
-                    # Vet ikke hva disse gjorde, men de var i veien, så jeg kommenterte de ut
-#db.init_app(app)
 
 def get_db():
     if 'db' not in g:
@@ -17,7 +14,6 @@ def get_db():
         g.db.row_factory = sqlite3.Row
 
     return g.db
-
 
 def close_db(e=None):
     db = g.pop('db', None)
@@ -48,5 +44,7 @@ def query_db(query, args=(), one=False):
     rv = cur.fetchall()
     cur.close()
     return (rv[0] if rv else None) if one else rv
+
+init_app(app)
 
 import projectDat250.views
