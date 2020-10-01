@@ -8,14 +8,18 @@ import os
 def index():
     userid = "djfnj"
     venneliste = query_db(f"SELECT * FROM friends WHERE userid = '{userid}'")
-    liste = []
+    venneIDliste = []
     for pers in venneliste:
-        liste.append(pers['friendid'])
-    hovedliste = [] 
-    for ident in liste: #Merk hvor nyttig det er å concatenate listen på denne måten
-        hovedliste += query_db(f"SELECT * FROM users WHERE userid = '{ident}'")
+        venneIDliste.append(pers['friendid'])
+    #I koden over finner vi id'ene til vennene til brukeren, hvor brukeren er userid
 
-    return render_template('index.html', test=hovedliste)
+    venneliste = [] 
+    postliste = []
+    for ID in venneIDliste: #Merk hvor nyttig det er å concatenate listen på denne måten
+        venneliste += query_db(f"SELECT * FROM users WHERE userid = '{ID}'")
+        postliste += query_db(f"SELECT * FROM post WHERE author_id = '{ID}'")
+
+    return render_template('index.html', venneliste=venneliste, postliste=postliste)
 
 
 #mest for forståelsen at this point
