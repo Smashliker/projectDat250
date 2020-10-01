@@ -2,4 +2,23 @@
 
 {% block body %}
 
+<form method="POST" action="/login">
+    {{ form.csrf_token }}
+
+    <fieldset class="username">
+        {{ form.username.label }}
+        {{ form.username(placeholder='username') }}
+    </fieldset>
+
+    <fieldset>
+        {{ form.password.label }}
+        {{ form.password }}
+    </fieldset>
+
+    <div class="submit-button">
+        {{ form.submit }}
+    </div>
+
+</form>
+
 {% endblock %}

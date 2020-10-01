@@ -5,10 +5,13 @@ import sqlite3
 import click
 from flask import current_app, g
 from flask.cli import with_appcontext
-import flask-login
+import flask_login
+from flask_login import UserMixin
 
 from flask_bcrypt import Bcrypt
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://///home/ove/repos/uis/projectDat250/projectDat250/database.db'
+
 
 def get_db():
     if 'db' not in g:
@@ -49,7 +52,34 @@ def query_db(query, args=(), one=False):
 
 init_app(app)
 bcrypt = Bcrypt(app)
+login_manager = flask_login.LoginManager()
 login_manager.init_app(app)
+
+from flask_sqlalchemy import SQLAlchemy
+import bcrypt
+import random, string
+
+db = SQLAlchemy(app)
+
+class Users(UserMixin, db.Model):
+    userid = db.Column(db.String, primary_key=True)
+    __tablename__ = 'users'
+    username = db.Column(db.String)
+    password = db.Column(db.String)
+
+    @login_manager.user_loader
+    def load_user(user_id):
+        return User.get(user_id)
+
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, SubmitField
+from wtforms.validators import DataRequired
+
+class LoginForm(FlaskForm):
+    username = StringField('username', validators=[DataRequired()])
+    password = PasswordField('password', validators=[DataRequired()])
+    submit = SubmitField('Log In')
+
 
 import projectDat250.views
 

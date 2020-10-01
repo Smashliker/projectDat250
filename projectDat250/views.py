@@ -4,15 +4,11 @@ from flask import Flask, render_template, redirect, url_for, request, session
 from flask_wtf import FlaskForm
 from wtforms import StringField
 from wtforms.validators import DataRequired
-from . import models
 import string, random
-from projectDat250 import get_db
+from projectDat250 import get_db, Users, db, LoginForm
 #from flask_bcrypt import Bcrypt
 from passlib.hash import sha256_crypt
 import os
-
-
-login_manager = LoginManager
 
 
 @app.route('/')
@@ -25,19 +21,24 @@ app.secret_key = os.urandom(16)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    get_db().cursor()
-    if request.method == 'POST':
+    form = LoginForm()
+    if form.validate_on_submit():
+        userid = 0
         for user in query_db("SELECT * FROM users"):
-            if request.form['username'] == user["username"] and user["password"] == str(sha256_crypt.encrypt(request.form['password'])):
-                session['username'] = request.form['username']
-        return redirect(url_for('index'))
-    return '''
-        <form method="post">
-            <p><input type=text name=username placeholder="Username">
-            <p><input type=password name=password placeholder=Password>
-            <p><input type=submit value=Login>
-        </form>
-    '''
+            if user["username"] == request.form["username"]:
+                userid = user["userid"]
+
+        user = Users.load_user(userid)
+        if user:
+            if sha256_crypt.verify(request.form["password"], user["password"]):
+                app.logger.info(user['username'])
+                user.authenicated = True
+                db.session.add(user)
+                db.session.commit()
+                login_user(user, remember=True)
+                flask.flash('Logged in successfully.')
+                return redirect(url_for('index'))
+    return render_template('login.html', form=form)
 
 @app.route('/logout')
 def logout():
@@ -57,9 +58,10 @@ def createUser():
             #TODO: Actually create user object from class in db.py
             userid = generateUserID()
             username = request.form['username']
-            password = str(sha256_crypt.encrypt(request.form['password']))
-            query_db(f"INSERT INTO 'users' ('userid', 'username', 'password') VALUES('{userid}', '{username}', '{password}')")
-            get_db().commit()
+            password = str(sha256_crypt.hash(request.form['password']))
+            user = Users(username=username, password=password, userid = userid)
+            db.session.add(user)
+            db.session.commit()
         else:
             return "error"
         return redirect(url_for('index'))

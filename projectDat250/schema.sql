@@ -3,6 +3,7 @@ CREATE TABLE "users" (
 	"userid"	TEXT UNIQUE NOT NULL,
 	"username"	TEXT NOT NULL,
 	"password"	TEXT NOT NULL,
+  "authenticated" BOOLEAN,
 	PRIMARY KEY("userid")
 );
 
