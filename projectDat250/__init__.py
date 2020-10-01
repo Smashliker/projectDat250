@@ -6,6 +6,7 @@ import click
 from flask import current_app, g
 from flask.cli import with_appcontext
 
+from flask_bcrypt import Bcrypt
 app = Flask(__name__)
 
 def get_db():
@@ -48,3 +49,5 @@ def query_db(query, args=(), one=False):
 init_app(app)
 
 import projectDat250.views
+bcrypt = Bcrypt(app)
+
