@@ -47,7 +47,7 @@ def query_db(query, args=(), one=False):
     return (rv[0] if rv else None) if one else rv
 
 init_app(app)
+bcrypt = Bcrypt(app)
 
 import projectDat250.views
-bcrypt = Bcrypt(app)
 
