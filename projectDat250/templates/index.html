@@ -1,6 +1,5 @@
 {% extends 'layout.html' %}
 
-
 {% block head %}
 <title>Index.html</title>
 {% endblock %}
@@ -26,7 +25,10 @@
     </div>
 
     <div id="friendlist">
-        friendlist
+        friendlist<br\ >
+        {% for pers in test %}
+        <p>{{pers['username']}}</p>
+        {% endfor %}
     </div>
    <footer>
        Made by Ove Oftedal and Benjamin Mydland
