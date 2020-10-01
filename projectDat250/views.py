@@ -38,9 +38,7 @@ def logout():
 
 @app.route('/aboutUs')
 def aboutUs():
-<<<<<<< HEAD
     return render_template('aboutUs.html')
-=======
         return render_template('aboutUs.html')
 
 @app.route('/createUser', methods=['GET', 'POST'])
@@ -82,4 +80,3 @@ def generateUserID():
         return result_str 
                 
         
->>>>>>> login
