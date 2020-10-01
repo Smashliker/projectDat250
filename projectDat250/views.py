@@ -10,6 +10,11 @@ from projectDat250 import get_db
 #from flask_bcrypt import Bcrypt
 from passlib.hash import sha256_crypt
 import os
+
+
+login_manager = LoginManager
+
+
 @app.route('/')
 def index():
     test = query_db('SELECT * FROM users')
@@ -20,10 +25,11 @@ app.secret_key = os.urandom(16)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    get_db().cursor()
     if request.method == 'POST':
         for user in query_db("SELECT * FROM users"):
-            if request.form['username'] == username and user["password"] == str(sha256_crypt.encrypt(request.form['password'])):
-                session['suername'] = request.form['username']
+            if request.form['username'] == user["username"] and user["password"] == str(sha256_crypt.encrypt(request.form['password'])):
+                session['username'] = request.form['username']
         return redirect(url_for('index'))
     return '''
         <form method="post">
@@ -53,7 +59,7 @@ def createUser():
             username = request.form['username']
             password = str(sha256_crypt.encrypt(request.form['password']))
             query_db(f"INSERT INTO 'users' ('userid', 'username', 'password') VALUES('{userid}', '{username}', '{password}')")
-            get_db()
+            get_db().commit()
         else:
             return "error"
         return redirect(url_for('index'))
