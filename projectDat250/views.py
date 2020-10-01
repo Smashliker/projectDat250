@@ -1,5 +1,4 @@
-from projectDat250 import app
-from projectDat250 import query_db
+from projectDat250 import app, query_db, get_db
 from flask import Flask, render_template, redirect, url_for, request, session
 from flask_wtf import FlaskForm
 from wtforms import StringField
@@ -7,8 +6,25 @@ from wtforms.validators import DataRequired
 import os
 @app.route('/')
 def index():
-    test = query_db('SELECT * FROM users')
-    return render_template('index.html', test=test)
+    userid = "djfnj"
+    venneliste = query_db(f"SELECT * FROM friends WHERE userid = '{userid}'")
+    liste = []
+    for pers in venneliste:
+        liste.append(pers['friendid'])
+    hovedliste = [] 
+    for ident in liste: #Merk hvor nyttig det er å concatenate listen på denne måten
+        hovedliste += query_db(f"SELECT * FROM users WHERE userid = '{ident}'")
+
+    return render_template('index.html', test=hovedliste)
+
+
+#mest for forståelsen at this point
+@app.route('/gibFriends')
+def gibFriends():
+    tester = query_db('INSERT INTO "friends" ("userid","friendid") VALUES("djfnj", "asdasd")')
+    get_db().commit()
+    return redirect(url_for('index'))
+
 
 # Set the secret key to some random bytes. Keep this really secret!
 app.secret_key = os.urandom(16)
