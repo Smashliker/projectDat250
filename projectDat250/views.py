@@ -21,6 +21,8 @@ app.secret_key = os.urandom(16)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    if current_user.is
+
     form = LoginForm()
     if form.validate_on_submit():
         userid = 0
@@ -28,9 +30,9 @@ def login():
             if user["username"] == request.form["username"]:
                 userid = user["userid"]
 
-        user = Users.load_user(userid)
+        user = Users.query.filter_by(userid=userid).first()
         if user:
-            if sha256_crypt.verify(request.form["password"], user["password"]):
+            if sha256_crypt.verify(request.form["password"], user.password):
                 app.logger.info(user['username'])
                 user.authenicated = True
                 db.session.add(user)
