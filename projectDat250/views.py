@@ -1,11 +1,13 @@
 from projectDat250 import app
 from projectDat250 import query_db
 from flask import Flask, render_template, redirect, url_for, request, session
+from flask import flash
 from flask_wtf import FlaskForm
 from wtforms import StringField
 from wtforms.validators import DataRequired
 import string, random
 from projectDat250 import get_db, Users, db, LoginForm
+from flask_login import login_required, logout_user, current_user, login_user
 #from flask_bcrypt import Bcrypt
 from passlib.hash import sha256_crypt
 import os
@@ -21,7 +23,6 @@ app.secret_key = os.urandom(16)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if current_user.is
 
     form = LoginForm()
     if form.validate_on_submit():
@@ -31,14 +32,14 @@ def login():
                 userid = user["userid"]
 
         user = Users.query.filter_by(userid=userid).first()
+        app.logger.info(user.username)
         if user:
             if sha256_crypt.verify(request.form["password"], user.password):
-                app.logger.info(user['username'])
                 user.authenicated = True
                 db.session.add(user)
                 db.session.commit()
                 login_user(user, remember=True)
-                flask.flash('Logged in successfully.')
+                flash('Logged in successfully.')
                 return redirect(url_for('index'))
     return render_template('login.html', form=form)
 
@@ -94,3 +95,4 @@ def generateUserID():
         return result_str 
                 
         
+

@@ -67,9 +67,13 @@ class Users(UserMixin, db.Model):
     username = db.Column(db.String)
     password = db.Column(db.String)
 
-    @login_manager.user_loader
-    def load_user(user_id):
-        return User.get(user_id)
+    def get_id(self):
+        return self.userid
+
+@login_manager.user_loader
+def load_user(user_id):
+    if user_id is not None:
+        return Users.query.get(user_id)
 
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
