@@ -10,7 +10,7 @@ from flask_login import UserMixin
 
 from flask_bcrypt import Bcrypt
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://///home/ove/repos/uis/projectDat250/projectDat250/database.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 
 
 def get_db():
