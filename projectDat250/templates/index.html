@@ -18,10 +18,12 @@
         <a href="login">login</a>
         {% endif %}
 
-        <a href="aboutUs">about us</a>
+        <a href="aboutUs">About Us</a>
+        <a href="createUser">Create User </a>
     </header>
     <div id="posts">
         <h2>Posts:</h2><br\ >
+        <a href="checkUsers">bruh</a>
         {% for post in postliste%}
         <h3>Posted by {{post['author_name']}} at {{post['created']}}</h3> <h4>{{post['title']}}</h4>
         <p>{{post['body']}}</p>
