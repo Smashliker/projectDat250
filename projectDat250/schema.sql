@@ -32,6 +32,9 @@ VALUES('asdasd', 'Sakurai', 'haha');
 INSERT INTO "users" 
   ("userid","username", "password")
 VALUES('afhf', 'min bror', 'funny');
+INSERT INTO "users" 
+  ("userid","username", "password")
+VALUES('gdgfh', 'nameJeff', 'nsfkjabfkjabkj');
 
 INSERT INTO "friends" ("userid","friendid") VALUES("djfnj", "asdasd");
 INSERT INTO "friends" ("userid","friendid") VALUES("djfnj", "afhf");
