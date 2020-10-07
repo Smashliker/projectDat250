@@ -84,6 +84,9 @@ class LoginForm(FlaskForm):
     password = PasswordField('password', validators=[DataRequired()])
     submit = SubmitField('Log In')
 
+class FriendForm(FlaskForm):
+    friendName = StringField('Friend name', validators=[DataRequired()])
+    submit = SubmitField('Add Friend')
 
 import projectDat250.views
 
