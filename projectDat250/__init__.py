@@ -76,8 +76,8 @@ def load_user(user_id):
         return Users.query.get(user_id)
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
-from wtforms.validators import DataRequired
+from wtforms import StringField, PasswordField, SubmitField, TextAreaField
+from wtforms.validators import DataRequired, EqualTo
 
 class LoginForm(FlaskForm):
     username = StringField('username', validators=[DataRequired()])
@@ -87,6 +87,18 @@ class LoginForm(FlaskForm):
 class FriendForm(FlaskForm):
     friendName = StringField('Friend name', validators=[DataRequired()])
     submit = SubmitField('Add Friend')
+    
+class SignUpForm(FlaskForm):
+    username = StringField('username', validators=[DataRequired()])
+    password = StringField('password', validators=[DataRequired()])
+    confirmPass = StringField('confirmpass', validators=[DataRequired(), EqualTo('password', message='Passwords must match')])
+    submit = SubmitField('Register')
+
+class PostForm(FlaskForm):
+    title = StringField('title')
+    body = StringField('body')
+    submit = SubmitField('Create Post')
+
 
 import projectDat250.views
 

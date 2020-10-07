@@ -1,33 +1,27 @@
 {% extends 'layout.html' %}
 
 {% block head %}
-<title>Index.html</title>
+<title>AntiRepost</title>
 {% endblock %}
 
 {% block body %}
 <div id="wrapper">
     <header>
         AntiRepost
-        
-        {% if session.get("username") != None %}
-        Logged in as: {{session['username']}}
+        Logged in as: {{current_user.username}}
         <a href="logout">logout</a>
-        {% endif %}
-
-        {% if session.get("username") == None %}
-        <a href="login">login</a>
-        {% endif %}
 
         <a href="aboutUs">About Us</a>
         <a href="createUser">Create User </a>
         <a href="newFriend">Add Friend</a>
+        <a href="post">post</a>
     </header>
     <div id="posts">
         <h2>Posts:</h2><br\ >
         <a href="checkUsers">bruh</a>
         {% for post in postliste%}
         <h3>Posted by {{post['author_name']}} at {{post['created']}}</h3> <h4>{{post['title']}}</h4>
-        <p>{{post['body']}}</p>
+        <p>{{post['body']}} </p>
         {% endfor %}
     </div>
 
