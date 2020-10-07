@@ -5,7 +5,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField
 from wtforms.validators import DataRequired
 import string, random
-from projectDat250 import get_db, Users, db, LoginForm
+from projectDat250 import get_db, Users, db, LoginForm, FriendForm
 from flask_login import login_required, logout_user, current_user, login_user
 #from flask_bcrypt import Bcrypt
 from passlib.hash import sha256_crypt
@@ -14,7 +14,7 @@ import os
 
 @app.route('/')
 def index():
-    userid = "djfnj"
+    userid = "djfnj"    #placeholder for hva enn useriden skal være, for testing
     venneliste = query_db(f"SELECT * FROM friends WHERE userid = '{userid}'")
     venneIDliste = []
     for pers in venneliste:
@@ -72,6 +72,33 @@ def logout():
 @app.route('/aboutUs')
 def aboutUs():
     return render_template('aboutUs.html')
+
+@app.route('/newFriend', methods=['GET', 'POST'])
+def newFriend():
+    userid = "djfnj"    #placeholder
+    formen = FriendForm()
+
+    addResult = None   #0 indikerer at brukeren ble lagt til vennelisten, 1 at brukeren ikke ble funnet, og 2 at brukeren allerede er i vennelisten, og None at det er usikkert
+    if formen.validate_on_submit():
+
+        tempFriendID = None
+        for user in query_db("SELECT * FROM users"):
+            if user["username"] == request.form["friendName"]:
+                tempFriendID = user["userid"]
+                break
+        
+        for friend in query_db(f"SELECT * FROM friends WHERE userid='{userid}'"):
+            if tempFriendID == friend["friendid"]:
+                addResult = 2
+
+        if addResult == None and tempFriendID != None:
+            query_db(f"INSERT INTO friends (userid,friendid) VALUES('{userid}','{tempFriendID}')")
+            get_db().commit()
+            addResult = 0
+        elif addResult != 2:
+            addResult = 1
+
+    return render_template('newFriend.html', form=formen, addResult=addResult)
 
 
 @app.route('/createUser', methods=['GET', 'POST'])

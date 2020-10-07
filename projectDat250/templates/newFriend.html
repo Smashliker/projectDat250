@@ -1,0 +1,31 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<form method="POST" action="/newFriend">
+    {{ form.csrf_token }}
+
+    <fieldset class="username">
+        {{ form.friendName.label }}
+        {{ form.friendName(placeholder='Friend Name') }}
+    </fieldset>
+
+    <div class="submit-button">
+        {{ form.submit }}
+    </div>
+
+    {% if addResult == 0 %}
+    <p>Sucessfully added friend!</p>
+    {% endif %}
+
+    {% if addResult == 1 %}
+    <p>Could not find user!</p>
+    {% endif %}
+
+    {% if addResult == 2 %}
+    <p>Already in friendlist</p>
+    {% endif %}
+
+</form>
+
+{% endblock %}
