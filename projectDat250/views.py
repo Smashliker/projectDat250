@@ -6,6 +6,7 @@ from wtforms import StringField
 from wtforms.validators import DataRequired
 import string, random
 from projectDat250 import get_db, Users, db, LoginForm
+from projectDat250 import SignUpForm
 from flask_login import login_required, logout_user, current_user, login_user
 #from flask_bcrypt import Bcrypt
 from passlib.hash import sha256_crypt
@@ -14,6 +15,8 @@ import os
 
 @app.route('/')
 def index():
+    if hasattr(current_user, 'username') == False:
+        return redirect(url_for('login'))
     userid = "djfnj"
     venneliste = query_db(f"SELECT * FROM friends WHERE userid = '{userid}'")
     venneIDliste = []
@@ -52,7 +55,6 @@ def login():
                 userid = user["userid"]
 
         user = Users.query.filter_by(userid=userid).first()
-        app.logger.info(user.username)
         if user:
             if sha256_crypt.verify(request.form["password"], user.password):
                 user.authenicated = True
@@ -63,10 +65,16 @@ def login():
                 return redirect(url_for('index'))
     return render_template('login.html', form=form)
 
-@app.route('/logout')
+#@app.route('/logout')
+#def logout():
+#    # remove the username from the session if it's there
+#    session.pop('username', None)
+#    return redirect(url_for('index'))
+
+@app.route("/logout")
+@login_required
 def logout():
-    # remove the username from the session if it's there
-    session.pop('username', None)
+    logout_user()
     return redirect(url_for('index'))
 
 @app.route('/aboutUs')
@@ -76,9 +84,9 @@ def aboutUs():
 
 @app.route('/createUser', methods=['GET', 'POST'])
 def createUser():
-    if request.method == 'POST':
+    form = SignUpForm()
+    if form.validate_on_submit():
         if validateUsername(request.form['username']) is True and len(request.form['password']) >= 1:
-            #TODO: Actually create user object from class in db.py
             userid = generateUserID()
             username = request.form['username']
             password = str(sha256_crypt.hash(request.form['password']))
@@ -88,13 +96,7 @@ def createUser():
         else:
             return "error"
         return redirect(url_for('index'))
-    return '''
-        <form method="post">
-            <p><input type="text" name=username placeholder="Username">
-            <p><input type="password" name=password placeholder="Password">
-            <p><input type="password" name=password placeholder="Repeat Password">
-            <p><input type="submit" value="Create User">
-        '''
+    return render_template('createUser.html', form=form)
 
 def validateUsername(wantedName):
     validated = True

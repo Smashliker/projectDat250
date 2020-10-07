@@ -1,5 +1,22 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-
+<form method="POST" action="/createUser">
+    {{ form.csrf_token }}
+    <fieldset class="username">
+        {{ form.username.label }}
+        {{ form.username(placeholder='username') }}
+    </fieldset>
+    <fieldset>
+        {{ form.password.label }}
+        {{ form.password }}
+    </fieldset>
+    <fieldset>
+        {{ form.confirmPass.label }}
+        {{ form.confirmPass }}
+    </fieldset>
+    <fieldset>
+        {{ form.submit }}
+    </fieldset>
+</form>
 {% endblock %}
