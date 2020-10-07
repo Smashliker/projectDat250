@@ -18,6 +18,9 @@ def index():
     if hasattr(current_user, 'username') == False:
         return redirect(url_for('login'))
     
+    for post in query_db("SELECT created FROM post"):
+        app.logger.info(post["created"])
+
     userid = "djfnj"
     venneliste = query_db(f"SELECT * FROM friends WHERE userid = '{userid}'")
     venneIDliste = []
@@ -111,8 +114,8 @@ def post():
 
 def validateUsername(wantedName):
     validated = True
-    for username in query_db('SELECT username FROM users'):
-        if wantedName == username:
+    for user in query_db('SELECT username FROM users'):
+        if wantedName == user["username"]:
             validated = False
             break
     return validated
