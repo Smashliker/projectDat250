@@ -1,0 +1,23 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<form method="POST" action="/post">
+    {{ form.csrf_token }}
+
+    <fieldset class="title">
+        {{ form.title.label }}
+        {{ form.title(placeholder='title') }}
+    </fieldset>
+
+    <fieldset>
+        {{ form.body.label }}
+        {{ form.body }}
+    </fieldset>
+
+    <div class="submit-button">
+        {{ form.submit }}
+    </div>
+
+</form>
+{% endblock %}

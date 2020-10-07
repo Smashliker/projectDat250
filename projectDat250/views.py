@@ -6,7 +6,7 @@ from wtforms import StringField
 from wtforms.validators import DataRequired
 import string, random
 from projectDat250 import get_db, Users, db, LoginForm
-from projectDat250 import SignUpForm
+from projectDat250 import SignUpForm, PostForm
 from flask_login import login_required, logout_user, current_user, login_user
 #from flask_bcrypt import Bcrypt
 from passlib.hash import sha256_crypt
@@ -17,6 +17,7 @@ import os
 def index():
     if hasattr(current_user, 'username') == False:
         return redirect(url_for('login'))
+    
     userid = "djfnj"
     venneliste = query_db(f"SELECT * FROM friends WHERE userid = '{userid}'")
     venneIDliste = []
@@ -98,9 +99,19 @@ def createUser():
         return redirect(url_for('index'))
     return render_template('createUser.html', form=form)
 
+@app.route('/post', methods=['GET', 'POST'])
+@login_required
+def post():
+    form = PostForm()
+    if form.validate_on_submit():
+        query_db(f'INSERT INTO POST (author_id,author_name,title,body) VALUES ("{current_user.userid}","{current_user.username}","{request.form["title"]}","{request.form["body"]}")')
+        get_db().commit()
+        return redirect(url_for('index'))
+    return render_template('post.html', form=form)
+
 def validateUsername(wantedName):
     validated = True
-    for username in query_db('select username from users'):
+    for username in query_db('SELECT username FROM users'):
         if wantedName == username:
             validated = False
             break
@@ -115,6 +126,3 @@ def generateUserID():
             if result_str == userid:
                 break
         return result_str 
-                
-        
-
