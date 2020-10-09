@@ -11,6 +11,9 @@ h1, h2, h3, h4, h5, h6 {
     padding: 0;
     margin: 0;
 }
+h2 {
+    text-align: center;
+}
 #wrapper {
     max-width: 100vw;
     min-height: 100vh;
@@ -53,9 +56,9 @@ li a, a {
     display: inline;
     font-size: 1.3em;
 }
-a:hover {
+a:hover, input[type=submit]:hover {
     animation-name: slight-opacity;
-    animation-duration: 100ms;
+    animation-duration: 75ms;
     animation-fill-mode: forwards;
     animation-timing-function: ease-in-out;
     animation-iteration-count: 1;
@@ -91,13 +94,14 @@ form {
     background-color: 121212 !important;
     height: auto !important;
     width: auto !important;
+    border: 0;
 }
 fieldset {
-    border-radius: 8px !important;
     text-align: center !important;
     color: black !important;
     height: auto !important;
     width: auto !important;
+    border: 0;
 }
 fieldset input {
     color: black;
@@ -110,8 +114,34 @@ form div {
     text-align: center;
 }
 
-a {
+a, input[type=submit] {
     background-color: #2A139D;
     padding: 10px;
-    border-radius: 0.1em;
+    border-radius: 0.5em;
+    border: 0;
+    color: white;
 }
+input[type=text], input[type=password] {
+    border-radius: 0.3em;
+    border: 0;
+    height: 3em;
+    width: 15em;
+}
+input[type=submit] {
+    margin-top: 3em;
+    padding: 1em;
+    cursor: pointer;
+    color: #efefef;
+    opacity: 0.6;
+}
+#login-createuser {
+    font-size: 1em !important;
+}
+/*
+input:focus {
+    border: 0.2em;
+    border-style: solid;
+    border-color: #2A139D;
+
+}
+*/
