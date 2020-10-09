@@ -50,22 +50,29 @@ app.secret_key = os.urandom(16)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-
+    #Create a WTForm for login
     form = LoginForm()
     if form.validate_on_submit():
         userid = 0
+
+        #Check for the username in the database to find a valid user
         for user in query_db("SELECT * FROM users"):
             if user["username"] == request.form["username"]:
                 userid = user["userid"]
 
+        #Find/Create the user object by query
         user = Users.query.filter_by(userid=userid).first()
+        
+        #If the user exists
         if user:
+            #Verify inputted password with the hashed version in the database
             if sha256_crypt.verify(request.form["password"], user.password):
+                #Add to session using flask_login
                 user.authenicated = True
                 db.session.add(user)
                 db.session.commit()
                 login_user(user, remember=True)
-                flash('Logged in successfully.')
+                #flash('Logged in successfully.')
                 return redirect(url_for('index'))
     return render_template('login.html', form=form)
 
@@ -115,12 +122,19 @@ def newFriend():
 
 @app.route('/createUser', methods=['GET', 'POST'])
 def createUser():
+    #Create WTForm for signup
     form = SignUpForm()
     if form.validate_on_submit():
+        #Validate usernamee by query database to check if someone else has already claimed the username
         if validateUsername(request.form['username']) is True and len(request.form['password']) >= 1:
+            #Generate a non-incremental user ID
             userid = generateUserID()
+
+            #Set username and password, and has the password
             username = request.form['username']
             password = str(sha256_crypt.hash(request.form['password']))
+            
+            #Create Users object and add it to the database
             user = Users(username=username, password=password, userid = userid)
             db.session.add(user)
             db.session.commit()
@@ -132,13 +146,17 @@ def createUser():
 @app.route('/post', methods=['GET', 'POST'])
 @login_required
 def post():
+    #Create WTForm for posting
     form = PostForm()
     if form.validate_on_submit():
+        #Add post to post table in database
         query_db(f'INSERT INTO POST (author_id,author_name,title,body) VALUES ("{current_user.userid}","{current_user.username}","{request.form["title"]}","{request.form["body"]}")')
         get_db().commit()
         return redirect(url_for('index'))
     return render_template('post.html', form=form)
 
+
+#Validates username by querying the database and checking if there is anyone else with that exact username (Case Sensitive)
 def validateUsername(wantedName):
     validated = True
     for user in query_db('SELECT username FROM users'):
@@ -146,7 +164,9 @@ def validateUsername(wantedName):
             validated = False
             break
     return validated
-    
+
+#Generate a user id by adding random letters together
+#TODO: Include numbers in the generation as well
 def generateUserID():
     while True:
         letters = string.ascii_lowercase
