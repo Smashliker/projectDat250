@@ -33,13 +33,19 @@ header {
 }
 nav {
     text-align: center;
+    display: flex;
+    justify-content: space-between;
+}
+#logout {
+    padding-right: 1em;
+    text-align: center;
 }
 nav li {
     display: inline;
-    padding: 0;
+    padding: 1em;
     margin: 0;
 }
-li a {
+li a, a {
     text-align: center;
     text-decoration: none;
     color: #efefef;
@@ -47,7 +53,7 @@ li a {
     display: inline;
     font-size: 1.3em;
 }
-li a:hover {
+a:hover {
     animation-name: slight-opacity;
     animation-duration: 100ms;
     animation-fill-mode: forwards;
@@ -66,7 +72,7 @@ li a:hover {
 
 
 #posts {
-    grid-column: 2 / 10;
+    grid-column: 3 / 10;
     grid-row: 2;
 }
 #friendlist {
@@ -79,10 +85,6 @@ footer {
 }
 p {
     overflow-wrap: break-word;
-}
-
-#logout {
-    text-align: left;
 }
 
 form {

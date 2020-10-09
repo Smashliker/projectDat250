@@ -11,6 +11,7 @@ from flask_login import login_required, logout_user, current_user, login_user
 #from flask_bcrypt import Bcrypt
 from passlib.hash import sha256_crypt
 from werkzeug.utils import secure_filename
+from datetime import datetime
 import os
 
 
@@ -19,8 +20,6 @@ def index():
     if hasattr(current_user, 'username') == False:
         return redirect(url_for('login'))
     
-    for post in query_db("SELECT created FROM post"):
-        app.logger.info(post["created"])
 
     userid = "djfnj"
     venneliste = query_db(f"SELECT * FROM friends WHERE userid = '{userid}'")
