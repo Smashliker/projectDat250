@@ -11,7 +11,7 @@ CREATE TABLE post (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   author_id TEXT NOT NULL,
   author_name TEXT NOT NULL,
-  created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  created TEXT NOT NULL,
   title TEXT NOT NULL,
   body TEXT NOT NULL,
   image_path TEXT,
@@ -39,6 +39,6 @@ INSERT INTO "users"
 VALUES('AJFNAJFpiebfqfwbj29334059uihsdnDD124', 'Admin', '2u129bRUbf91ucwJsa9w9b12ubejd218edubsia9');
 
 INSERT INTO post
-  (author_id, author_name, title, body)
-VALUES('AJFNAJFpiebfqfwbj29334059uihsdnDD124', 'Admin', 'Welcome!', "Welcome to our website! We look forward to seeing what new ideas you'll share here.");
+  (author_id, author_name, created, title, body)
+VALUES('AJFNAJFpiebfqfwbj29334059uihsdnDD124', 'Admin', '09/10/2020  19:40:50' ,'Welcome!', "Welcome to our website! We look forward to seeing what new ideas you'll share here.");
 
