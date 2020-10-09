@@ -32,7 +32,7 @@ CREATE TABLE comments (
   body TEXT NOT NULL,
   post_id INTEGER,
   FOREIGN KEY (author_id) REFERENCES post (id)
-)
+);
 
 INSERT INTO "users" 
   ("userid","username", "password")
