@@ -50,6 +50,10 @@ app.secret_key = os.urandom(16)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    #Logout user if already logged in
+    if current_user.is_authenticated:
+        logout_user
+        
     #Create a WTForm for login
     form = LoginForm()
     if form.validate_on_submit():
@@ -75,12 +79,6 @@ def login():
                 #flash('Logged in successfully.')
                 return redirect(url_for('index'))
     return render_template('login.html', form=form)
-
-#@app.route('/logout')
-#def logout():
-#    # remove the username from the session if it's there
-#    session.pop('username', None)
-#    return redirect(url_for('index'))
 
 @app.route("/logout")
 @login_required
