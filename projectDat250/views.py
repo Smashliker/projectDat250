@@ -53,7 +53,7 @@ def login():
     #Logout user if already logged in
     if current_user.is_authenticated:
         logout_user
-        
+
     #Create a WTForm for login
     form = LoginForm()
     if form.validate_on_submit():
@@ -170,6 +170,7 @@ def validateUsername(wantedName):
 
 #Generate a user id by adding random letters together
 #TODO: Include numbers in the generation as well
+#TODO: FIX SO IT WORKS AS INTENDED (CAN GET SAME USER ID)
 def generateUserID():
     while True:
         letters = string.ascii_lowercase
