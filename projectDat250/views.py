@@ -33,15 +33,6 @@ def index():
 
     return render_template('index.html', venneliste=venneliste, postliste=postliste)
 
-
-#mest for forståelsen at this point
-@app.route('/gibFriends')
-def gibFriends():
-    tester = query_db('INSERT INTO "friends" ("userid","friendid") VALUES("djfnj", "asdasd")')
-    get_db().commit()
-    return redirect(url_for('index'))
-
-
 # Set the secret key to some random bytes. Keep this really secret!
 app.secret_key = os.urandom(16)
 
