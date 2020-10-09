@@ -2,7 +2,7 @@
 
 {% block body %}
 
-<form method="POST" action="/post">
+<form method="POST" enctype="multipart/form-data" action="/post">
     {{ form.csrf_token }}
 
     <a href="/">Go back</a>
@@ -15,6 +15,10 @@
     <fieldset>
         {{ form.body.label }}
         {{ form.body }}
+    </fieldset>
+
+    <fieldset>
+        {{ form.photo }}
     </fieldset>
 
     <div class="submit-button">

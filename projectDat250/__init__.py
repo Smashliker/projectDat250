@@ -76,8 +76,9 @@ def load_user(user_id):
         return Users.query.get(user_id)
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, TextAreaField
+from wtforms import StringField, PasswordField, SubmitField, TextAreaField, FileField
 from wtforms.validators import DataRequired, EqualTo
+from flask_wtf.file import FileField, FileRequired, FileAllowed
 
 class LoginForm(FlaskForm):
     username = StringField('username', validators=[DataRequired()])
@@ -95,8 +96,11 @@ class SignUpForm(FlaskForm):
     submit = SubmitField('Register')
 
 class PostForm(FlaskForm):
-    title = StringField('title')
+    title = StringField('title', validators=[DataRequired()])
     body = StringField('body')
+    photo = FileField(validators=[
+        FileRequired(),
+        FileAllowed(['jpg', 'jpeg', 'png'], 'Images only!')])
     submit = SubmitField('Create Post')
 
 

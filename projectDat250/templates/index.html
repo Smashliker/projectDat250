@@ -7,18 +7,19 @@
 {% block body %}
 <div id="wrapper">
     <header>
-        AntiRepost
-        Logged in as: {{current_user.username}}
-        <a href="logout">logout</a>
-
-        <a href="aboutUs">About Us</a>
-        <a href="createUser">Create User </a>
-        <a href="newFriend">Add Friend</a>
-        <a href="post">post</a>
+        <h1>AntiRepost</h1>
+        <nav>
+            <p>Logged in as: {{current_user.username}}</p>
+            <ul>
+                <li><a href="post">Post</a></li>
+                <li><a href="aboutUs">About Us</a></li>
+                <li><a href="newFriend">Add Friend</a></li>
+            </ul>
+            <p><a id="logout" href="logout">Logout</a></p>
+        </nav>
     </header>
     <div id="posts">
         <h2>Posts:</h2><br\ >
-        <a href="checkUsers">bruh</a>
         {% for post in postliste%}
         <h3>Posted by {{post['author_name']}} at {{post['created']}}</h3> <h4>{{post['title']}}</h4>
         <p>{{post['body']}} </p>
@@ -30,6 +31,8 @@
         {% for pers in venneliste %}
         <h3>{{pers['username']}}</h3>
         {% endfor %}
+        <br>
+        <a href="newFriend">Add Friend</a>
     </div>
    <footer>
        Made by Ove Oftedal and Benjamin Mydland

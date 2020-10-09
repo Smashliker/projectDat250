@@ -6,6 +6,8 @@ from wtforms.validators import DataRequired
 import string, random
 from flask_login import login_required, logout_user, current_user, login_user
 from passlib.hash import sha256_crypt
+from werkzeug.utils import secure_filename
+from datetime import datetime
 import os
 
 
@@ -14,8 +16,6 @@ def index():
     if hasattr(current_user, 'username') == False:
         return redirect(url_for('login'))
     
-    for post in query_db("SELECT created FROM post"):
-        app.logger.info(post["created"])
 
     userid = current_user.userid
     venneliste = query_db(f"SELECT * FROM friends WHERE userid = '{userid}'")
@@ -47,30 +47,35 @@ app.secret_key = os.urandom(16)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-
+    #Logout user if already logged in
+    if current_user.is_authenticated:
+        logout_user
+        
+    #Create a WTForm for login
     form = LoginForm()
     if form.validate_on_submit():
         userid = 0
+
+        #Check for the username in the database to find a valid user
         for user in query_db("SELECT * FROM users"):
             if user["username"] == request.form["username"]:
                 userid = user["userid"]
 
+        #Find/Create the user object by query
         user = Users.query.filter_by(userid=userid).first()
+        
+        #If the user exists
         if user:
+            #Verify inputted password with the hashed version in the database
             if sha256_crypt.verify(request.form["password"], user.password):
+                #Add to session using flask_login
                 user.authenicated = True
                 db.session.add(user)
                 db.session.commit()
                 login_user(user, remember=True)
-                flash('Logged in successfully.')
+                #flash('Logged in successfully.')
                 return redirect(url_for('index'))
     return render_template('login.html', form=form)
-
-#@app.route('/logout')
-#def logout():
-#    # remove the username from the session if it's there
-#    session.pop('username', None)
-#    return redirect(url_for('index'))
 
 @app.route("/logout")
 @login_required
@@ -113,12 +118,19 @@ def newFriend():
 
 @app.route('/createUser', methods=['GET', 'POST'])
 def createUser():
+    #Create WTForm for signup
     form = SignUpForm()
     if form.validate_on_submit():
+        #Validate usernamee by query database to check if someone else has already claimed the username
         if validateUsername(request.form['username']) is True and len(request.form['password']) >= 1:
+            #Generate a non-incremental user ID
             userid = generateUserID()
+
+            #Set username and password, and has the password
             username = request.form['username']
             password = str(sha256_crypt.hash(request.form['password']))
+            
+            #Create Users object and add it to the database
             user = Users(username=username, password=password, userid = userid)
 
             adminQ = query_db("SELECT * FROM users WHERE username='Admin'")
@@ -136,13 +148,22 @@ def createUser():
 @app.route('/post', methods=['GET', 'POST'])
 @login_required
 def post():
+    #Create WTForm for posting
     form = PostForm()
     if form.validate_on_submit():
-        query_db(f'INSERT INTO POST (author_id,author_name,title,body) VALUES ("{current_user.userid}","{current_user.username}","{request.form["title"]}","{request.form["body"]}")')
+        f = form.photo.data
+        filename = secure_filename(f.filename)
+        f.save(os.path.join(
+            app.instance_path, 'photo', filename
+        ))
+        #Add post to post table in database
+        query_db(f'INSERT INTO POST (author_id,author_name,title,body,image_path) VALUES ("{current_user.userid}","{current_user.username}","{request.form["title"]}","{request.form["body"]}","{"instance/photo/" + filename}")')
         get_db().commit()
         return redirect(url_for('index'))
     return render_template('post.html', form=form)
 
+
+#Validates username by querying the database and checking if there is anyone else with that exact username (Case Sensitive)
 def validateUsername(wantedName):
     validated = True
     for user in query_db('SELECT username FROM users'):
@@ -150,7 +171,9 @@ def validateUsername(wantedName):
             validated = False
             break
     return validated
-    
+
+#Generate a user id by adding random letters together
+#TODO: Include numbers in the generation as well
 def generateUserID():
     while True:
         letters = string.ascii_lowercase

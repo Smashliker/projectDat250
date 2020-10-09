@@ -6,19 +6,17 @@
     {{ form.csrf_token }}
 
     <fieldset class="username">
-        {{ form.username.label }}
         {{ form.username(placeholder='username') }}
     </fieldset>
 
     <fieldset>
-        {{ form.password.label }}
-        {{ form.password }}
+        {{ form.password(placeholder='password') }}
     </fieldset>
 
     <div class="submit-button">
         {{ form.submit }}
     </div>
 
+    <a href="createUser">Not Already Registered? Signup here!</a>
 </form>
-<a href="createUser">Create User</a>
 {% endblock %}
