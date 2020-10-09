@@ -143,12 +143,16 @@ def post():
     form = PostForm()
     if form.validate_on_submit():
         f = form.photo.data
-        filename = secure_filename(f.filename)
-        f.save(os.path.join(
-            app.instance_path, 'photo', filename
-        ))
+        app.logger.info(f)
+        if f != None:
+            filename = secure_filename(f.filename)
+            f.save(os.path.join(
+                app.instance_path, 'photo', filename
+            ))
+            query_db(f'INSERT INTO POST (author_id,author_name,title,body,image_path) VALUES ("{current_user.userid}","{current_user.username}","{request.form["title"]}","{request.form["body"]}","{"instance/photo/" + filename}")')
+        else:
+            query_db(f'INSERT INTO POST (author_id,author_name,title,body) VALUES ("{current_user.userid}","{current_user.username}","{request.form["title"]}","{request.form["body"]}")')
         #Add post to post table in database
-        query_db(f'INSERT INTO POST (author_id,author_name,title,body,image_path) VALUES ("{current_user.userid}","{current_user.username}","{request.form["title"]}","{request.form["body"]}","{"instance/photo/" + filename}")')
         get_db().commit()
         return redirect(url_for('index'))
     return render_template('post.html', form=form)
