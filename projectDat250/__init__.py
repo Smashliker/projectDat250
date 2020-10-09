@@ -98,9 +98,7 @@ class SignUpForm(FlaskForm):
 class PostForm(FlaskForm):
     title = StringField('title', validators=[DataRequired()])
     body = StringField('body')
-    photo = FileField(validators=[
-        FileRequired(),
-        FileAllowed(['jpg', 'jpeg', 'png'], 'Images only!')])
+    photo = FileField(validators=[FileAllowed(['jpg', 'jpeg', 'png'], 'Images only!')])
     submit = SubmitField('Create Post')
 
 
