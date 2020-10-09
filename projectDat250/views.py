@@ -10,6 +10,8 @@ from werkzeug.utils import secure_filename
 from datetime import datetime
 import os
 
+def sortPostKey(x):
+    return x["id"]
 
 @app.route('/')
 def index():
@@ -30,6 +32,7 @@ def index():
         venneliste += query_db(f"SELECT * FROM users WHERE userid = '{ID}'")
         postliste += query_db(f"SELECT * FROM post WHERE author_id = '{ID}'")
     postliste += query_db(f"SELECT * FROM post WHERE author_id = '{userid}'")
+    postliste.sort(reverse=True, key=sortPostKey)
 
     return render_template('index.html', venneliste=venneliste, postliste=postliste)
 
