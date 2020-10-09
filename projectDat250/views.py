@@ -13,6 +13,9 @@ import os
 def sortPostKey(x):
     return x["id"]
 
+def sortFriendKey(x):
+    return x["username"]
+
 @app.route('/')
 def index():
     if hasattr(current_user, 'username') == False:
@@ -33,6 +36,7 @@ def index():
         postliste += query_db(f"SELECT * FROM post WHERE author_id = '{ID}'")
     postliste += query_db(f"SELECT * FROM post WHERE author_id = '{userid}'")
     postliste.sort(reverse=True, key=sortPostKey)
+    venneliste.sort(key=sortFriendKey)
 
     return render_template('index.html', venneliste=venneliste, postliste=postliste)
 

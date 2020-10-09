@@ -38,6 +38,14 @@ INSERT INTO "users"
   ("userid","username", "password")
 VALUES('AJFNAJFpiebfqfwbj29334059uihsdnDD124', 'Admin', '2u129bRUbf91ucwJsa9w9b12ubejd218edubsia9');
 
+INSERT INTO "users" 
+  ("userid","username", "password")
+VALUES('jeff', 'Ben', 'jeff');
+
+INSERT INTO "users" 
+  ("userid","username", "password")
+VALUES('jeff2', 'Qatar', 'jeff');
+
 INSERT INTO post
   (author_id, author_name, created, title, body)
 VALUES('AJFNAJFpiebfqfwbj29334059uihsdnDD124', 'Admin', '09/10/2020  19:40:50' ,'Welcome!', "Welcome to our website! We look forward to seeing what new ideas you'll share here.");
