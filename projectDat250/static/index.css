@@ -109,3 +109,9 @@ form div input {
 form div {
     text-align: center;
 }
+
+a {
+    background-color: #2A139D;
+    padding: 10px;
+    border-radius: 0.1em;
+}
