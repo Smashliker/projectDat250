@@ -5,6 +5,8 @@
 <form method="POST" action="/newFriend">
     {{ form.csrf_token }}
 
+    <a href="/">Go back</a>
+
     <fieldset class="username">
         {{ form.friendName.label }}
         {{ form.friendName(placeholder='Friend Name') }}
