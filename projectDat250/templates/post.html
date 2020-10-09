@@ -5,6 +5,8 @@
 <form method="POST" enctype="multipart/form-data" action="/post">
     {{ form.csrf_token }}
 
+    <a href="/">Go back</a>
+
     <fieldset class="title">
         {{ form.title.label }}
         {{ form.title(placeholder='title') }}

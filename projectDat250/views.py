@@ -1,14 +1,10 @@
-from projectDat250 import app, query_db, get_db
-from flask import Flask, render_template, redirect, url_for, request, session
-from flask import flash
+from projectDat250 import app, query_db, get_db, get_db, Users, db, LoginForm, FriendForm, SignUpForm, PostForm
+from flask import Flask, render_template, redirect, url_for, request, session, flash
 from flask_wtf import FlaskForm
 from wtforms import StringField
 from wtforms.validators import DataRequired
 import string, random
-from projectDat250 import get_db, Users, db, LoginForm, FriendForm
-from projectDat250 import SignUpForm, PostForm
 from flask_login import login_required, logout_user, current_user, login_user
-#from flask_bcrypt import Bcrypt
 from passlib.hash import sha256_crypt
 from werkzeug.utils import secure_filename
 from datetime import datetime
@@ -21,7 +17,7 @@ def index():
         return redirect(url_for('login'))
     
 
-    userid = "djfnj"
+    userid = current_user.userid
     venneliste = query_db(f"SELECT * FROM friends WHERE userid = '{userid}'")
     venneIDliste = []
     for pers in venneliste:
@@ -33,6 +29,7 @@ def index():
     for ID in venneIDliste: #Merk hvor nyttig det er å concatenate listen på denne måten
         venneliste += query_db(f"SELECT * FROM users WHERE userid = '{ID}'")
         postliste += query_db(f"SELECT * FROM post WHERE author_id = '{ID}'")
+    postliste += query_db(f"SELECT * FROM post WHERE author_id = '{userid}'")
 
     return render_template('index.html', venneliste=venneliste, postliste=postliste)
 
@@ -92,7 +89,7 @@ def aboutUs():
 
 @app.route('/newFriend', methods=['GET', 'POST'])
 def newFriend():
-    userid = "djfnj"    #placeholder
+    userid = current_user.userid
     formen = FriendForm()
 
     addResult = None   #0 indikerer at brukeren ble lagt til vennelisten, 1 at brukeren ikke ble funnet, og 2 at brukeren allerede er i vennelisten, og None at det er usikkert
@@ -112,6 +109,7 @@ def newFriend():
             query_db(f"INSERT INTO friends (userid,friendid) VALUES('{userid}','{tempFriendID}')")
             get_db().commit()
             addResult = 0
+
         elif addResult != 2:
             addResult = 1
 
@@ -134,6 +132,12 @@ def createUser():
             
             #Create Users object and add it to the database
             user = Users(username=username, password=password, userid = userid)
+
+            adminQ = query_db("SELECT * FROM users WHERE username='Admin'")
+            adminID = adminQ[0]["userid"]   #TODO evaluer om denne metoden er sikker, eller om den setter superbrukeren i risiko
+            query_db(f"INSERT INTO friends (userid,friendid) VALUES('{userid}','{adminID}')") 
+            get_db().commit() #Poenget med koden er å legge til en superbruker slik at det alltid er en venn
+
             db.session.add(user)
             db.session.commit()
         else:
