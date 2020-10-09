@@ -10,6 +10,7 @@ from projectDat250 import SignUpForm, PostForm
 from flask_login import login_required, logout_user, current_user, login_user
 #from flask_bcrypt import Bcrypt
 from passlib.hash import sha256_crypt
+from werkzeug.utils import secure_filename
 import os
 
 
@@ -149,8 +150,13 @@ def post():
     #Create WTForm for posting
     form = PostForm()
     if form.validate_on_submit():
+        f = form.photo.data
+        filename = secure_filename(f.filename)
+        f.save(os.path.join(
+            app.instance_path, 'photo', filename
+        ))
         #Add post to post table in database
-        query_db(f'INSERT INTO POST (author_id,author_name,title,body) VALUES ("{current_user.userid}","{current_user.username}","{request.form["title"]}","{request.form["body"]}")')
+        query_db(f'INSERT INTO POST (author_id,author_name,title,body,image_path) VALUES ("{current_user.userid}","{current_user.username}","{request.form["title"]}","{request.form["body"]}","{"instance/photo/" + filename}")')
         get_db().commit()
         return redirect(url_for('index'))
     return render_template('post.html', form=form)

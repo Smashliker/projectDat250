@@ -11,9 +11,10 @@ CREATE TABLE post (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   author_id TEXT NOT NULL,
   author_name TEXT NOT NULL,
-  created TIMESTAMP DEFAULT GETDATE(),
+  created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   title TEXT NOT NULL,
   body TEXT NOT NULL,
+  image_path,
   FOREIGN KEY (author_id) REFERENCES user (id)
 );
 
