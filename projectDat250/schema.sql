@@ -24,6 +24,16 @@ CREATE TABLE "friends" (
   "friendid" TEXT NOT NULL
 );
 
+CREATE TABLE comments (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  author_id TEXT NOT NULL,
+  author_name TEXT NOT NULL,
+  created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  body TEXT NOT NULL,
+  post_id INTEGER,
+  FOREIGN KEY (author_id) REFERENCES post (id)
+)
+
 INSERT INTO "users" 
   ("userid","username", "password")
 VALUES('AJFNAJFpiebfqfwbj29334059uihsdnDD124', 'Admin', '2u129bRUbf91ucwJsa9w9b12ubejd218edubsia9');
