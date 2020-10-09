@@ -122,7 +122,7 @@ def createUser():
     form = SignUpForm()
     if form.validate_on_submit():
         #Validate usernamee by query database to check if someone else has already claimed the username
-        if validateUsername(request.form['username']) is True and len(request.form['password']) >= 1:
+        if validateUsername(request.form['username']) is True:
             #Generate a non-incremental user ID
             userid = generateUserID()
 
@@ -141,7 +141,7 @@ def createUser():
             db.session.add(user)
             db.session.commit()
         else:
-            return "error"
+            return "ERROR: user already exists!"
         return redirect(url_for('index'))
     return render_template('createUser.html', form=form)
 
