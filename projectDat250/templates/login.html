@@ -2,6 +2,7 @@
 
 {% block body %}
 
+<h2>Log In</h2>
 <form method="POST" action="/login">
     {{ form.csrf_token }}
 
@@ -17,6 +18,6 @@
         {{ form.submit }}
     </div>
 
-    <a href="createUser">Not Already Registered? Signup here!</a>
+    <a id="login-createuser" href="createUser">Not Already Registered? Signup here!</a>
 </form>
 {% endblock %}
