@@ -80,6 +80,8 @@ from wtforms import StringField, PasswordField, SubmitField, TextAreaField, File
 from wtforms.validators import DataRequired, EqualTo
 from flask_wtf.file import FileField, FileRequired, FileAllowed
 
+#NumberRange(min=0, max=10)]
+
 class LoginForm(FlaskForm):
     username = StringField('username', validators=[DataRequired()])
     password = PasswordField('password', validators=[DataRequired()])
@@ -101,6 +103,10 @@ class PostForm(FlaskForm):
     photo = FileField(validators=[FileAllowed(['jpg', 'jpeg', 'png'], 'Images only!')])
     submit = SubmitField('Create Post')
 
+class CommentForm(FlaskForm):
+    title = StringField('title', validators=[DataRequired()])
+    body = StringField('body', validators=[DataRequired()])
+    submit = SubmitField('Comment on post')
 
 import projectDat250.views
 

@@ -157,6 +157,15 @@ def post():
         return redirect(url_for('index'))
     return render_template('post.html', form=form)
 
+@app.route('comment', methods=["GET", "POST"])
+@login_required
+def comment():
+    form = CommentForm()
+    if form.validate_on_submit():
+        request.form['title']
+        request.form['body']
+        request.form['submit']
+
 
 #Validates username by querying the database and checking if there is anyone else with that exact username (Case Sensitive)
 def validateUsername(wantedName):

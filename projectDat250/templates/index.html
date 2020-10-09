@@ -21,8 +21,9 @@
     <div id="posts">
         <h2>Posts:</h2><br\ >
         {% for post in postliste%}
-        <h3>Posted by {{post['author_name']}} at {{post['created']}}</h3> <h4>{{post['title']}}</h4>
-        <p>{{post['body']}} </p>
+        <h3>{{ post['title'] }}</h3>
+        <h5>Posted by {{ post['author_name'] }} at {{ post['created'] }}</h5>
+        <p>{{ post['body'] }}</p>
         {% endfor %}
     </div>
 
