@@ -15,10 +15,6 @@ import os
 def index():
     if hasattr(current_user, 'username') == False:
         return redirect(url_for('login'))
-    
-    for comment in query_db("SELECT * FROM comments"):
-        app.logger.info(comment["body"])
-    
 
     userid = current_user.userid
     venneliste = query_db(f"SELECT * FROM friends WHERE userid = '{userid}'")
@@ -146,7 +142,6 @@ def createPost():
     form = PostForm()
     if form.validate_on_submit():
         f = form.photo.data
-        app.logger.info(f)
         if f != None:
             filename = secure_filename(f.filename)
             f.save(os.path.join(
@@ -162,10 +157,11 @@ def createPost():
 
 
 @app.route('/<int:post_id>')
-@login_required
+#@login_required
 def viewPosts(post_id):
     post = query_db(f'SELECT * FROM post WHERE id={post_id}')
-    return render_template('viewPost.html', post=post[0])
+    comments = query_db(f"SELECT * FROM comments WHERE post_id={post_id}")
+    return render_template('viewPost.html', post=post[0], comments=comments)
 
 @app.route('/<int:post_id>/comment', methods=["GET", "POST"])
 @login_required
@@ -173,7 +169,8 @@ def comment(post_id):
     form = CommentForm()
     if form.validate_on_submit():
         splitRequest = request.path.split('/')
-        post_id = splitRequest[0]
+        print(splitRequest)
+        post_id = splitRequest[1]
         body = request.form['body']
         query_db(f'INSERT INTO comments (post_id,author_id,author_name,body) VALUES("{post_id}","{current_user.userid}","{current_user.username}", "{body}")')
         get_db().commit()
