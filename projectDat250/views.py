@@ -25,7 +25,7 @@ def checkIfRepost(postTekst):
     maksverdi = maks[-1]["id"]
 
     starten = 0
-    grense = 100
+    grense = 50
     if maksverdi > grense:          #Setter startverdi for sjekk
         starten = maksverdi - grense
 
