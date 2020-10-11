@@ -1,4 +1,4 @@
-from projectDat250 import app, query_db, get_db, get_db, Users, db, LoginForm, FriendForm, SignUpForm, PostForm
+from projectDat250 import app, query_db, get_db, get_db, Users, db, LoginForm, FriendForm, SignUpForm, PostForm, CommentForm
 from flask import Flask, render_template, redirect, url_for, request, session, flash
 from flask_wtf import FlaskForm
 from wtforms import StringField
@@ -15,6 +15,9 @@ import os
 def index():
     if hasattr(current_user, 'username') == False:
         return redirect(url_for('login'))
+    
+    for comment in query_db("SELECT * FROM comments"):
+        app.logger.info(comment["body"])
     
 
     userid = current_user.userid
@@ -33,7 +36,7 @@ def index():
 
     return render_template('index.html', venneliste=venneliste, postliste=postliste)
 
-# Set the secret key to some random bytes. Keep this really secret!
+# Set the secret key to some random bytes
 app.secret_key = os.urandom(16)
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -157,23 +160,27 @@ def createPost():
         return redirect(url_for('index'))
     return render_template('createPost.html', form=form)
 
-@app.route('/comment', methods=["GET", "POST"])
-@login_required
-def comment():
-    form = CommentForm()
-    if form.validate_on_submit():
-        request.form['postid'].id
-        request.form['title']
-        request.form['body']
-        request.form['submit']
-        query_db(f'INSERT INTO COMMENTS (author_id,author_name,title,body')
 
-
-@app.route('/<int:post>')
+@app.route('/<int:post_id>')
 @login_required
 def viewPosts(post_id):
     post = query_db(f'SELECT * FROM post WHERE id={post_id}')
-    return render_template('viewPost.html', post=post)
+    return render_template('viewPost.html', post=post[0])
+
+@app.route('/<int:post_id>/comment', methods=["GET", "POST"])
+@login_required
+def comment(post_id):
+    form = CommentForm()
+    if form.validate_on_submit():
+        splitRequest = request.path.split('/')
+        post_id = splitRequest[0]
+        body = request.form['body']
+        query_db(f'INSERT INTO comments (post_id,author_id,author_name,body) VALUES("{post_id}","{current_user.userid}","{current_user.username}", "{body}")')
+        get_db().commit()
+        return redirect(url_for('index'))
+    return render_template('comment.html', form=form)
+
+
 
 #Validates username by querying the database and checking if there is anyone else with that exact username (Case Sensitive)
 def validateUsername(wantedName):

@@ -108,8 +108,6 @@ class PostForm(FlaskForm):
     submit = SubmitField('Create Post')
 
 class CommentForm(FlaskForm):
-    postid = HiddenField('postid', validators=[DataRequired()])
-    title = StringField('title', validators=[DataRequired()])
     body = StringField('body', validators=[DataRequired()])
     submit = SubmitField('Comment on post')
 
