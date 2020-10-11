@@ -18,6 +18,7 @@ def sortFriendKey(x):
 
 def checkIfRepost(postTekst):
     postTekst = postTekst.replace(" ","") #Fjerner whitespace og gjør alt lowercase
+    postTekst = postTekst.strip("\n")
     postTekst = postTekst.lower()
 
     maks = query_db("SELECT * FROM post") #Finner maksverdi
@@ -33,28 +34,36 @@ def checkIfRepost(postTekst):
     for post in postene:
         body = post["body"]
         body = body.replace(" ","")
+        body = body.strip("\n")
         body = body.lower()
 
         i = 0
         plag = 0
         prosentPlag = 0.0
 
-        if len(body) < 10:
-            prosentGrense = (len(body)-1)/(len(body)) #Passer på at poster under 10 bokstaver også kan plagiatkontrolleres
+        if len(body) < 10 or len(postTekst) < 10:   #Hvis en av strengene ikke passer inn i 9/10 forholdet vi har, bruk en enklere sammenlikning
+            if body == postTekst:
+                return True
+            
         else:
             prosentGrense = 0.90
 
-        for ordet in body:
-            if i >= len(postTekst): #Siden postene kan ha forskjellig lengde, sjekker denne at vi ikke får error
-                break
+            if len(body) >= len(postTekst): #Dette sikrer at metoden ikke monopoliserer visse bokstaver
+                lengden = len(body)
+            else:
+                lengden = len(postTekst)
 
-            if postTekst[i] == ordet: #ved at én bokstav er lik:
-                plag += 1
-                prosentPlag = plag/len(body)
-                if prosentPlag >= prosentGrense:
-                    return True
+            for ordet in body:
+                if i >= len(postTekst): #Siden postene kan ha forskjellig lengde, sjekker denne at vi ikke får error
+                    break
 
-            i += 1
+                if postTekst[i] == ordet: #ved at én bokstav er lik:
+                    plag += 1
+                    prosentPlag = plag/lengden
+                    if prosentPlag >= prosentGrense:
+                        return True
+
+                i += 1
     return False
 
 @app.route('/')
