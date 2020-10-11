@@ -16,6 +16,47 @@ def sortPostKey(x):
 def sortFriendKey(x):
     return x["username"]
 
+def checkIfRepost(postTekst):
+    postTekst = postTekst.replace(" ","") #Fjerner whitespace og gjør alt lowercase
+    postTekst = postTekst.lower()
+
+    maks = query_db("SELECT * FROM post") #Finner maksverdi
+    maksverdi = maks[-1]["id"]
+
+    starten = 0
+    grense = 100
+    if maksverdi > grense:          #Setter startverdi for sjekk
+        starten = maksverdi - grense
+
+    postene = query_db(f"SELECT * FROM post LIMIT {starten},{maksverdi}")
+
+    for post in postene:
+        body = post["body"]
+        body = body.replace(" ","")
+        body = body.lower()
+
+        i = 0
+        plag = 0
+        prosentPlag = 0.0
+
+        if len(body) < 10:
+            prosentGrense = (len(body)-1)/(len(body)) #Passer på at poster under 10 bokstaver også kan plagiatkontrolleres
+        else:
+            prosentGrense = 0.90
+
+        for ordet in body:
+            if i >= len(postTekst): #Siden postene kan ha forskjellig lengde, sjekker denne at vi ikke får error
+                break
+
+            if postTekst[i] == ordet: #ved at én bokstav er lik:
+                plag += 1
+                prosentPlag = plag/len(body)
+                if prosentPlag >= prosentGrense:
+                    return True
+
+            i += 1
+    return False
+
 @app.route('/')
 def index():
     if hasattr(current_user, 'username') == False:
@@ -153,7 +194,9 @@ def post():
         app.logger.info(f)
         nu = datetime.now()
         tidNu = nu.strftime("%d/%m/%Y  %H:%M:%S")
-        if f != None:
+        if checkIfRepost(request.form["body"]):
+            return "ERROR: post has been deemed a repost!"
+        elif f != None:
             filename = secure_filename(f.filename)
             f.save(os.path.join(
                 app.instance_path, 'photo', filename
