@@ -11,7 +11,7 @@
         <nav>
             <p>Logged in as: {{current_user.username}}</p>
             <ul>
-                <li><a href="post">Post</a></li>
+                <li><a href="createPost">Post</a></li>
                 <li><a href="aboutUs">About Us</a></li>
                 <li><a href="newFriend">Add Friend</a></li>
             </ul>
@@ -24,6 +24,7 @@
         <h3>{{ post['title'] }}</h3>
         <h5>Posted by {{ post['author_name'] }} at {{ post['created'] }}</h5>
         <p>{{ post['body'] }}</p>
+        
         {% endfor %}
     </div>
 

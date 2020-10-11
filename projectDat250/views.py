@@ -136,9 +136,9 @@ def createUser():
         return redirect(url_for('index'))
     return render_template('createUser.html', form=form)
 
-@app.route('/post', methods=['GET', 'POST'])
+@app.route('/createPost', methods=['GET', 'POST'])
 @login_required
-def post():
+def createPost():
     #Create WTForm for posting
     form = PostForm()
     if form.validate_on_submit():
@@ -155,18 +155,25 @@ def post():
         #Add post to post table in database
         get_db().commit()
         return redirect(url_for('index'))
-    return render_template('post.html', form=form)
+    return render_template('createPost.html', form=form)
 
 @app.route('/comment', methods=["GET", "POST"])
 @login_required
 def comment():
     form = CommentForm()
     if form.validate_on_submit():
+        request.form['postid'].id
         request.form['title']
         request.form['body']
         request.form['submit']
         query_db(f'INSERT INTO COMMENTS (author_id,author_name,title,body')
 
+
+@app.route('/<int:post>')
+@login_required
+def viewPosts(post_id):
+    post = query_db(f'SELECT * FROM post WHERE id={post_id}')
+    return render_template('viewPost.html', post=post)
 
 #Validates username by querying the database and checking if there is anyone else with that exact username (Case Sensitive)
 def validateUsername(wantedName):
