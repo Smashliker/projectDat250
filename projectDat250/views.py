@@ -157,7 +157,7 @@ def post():
         return redirect(url_for('index'))
     return render_template('post.html', form=form)
 
-@app.route('comment', methods=["GET", "POST"])
+@app.route('/comment', methods=["GET", "POST"])
 @login_required
 def comment():
     form = CommentForm()
@@ -165,6 +165,7 @@ def comment():
         request.form['title']
         request.form['body']
         request.form['submit']
+        query_db(f'INSERT INTO COMMENTS (author_id,author_name,title,body')
 
 
 #Validates username by querying the database and checking if there is anyone else with that exact username (Case Sensitive)
