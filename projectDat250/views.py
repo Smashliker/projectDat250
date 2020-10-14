@@ -65,6 +65,8 @@ def login():
                 login_user(user, remember=True)
                 #flash('Logged in successfully.')
                 return redirect(url_for('index'))
+    else:
+        render_template("error.html", error="Invalid username or password!")
     return render_template('login.html', form=form)
 
 @app.route("/logout")
@@ -102,6 +104,8 @@ def newFriend():
 
         elif addResult != 2:
             addResult = 1
+        else:
+            render_template("error.html", error="Could not find user with that username")
 
     return render_template('newFriend.html', form=formen, addResult=addResult)
 
@@ -131,7 +135,7 @@ def createUser():
             db.session.add(user)
             db.session.commit()
         else:
-            return "ERROR: user already exists!"
+            return render_template('error.html', error="User already exists!")
         return redirect(url_for('index'))
     return render_template('createUser.html', form=form)
 

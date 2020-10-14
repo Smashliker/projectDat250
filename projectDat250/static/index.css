@@ -148,3 +148,10 @@ input:focus {
 .post {
     margin-top: 3em !important;
 }
+
+#error {
+    text-align: center;
+}
+#error-message {
+    padding: 2em;
+}
