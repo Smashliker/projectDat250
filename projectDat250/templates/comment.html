@@ -1,0 +1,17 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<h2>Post Comment</h2>
+<form method="POST" action="{{url_for('comment', post_id=1)}}">
+    {{ form.csrf_token }}
+    <fieldset>
+        {{ form.body(placeholder='body') }}
+    </fieldset>
+    <fieldset>
+        {{ form.submit }}
+    </fieldset>
+    <a href="../">Back</a>
+
+</form>
+
+{% endblock %}

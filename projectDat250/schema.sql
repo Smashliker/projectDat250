@@ -31,7 +31,7 @@ CREATE TABLE comments (
   created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   body TEXT NOT NULL,
   post_id INTEGER,
-  FOREIGN KEY (author_id) REFERENCES post (id)
+  FOREIGN KEY (post_id) REFERENCES post (id)
 );
 
 INSERT INTO "users" 

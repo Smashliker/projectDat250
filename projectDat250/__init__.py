@@ -75,10 +75,16 @@ def load_user(user_id):
     if user_id is not None:
         return Users.query.get(user_id)
 
+#TODO: DO THIS FOR BOTH COMMENTS AND POSTS FOR READABILITY AND MAINATAINABILITY
+class Post(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    #author_id = db.Column(db.String, db.ForeignKey(''))
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, TextAreaField, FileField
+from wtforms import StringField, PasswordField, SubmitField, TextAreaField, FileField, HiddenField
 from wtforms.validators import DataRequired, EqualTo
 from flask_wtf.file import FileField, FileRequired, FileAllowed
+
+#NumberRange(min=0, max=10)]
 
 class LoginForm(FlaskForm):
     username = StringField('username', validators=[DataRequired()])
@@ -97,10 +103,13 @@ class SignUpForm(FlaskForm):
 
 class PostForm(FlaskForm):
     title = StringField('title', validators=[DataRequired()])
-    body = StringField('body')
+    body = TextAreaField('body')
     photo = FileField(validators=[FileAllowed(['jpg', 'jpeg', 'png'], 'Images only!')])
     submit = SubmitField('Create Post')
 
+class CommentForm(FlaskForm):
+    body = StringField('body', validators=[DataRequired()])
+    submit = SubmitField('Comment on post')
 
 import projectDat250.views
 
