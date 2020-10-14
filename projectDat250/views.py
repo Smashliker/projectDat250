@@ -10,6 +10,61 @@ from werkzeug.utils import secure_filename
 from datetime import datetime
 import os
 
+def sortPostKey(x):
+    return x["id"]
+
+def sortFriendKey(x):
+    return x["username"]
+
+def checkIfRepost(postTekst):
+    postTekst = postTekst.replace(" ","") #Fjerner whitespace og gjør alt lowercase
+    postTekst = postTekst.strip("\n")
+    postTekst = postTekst.lower()
+
+    maks = query_db("SELECT * FROM post") #Finner maksverdi
+    maksverdi = maks[-1]["id"]
+
+    starten = 0
+    grense = 50
+    if maksverdi > grense:          #Setter startverdi for sjekk
+        starten = maksverdi - grense
+
+    postene = query_db(f"SELECT * FROM post LIMIT {starten},{maksverdi}")
+
+    for post in postene:
+        body = post["body"]
+        body = body.replace(" ","")
+        body = body.strip("\n")
+        body = body.lower()
+
+        i = 0
+        plag = 0
+        prosentPlag = 0.0
+
+        if len(body) < 10 or len(postTekst) < 10:   #Hvis en av strengene ikke passer inn i 9/10 forholdet vi har, bruk en enklere sammenlikning
+            if body == postTekst:
+                return True
+            
+        else:
+            prosentGrense = 0.90
+
+            if len(body) >= len(postTekst): #Dette sikrer at metoden ikke monopoliserer visse bokstaver
+                lengden = len(body)
+            else:
+                lengden = len(postTekst)
+
+            for ordet in body:
+                if i >= len(postTekst): #Siden postene kan ha forskjellig lengde, sjekker denne at vi ikke får error
+                    break
+
+                if postTekst[i] == ordet: #ved at én bokstav er lik:
+                    plag += 1
+                    prosentPlag = plag/lengden
+                    if prosentPlag >= prosentGrense:
+                        return True
+
+                i += 1
+    return False
 
 @app.route('/')
 def index():
@@ -29,6 +84,8 @@ def index():
         venneliste += query_db(f"SELECT * FROM users WHERE userid = '{ID}'")
         postliste += query_db(f"SELECT * FROM post WHERE author_id = '{ID}'")
     postliste += query_db(f"SELECT * FROM post WHERE author_id = '{userid}'")
+    postliste.sort(reverse=True, key=sortPostKey)
+    venneliste.sort(key=sortFriendKey)
 
     return render_template('index.html', venneliste=venneliste, postliste=postliste)
 
@@ -145,14 +202,19 @@ def createPost():
     form = PostForm()
     if form.validate_on_submit():
         f = form.photo.data
-        if f != None:
+        app.logger.info(f)
+        nu = datetime.now()
+        tidNu = nu.strftime("%d/%m/%Y  %H:%M:%S")
+        if checkIfRepost(request.form["body"]):
+            return "ERROR: post has been deemed a repost!"
+        elif f != None:
             filename = secure_filename(f.filename)
             f.save(os.path.join(
                 app.instance_path, 'photo', filename
             ))
-            query_db(f'INSERT INTO POST (author_id,author_name,title,body,image_path) VALUES ("{current_user.userid}","{current_user.username}","{request.form["title"]}","{request.form["body"]}","{"instance/photo/" + filename}")')
+            query_db(f'INSERT INTO POST (author_id,author_name,created,title,body,image_path) VALUES ("{current_user.userid}","{current_user.username}","{tidNu}","{request.form["title"]}","{request.form["body"]}","{"instance/photo/" + filename}")')
         else:
-            query_db(f'INSERT INTO POST (author_id,author_name,title,body) VALUES ("{current_user.userid}","{current_user.username}","{request.form["title"]}","{request.form["body"]}")')
+            query_db(f'INSERT INTO POST (author_id,author_name,created,title,body) VALUES ("{current_user.userid}","{current_user.username}","{tidNu}","{request.form["title"]}","{request.form["body"]}")')
         #Add post to post table in database
         get_db().commit()
         return redirect(url_for('index'))
