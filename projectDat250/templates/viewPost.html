@@ -11,16 +11,6 @@
     <h6>Posted by {{ comment['author_name'] }} at </h6>
     {% endfor %}
 
-    <h2>Post Comment</h2>
-    <form method="POST" action="{{url_for('comment', post_id=post["id"])}}">
-    {{ form.csrf_token }}
-    <fieldset>
-        {{ form.body(placeholder='body') }}
-    </fieldset>
-    <fieldset>
-        {{ form.submit }}
-    </fieldset>
-
 
 </form>
 
