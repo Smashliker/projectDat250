@@ -155,3 +155,6 @@ input:focus {
 #error-message {
     padding: 2em;
 }
+#photo {
+    color: white;
+}
