@@ -103,7 +103,7 @@ fieldset {
     width: auto !important;
     border: 0;
 }
-fieldset input {
+fieldset input, textarea {
     color: black;
 }
 form div input {
@@ -145,3 +145,6 @@ input:focus {
 
 }
 */
+.post {
+    margin-top: 3em !important;
+}
