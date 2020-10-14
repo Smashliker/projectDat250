@@ -140,7 +140,6 @@ def createUser():
     return render_template('createUser.html', form=form)
 
 @app.route('/createPost', methods=['GET', 'POST'])
-@login_required
 def createPost():
     #Create WTForm for posting
     form = PostForm()
