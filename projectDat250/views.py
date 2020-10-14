@@ -207,9 +207,9 @@ def createPost():
         elif f != None:
             filename = secure_filename(f.filename)
             f.save(os.path.join(
-                app.instance_path, 'photo', filename
+                app.root_path, 'static', filename
             ))
-            query_db(f'INSERT INTO POST (author_id,author_name,created,title,body,image_path) VALUES ("{current_user.userid}","{current_user.username}","{tidNu}","{request.form["title"]}","{request.form["body"]}","{"instance/photo/" + filename}")')
+            query_db(f'INSERT INTO POST (author_id,author_name,created,title,body,image_path) VALUES ("{current_user.userid}","{current_user.username}","{tidNu}","{request.form["title"]}","{request.form["body"]}","{filename}")')
         else:
             query_db(f'INSERT INTO POST (author_id,author_name,created,title,body) VALUES ("{current_user.userid}","{current_user.username}","{tidNu}","{request.form["title"]}","{request.form["body"]}")')
         #Add post to post table in database
