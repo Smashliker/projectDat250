@@ -169,14 +169,20 @@ def comment(post_id):
     form = CommentForm()
     if form.validate_on_submit():
         splitRequest = request.path.split('/')
-        print(splitRequest)
-        post_id = splitRequest[1]
+
+        f = open("tmp", "r")
+        post_id = int(f.read())
+        f.close()
+        
         body = request.form['body']
         query_db(f'INSERT INTO comments (post_id,author_id,author_name,body) VALUES("{post_id}","{current_user.userid}","{current_user.username}", "{body}")')
         get_db().commit()
         return redirect(url_for('index'))
-    return render_template('comment.html', form=form)
 
+    f = open("tmp", "w")
+    f.write(str(post_id))
+    f.close
+    return render_template('comment.html', form=form)
 
 
 #Validates username by querying the database and checking if there is anyone else with that exact username (Case Sensitive)
