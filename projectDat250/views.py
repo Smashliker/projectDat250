@@ -164,7 +164,7 @@ def viewPosts(post_id):
     return render_template('viewPost.html', post=post[0], comments=comments)
 
 @app.route('/<int:post_id>/comment', methods=["GET", "POST"])
-@login_required
+#@login_required
 def comment(post_id):
     form = CommentForm()
     if form.validate_on_submit():

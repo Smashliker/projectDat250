@@ -1,8 +1,7 @@
-{% extends 'layout.html' %}
 
 {% block body %}
-<h2>Create User</h2>
-<form method="POST" action="{{url_for('comment', post_id=1)}}">
+<h2>Post Comment</h2>
+<form method="POST" action="{{url_for('comment', post_id=post["id"])}}">
     {{ form.csrf_token }}
     <fieldset>
         {{ form.body(placeholder='body') }}
@@ -10,6 +9,7 @@
     <fieldset>
         {{ form.submit }}
     </fieldset>
+
 
 </form>
 
