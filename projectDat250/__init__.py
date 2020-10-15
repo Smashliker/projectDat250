@@ -13,6 +13,9 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 
 
+
+
+
 def get_db():
     if 'db' not in g:
         g.db = sqlite3.connect("projectDat250/database.db")

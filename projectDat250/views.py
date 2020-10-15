@@ -1,6 +1,7 @@
 from projectDat250 import app, query_db, get_db, get_db, Users, db, LoginForm, FriendForm, SignUpForm, PostForm, CommentForm
-from flask import Flask, render_template, redirect, url_for, request, session, flash
+from flask import Flask, render_template, redirect, url_for, request, session, flash, Response
 from flask_wtf import FlaskForm
+
 from wtforms import StringField
 from wtforms.validators import DataRequired
 import string, random
@@ -68,8 +69,13 @@ def checkIfRepost(postTekst):
 
 @app.route('/')
 def index():
-    if hasattr(current_user, 'username') == False:
+    if current_user.is_authenticated is False:
         return redirect(url_for('login'))
+
+    #TODO: Figure this out:
+    #Testing response, not sure what to add as argument for Response function
+    response = Response()
+    response.headers['Content-Security-Policy'] = "default-src 'self'"
 
     userid = current_user.userid
     venneliste = query_db(f"SELECT * FROM friends WHERE userid = '{userid}'")
