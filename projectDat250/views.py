@@ -235,12 +235,15 @@ def comment(post_id):
     if form.validate_on_submit():
         splitRequest = request.path.split('/')
 
+        nu = datetime.now()
+        tidNu = nu.strftime("%d/%m/%Y  %H:%M:%S")
+
         f = open("tmp", "r")
         post_id = int(f.read())
         f.close()
         
         body = request.form['body']
-        query_db(f'INSERT INTO comments (post_id,author_id,author_name,body) VALUES("{post_id}","{current_user.userid}","{current_user.username}", "{body}")')
+        query_db(f'INSERT INTO comments (post_id,author_id,author_name,created,body) VALUES("{post_id}","{current_user.userid}","{current_user.username}","{tidNu}","{body}")')
         get_db().commit()
         return redirect(url_for('index'))
 

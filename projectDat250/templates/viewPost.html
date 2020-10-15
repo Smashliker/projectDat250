@@ -8,7 +8,7 @@
 
     {% for comment in comments %}
     <h5>{{ comment['body'] }}</h5>
-    <h6>Posted by {{ comment['author_name'] }} at </h6>
+    <h6>Posted by {{ comment['author_name'] }} at {{ comment['created'] }}</h6>
     {% endfor %}
 
 </form>
