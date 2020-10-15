@@ -94,6 +94,7 @@ app.secret_key = os.urandom(16)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    status = 0
     #Logout user if already logged in
     if current_user.is_authenticated:
         logout_user
@@ -120,9 +121,11 @@ def login():
                 db.session.add(user)
                 db.session.commit()
                 login_user(user, remember=True)
-                #flash('Logged in successfully.')
                 return redirect(url_for('index'))
-    return render_template('login.html', form=form)
+
+        status = 1
+            
+    return render_template('login.html', form=form, status=status)
 
 @app.route("/logout")
 @login_required

@@ -19,5 +19,9 @@
     </div>
 
     <a id="login-createuser" href="createUser">Not Already Registered? Signup here!</a>
+
+    {% if status == 1 %}
+    <p>Invalid credentials!</p>
+    {% endif %}
 </form>
 {% endblock %}
