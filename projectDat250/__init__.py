@@ -7,10 +7,18 @@ from flask import current_app, g
 from flask.cli import with_appcontext
 import flask_login
 from flask_login import UserMixin
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 
 from flask_bcrypt import Bcrypt
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+
+limiter = Limiter(
+    app,
+    key_func=get_remote_address,
+    default_limits=["3/second"]
+)
 
 
 def get_db():
