@@ -34,6 +34,11 @@ CREATE TABLE comments (
   FOREIGN KEY (post_id) REFERENCES post (id)
 );
 
+CREATE TABLE tmp (
+  userid TEXT NOT NULL,
+  post_id INTEGER NOT NULL
+);
+
 INSERT INTO "users" 
   ("userid","username", "password")
 VALUES('AJFNAJFpiebfqfwbj29334059uihsdnDD124', 'Admin', '2u129bRUbf91ucwJsa9w9b12ubejd218edubsia9');
