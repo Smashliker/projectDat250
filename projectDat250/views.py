@@ -104,6 +104,7 @@ def login():
     if current_user.is_authenticated:
         logout_user
 
+
     #Create a WTForm for login
     form = LoginForm()
     if form.validate_on_submit():
@@ -127,8 +128,13 @@ def login():
                 db.session.commit()
                 login_user(user, remember=True)
                 #flash('Logged in successfully.')
-                return redirect(url_for('index'))
-    return render_template('login.html', form=form)
+                response = make_response(redirect(url_for('index')))
+                response.headers['Content-Security-Policy'] = "default-src 'self'"
+
+                return response
+    response = make_response(render_template('login.html', form=form))
+    response.headers['Content-Security-Policy'] = "default-src 'self'"
+    return response
 
 @app.route("/logout")
 @login_required
