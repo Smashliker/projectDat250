@@ -159,4 +159,14 @@ input:focus {
     padding: 0;
     margin: 0;
     text-align: left;
+
+}
+#error {
+    text-align: center;
+}
+#error-message {
+    padding: 2em;
+}
+#photo {
+    color: white;
 }
