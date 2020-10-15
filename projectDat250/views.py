@@ -96,7 +96,7 @@ app.secret_key = os.urandom(16)
 def login():
     #Logout user if already logged in
     if current_user.is_authenticated:
-        logout_user
+       logout_user
 
     #Create a WTForm for login
     form = LoginForm()
@@ -122,8 +122,8 @@ def login():
                 login_user(user, remember=True)
                 #flash('Logged in successfully.')
                 return redirect(url_for('index'))
-    else:
-        render_template("error.html", error="Invalid username or password!")
+            else:
+                return render_template("error.html", error="Invalid username or password!")
     return render_template('login.html', form=form)
 
 @app.route("/logout")
@@ -162,7 +162,7 @@ def newFriend():
         elif addResult != 2:
             addResult = 1
         else:
-            render_template("error.html", error="Could not find user with that username")
+            return render_template("error.html", error="Could not find user with that username")
 
     return render_template('newFriend.html', form=formen, addResult=addResult)
 
