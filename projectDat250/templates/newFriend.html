@@ -25,7 +25,11 @@
     {% endif %}
 
     {% if addResult == 2 %}
-    <p>Already in friendlist</p>
+    <p>Already in friendlist.</p>
+    {% endif %}
+
+    {% if addResult == 3 %}
+    <p>Can't add self as friend.</p>
     {% endif %}
 
 </form>

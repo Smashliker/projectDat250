@@ -142,7 +142,7 @@ def newFriend():
     userid = current_user.userid
     formen = FriendForm()
 
-    addResult = None   #0 indikerer at brukeren ble lagt til vennelisten, 1 at brukeren ikke ble funnet, og 2 at brukeren allerede er i vennelisten, og None at det er usikkert
+    addResult = None   #0 indikerer at brukeren ble lagt til vennelisten, 1 at brukeren ikke ble funnet, 2 at brukeren allerede er i vennelisten, 3 at vennen er lik bruker, og None at det er usikkert
     if formen.validate_on_submit():
 
         tempFriendID = None
@@ -155,7 +155,10 @@ def newFriend():
             if tempFriendID == friend["friendid"]:
                 addResult = 2
 
-        if addResult == None and tempFriendID != None:
+        if userid == tempFriendID:
+            addResult = 3
+
+        elif addResult == None and tempFriendID != None:
             query_db(f"INSERT INTO friends (userid,friendid) VALUES('{userid}','{tempFriendID}')")
             get_db().commit()
             addResult = 0
