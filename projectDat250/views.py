@@ -230,6 +230,7 @@ def createPost():
 def viewPosts(post_id):
     post = query_db(f'SELECT * FROM post WHERE id={post_id}')
     comments = query_db(f"SELECT * FROM comments WHERE post_id={post_id}")
+    comments.sort(reverse=True, key=sortPostKey)
     return render_template('viewPost.html', post=post[0], comments=comments)
 
 @app.route('/<int:post_id>/comment', methods=["GET", "POST"])
@@ -242,18 +243,21 @@ def comment(post_id):
         nu = datetime.now()
         tidNu = nu.strftime("%d/%m/%Y  %H:%M:%S")
 
-        f = open("tmp", "r")
-        post_id = int(f.read())
-        f.close()
+        tmp = query_db(f"SELECT * FROM tmp WHERE userid='{current_user.userid}'")
+        post_id = tmp[0]['post_id']
         
         body = request.form['body']
         query_db(f'INSERT INTO comments (post_id,author_id,author_name,created,body) VALUES("{post_id}","{current_user.userid}","{current_user.username}","{tidNu}","{body}")')
         get_db().commit()
         return redirect(url_for('index'))
 
-    f = open("tmp", "w")
-    f.write(str(post_id))
-    f.close
+    tmpliste = query_db(f"SELECT * FROM tmp WHERE userid='{current_user.userid}'")
+    if len(tmpliste) > 0:
+        query_db(f"UPDATE tmp SET post_id={post_id} WHERE userid='{current_user.userid}'")
+    else:
+        query_db(f"INSERT INTO tmp (userid,post_id) VALUES('{current_user.userid}', {post_id})")
+    get_db().commit()
+
     return render_template('comment.html', form=form)
 
 
