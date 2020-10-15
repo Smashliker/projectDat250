@@ -218,6 +218,8 @@ def createPost():
         #Add post to post table in database
         get_db().commit()
         return redirect(url_for('index'))
+    else:
+        render_template("error.html", error="Missing title or body")
     return render_template('createPost.html', form=form)
 
 
@@ -243,7 +245,6 @@ def comment(post_id):
         query_db(f'INSERT INTO comments (post_id,author_id,author_name,body) VALUES("{post_id}","{current_user.userid}","{current_user.username}", "{body}")')
         get_db().commit()
         return redirect(url_for('index'))
-
     f = open("tmp", "w")
     f.write(str(post_id))
     f.close
