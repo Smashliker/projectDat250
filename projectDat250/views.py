@@ -97,7 +97,7 @@ def login():
     status = 0
     #Logout user if already logged in
     if current_user.is_authenticated:
-        logout_user
+       logout_user
 
     #Create a WTForm for login
     form = LoginForm()
@@ -122,10 +122,16 @@ def login():
                 db.session.commit()
                 login_user(user, remember=True)
                 return redirect(url_for('index'))
+<<<<<<< HEAD
 
         status = 1
             
     return render_template('login.html', form=form, status=status)
+=======
+            else:
+                return render_template("error.html", error="Invalid username or password!")
+    return render_template('login.html', form=form)
+>>>>>>> master
 
 @app.route("/logout")
 @login_required
@@ -166,6 +172,8 @@ def newFriend():
 
         elif addResult != 2:
             addResult = 1
+        else:
+            return render_template("error.html", error="Could not find user with that username")
 
     return render_template('newFriend.html', form=formen, addResult=addResult)
 
@@ -195,12 +203,11 @@ def createUser():
             db.session.add(user)
             db.session.commit()
         else:
-            return "ERROR: user already exists!"
+            return render_template('error.html', error="User already exists!")
         return redirect(url_for('index'))
     return render_template('createUser.html', form=form)
 
 @app.route('/createPost', methods=['GET', 'POST'])
-@login_required
 def createPost():
     #Create WTForm for posting
     form = PostForm()
@@ -214,14 +221,16 @@ def createPost():
         elif f != None:
             filename = secure_filename(f.filename)
             f.save(os.path.join(
-                app.instance_path, 'photo', filename
+                app.root_path, 'static', filename
             ))
-            query_db(f'INSERT INTO POST (author_id,author_name,created,title,body,image_path) VALUES ("{current_user.userid}","{current_user.username}","{tidNu}","{request.form["title"]}","{request.form["body"]}","{"instance/photo/" + filename}")')
+            query_db(f'INSERT INTO POST (author_id,author_name,created,title,body,image_path) VALUES ("{current_user.userid}","{current_user.username}","{tidNu}","{request.form["title"]}","{request.form["body"]}","{filename}")')
         else:
             query_db(f'INSERT INTO POST (author_id,author_name,created,title,body) VALUES ("{current_user.userid}","{current_user.username}","{tidNu}","{request.form["title"]}","{request.form["body"]}")')
         #Add post to post table in database
         get_db().commit()
         return redirect(url_for('index'))
+    else:
+        render_template("error.html", error="Missing title or body")
     return render_template('createPost.html', form=form)
 
 

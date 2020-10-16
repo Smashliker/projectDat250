@@ -19,13 +19,15 @@
         </nav>
     </header>
     <div id="posts">
-        <h2>Posts:</h2><br\ >
+        <h2>Posts:</h2>
         {% for post in postliste%}
             <div class="post">
-                <h3>{{ post['title'] }}</h3>
-                <h5>Posted by {{ post['author_name'] }} at {{ post['created'] }}</h5>
-                <p>{{ post['body'] }}</p>
-                <a href="{{post["id"]}}">View Post</a>
+                <a class="post-a" href="{{post["id"]}}">
+                    <img src="static/{{ post['image_path'] }}" alt="">
+                    <h3>{{ post['title'] }}</h3>
+                    <h5>Posted by {{ post['author_name'] }} at {{ post['created'] }}</h5>
+                    <p>{{ post['body'] }}</p>
+                </a>
             </div>
         {% endfor %}
     </div>

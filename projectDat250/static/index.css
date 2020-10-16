@@ -148,3 +148,25 @@ input:focus {
 .post {
     margin-top: 3em !important;
 }
+.post img {
+    max-height: 5vw;
+    width: auto;
+    float: left;
+    display: inline;
+    padding-right: 1em;
+}
+.post-a {
+    padding: 0;
+    margin: 0;
+    text-align: left;
+
+}
+#error {
+    text-align: center;
+}
+#error-message {
+    padding: 2em;
+}
+#photo {
+    color: white;
+}
