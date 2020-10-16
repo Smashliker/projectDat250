@@ -122,16 +122,9 @@ def login():
                 db.session.commit()
                 login_user(user, remember=True)
                 return redirect(url_for('index'))
-<<<<<<< HEAD
-
-        status = 1
-            
-    return render_template('login.html', form=form, status=status)
-=======
             else:
                 return render_template("error.html", error="Invalid username or password!")
     return render_template('login.html', form=form)
->>>>>>> master
 
 @app.route("/logout")
 @login_required
