@@ -174,8 +174,7 @@ def newFriend():
 
         elif addResult != 2:
             addResult = 1
-        else:
-            return render_template("error.html", error="Could not find user with that username")
+        
 
     return render_template('newFriend.html', form=formen, addResult=addResult)
 
