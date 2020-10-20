@@ -12,9 +12,9 @@ import os
 
 @app.before_request
 def before_request():
-    flask.session.permanent = True
+    session.permanent = True
     app.permanent_session_lifetime = datetime.timedelta(minutes=20)
-    flask.session.modified = True
+    session.modified = True
 
 
 
