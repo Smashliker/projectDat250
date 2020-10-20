@@ -10,6 +10,7 @@ from werkzeug.utils import secure_filename
 from datetime import datetime
 import os
 
+
 @app.before_request
 def before_request():
     session.permanent = True
@@ -173,8 +174,7 @@ def newFriend():
 
         elif addResult != 2:
             addResult = 1
-        else:
-            return render_template("error.html", error="Could not find user with that username")
+        
 
     return render_template('newFriend.html', form=formen, addResult=addResult)
 
