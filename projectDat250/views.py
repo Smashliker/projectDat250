@@ -10,6 +10,14 @@ from werkzeug.utils import secure_filename
 from datetime import datetime
 import os
 
+@app.before_request
+def before_request():
+    flask.session.permanent = True
+    app.permanent_session_lifetime = datetime.timedelta(minutes=20)
+    flask.session.modified = True
+
+
+
 def sortPostKey(x):
     return x["id"]
 
