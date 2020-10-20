@@ -7,14 +7,14 @@ import string, random
 from flask_login import login_required, logout_user, current_user, login_user
 from passlib.hash import sha256_crypt
 from werkzeug.utils import secure_filename
-from datetime import datetime
+from datetime import datetime, timedelta
 import os
 
 
 @app.before_request
 def before_request():
     session.permanent = True
-    app.permanent_session_lifetime = datetime.timedelta(minutes=20)
+    app.permanent_session_lifetime = timedelta(minutes=20)
     session.modified = True
 
 
