@@ -41,9 +41,9 @@ CREATE TABLE tmp (
 
 INSERT INTO "users" 
   ("userid","username", "password")
-VALUES('AJFNAJFpiebfqfwbj29334059uihsdnDD124', 'Admin', '2u129bRUbf91ucwJsa9w9b12ubejd218edubsia9');
+VALUES('vvnuwzyy', 'Admin', '$5$rounds=535000$Yi35iVeKoxsg8YM2$WDc2KOGEUIuRzLXsovK5OI.rGGv97lsn1ecl1xLo8D2');
 
 INSERT INTO post
   (author_id, author_name, created, title, body)
-VALUES('AJFNAJFpiebfqfwbj29334059uihsdnDD124', 'Admin', '09/10/2020  19:40:50' ,'Welcome!', "Welcome to our website! We look forward to seeing what new ideas you'll share here.");
+VALUES('vvnuwzyy', 'Admin', '09/10/2020  19:40:50' ,'Welcome!', "Welcome to our website! We look forward to seeing what new ideas you'll share here.");
 
