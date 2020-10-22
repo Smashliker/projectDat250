@@ -2,7 +2,7 @@
 
 {% block body %}
 <h2>Post Comment</h2>
-<form method="POST" action="{{url_for('comment', post_id=1)}}">
+<form method="POST">
     {{ form.csrf_token }}
     <fieldset>
         {{ form.body(placeholder='body') }}
