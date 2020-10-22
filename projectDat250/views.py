@@ -1,5 +1,5 @@
 from projectDat250 import app, query_db, get_db, get_db, Users, db, LoginForm, FriendForm, SignUpForm, PostForm, CommentForm
-from flask import Flask, render_template, redirect, url_for, request, session, flash
+from flask import Flask, render_template, redirect, url_for, request, session, flash, app
 from flask_wtf import FlaskForm
 from wtforms import StringField
 from wtforms.validators import DataRequired
@@ -7,16 +7,8 @@ import string, random
 from flask_login import login_required, logout_user, current_user, login_user
 from passlib.hash import sha256_crypt
 from werkzeug.utils import secure_filename
-from datetime import datetime
+from datetime import datetime, timedelta
 import os
-
-
-@app.before_request
-def before_request():
-    session.permanent = True
-    app.permanent_session_lifetime = datetime.timedelta(minutes=20)
-    session.modified = True
-
 
 
 def sortPostKey(x):

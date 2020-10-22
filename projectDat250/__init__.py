@@ -9,10 +9,13 @@ import flask_login
 from flask_login import UserMixin
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
-
+from datetime import timedelta
 from flask_bcrypt import Bcrypt
+
 app = Flask(__name__)
+
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=20)
 
 limiter = Limiter(
     app,
