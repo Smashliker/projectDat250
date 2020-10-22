@@ -122,5 +122,26 @@ class CommentForm(FlaskForm):
     body = StringField('body', validators=[DataRequired()])
     submit = SubmitField('Comment on post')
 
+class Post(db.Model):
+    __tablename__ = 'users'
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String)
+    body = db.Column(db.String)
+    created = db.Column(db.String)
+    author_id = db.Column(db.String)
+    author_name = db.Column(db.String)
+    image_path = db.Column(db.String)
+
+class Comments(db.Model):
+    __tablename__ = 'comments'
+    id = db.Column(db.Integer, primary_key=True)
+    author_id = db.Column(db.String)
+    post_id = db.Column(db.String)
+    author_name = db.Column(db.String)
+    body = db.Column(db.String)
+    created = db.Column(db.String)
+
+
+
 import projectDat250.views
 
