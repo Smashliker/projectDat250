@@ -170,3 +170,7 @@ input:focus {
 #photo {
     color: white;
 }
+
+.comment {
+    padding-top: 2em;
+}

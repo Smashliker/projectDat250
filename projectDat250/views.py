@@ -282,7 +282,10 @@ def generateUserID():
             letters += str(x)
         result_str = ''.join(random.choice(letters) for i in range(8))
 
-        for userid in query_db('select userid from users'):
+        for userid in query_db('SELECT userid FROM users'):
             if result_str == userid:
-                break
+                duplicate == True
+                
+        if duplicate:
+            continue
         return result_str 

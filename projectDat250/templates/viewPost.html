@@ -12,8 +12,10 @@
     <a href="{{post['id']}}/comment">Comment</a>
 
     {% for comment in comments %}
-    <h5>{{ comment['body'] }}</h5>
-    <h6>Posted by {{ comment['author_name'] }} at {{ comment['created'] }}</h6>
+    <div class="comment">
+        <h5>{{ comment['body'] }}</h5>
+        <h6>Posted by {{ comment['author_name'] }} at {{ comment['created'] }}</h6>
+    </div>
     {% endfor %}
 
 </form>
