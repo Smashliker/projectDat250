@@ -1,4 +1,4 @@
-from projectDat250 import app, query_db, get_db, get_db, Users, db, LoginForm, FriendForm, SignUpForm, PostForm, CommentForm
+from projectDat250 import app, query_db, get_db, get_db, Users, db, LoginForm, FriendForm, SignUpForm, PostForm, CommentForm, Post, Comments, connection
 from flask import Flask, render_template, redirect, url_for, request, session, flash
 from flask_wtf import FlaskForm
 from wtforms import StringField
@@ -8,6 +8,7 @@ from flask_login import login_required, logout_user, current_user, login_user
 from passlib.hash import sha256_crypt
 from werkzeug.utils import secure_filename
 from datetime import datetime, timedelta
+from sqlalchemy import select
 import os
 
 
@@ -69,6 +70,7 @@ def checkIfRepost(postTekst):
 
 @app.route('/')
 def index():
+    print(generateUserID())
     if hasattr(current_user, 'username') == False:
         return redirect(url_for('login'))
 
@@ -111,7 +113,10 @@ def login():
                 userid = user["userid"]
 
         #Find/Create the user object by query
-        user = Users.query.filter_by(userid=userid).first()
+        #user = Users.query.filter_by(userid=userid).first()
+        s = db.select([Users]).where(Users.userid == userid)
+        user = connection.execute(s)
+        print(user)
         
         #If the user exists
         if user:
@@ -206,21 +211,25 @@ def createPost():
     form = PostForm()
     if form.validate_on_submit():
         f = form.photo.data
-        app.logger.info(f)
         nu = datetime.now()
         tidNu = nu.strftime("%d/%m/%Y  %H:%M:%S")
         if checkIfRepost(request.form["body"]):
             return "ERROR: post has been deemed a repost!"
-        elif f != None:
+        post = Post()
+        post.author_id = current_user.userid
+        post.author_name = current_user.username
+        post.created = tidNu
+        post.title = request.form["title"]
+        post.body = request.form["body"]
+        if f != None:
             filename = secure_filename(f.filename)
             f.save(os.path.join(
                 app.root_path, 'static', filename
             ))
-            query_db(f'INSERT INTO POST (author_id,author_name,created,title,body,image_path) VALUES ("{current_user.userid}","{current_user.username}","{tidNu}","{request.form["title"]}","{request.form["body"]}","{filename}")')
-        else:
-            query_db(f'INSERT INTO POST (author_id,author_name,created,title,body) VALUES ("{current_user.userid}","{current_user.username}","{tidNu}","{request.form["title"]}","{request.form["body"]}")')
+            post.image_path = filename
+        db.session.add(post)
+        db.session.commit()
         #Add post to post table in database
-        get_db().commit()
         return redirect(url_for('index'))
     else:
         render_template("error.html", error="Missing title or body")
@@ -248,9 +257,16 @@ def comment(post_id):
         tmp = query_db(f"SELECT * FROM tmp WHERE userid='{current_user.userid}'")
         post_id = tmp[0]['post_id']
         
-        body = request.form['body']
-        query_db(f'INSERT INTO comments (post_id,author_id,author_name,created,body) VALUES("{post_id}","{current_user.userid}","{current_user.username}","{tidNu}","{body}")')
-        get_db().commit()
+        comment = Comments()
+        comment.author_id = current_user.userid
+        comment.author_name = current_user.username
+        comment.post_id = post_id
+        comment.body = request.form['body']
+        comment.created = tidNu
+
+        db.session.add(comment)
+        db.session.commit()
+
         return redirect(url_for('index'))
 
     tmpliste = query_db(f"SELECT * FROM tmp WHERE userid='{current_user.userid}'")
@@ -276,16 +292,19 @@ def validateUsername(wantedName):
 #TODO: Include numbers in the generation as well
 #TODO: FIX SO IT WORKS AS INTENDED (CAN GET SAME USER ID)
 def generateUserID():
+    duplicate = False
     while True:
         letters = string.ascii_lowercase
         for x in range(9):
             letters += str(x)
         result_str = ''.join(random.choice(letters) for i in range(8))
 
-        for userid in query_db('SELECT userid FROM users'):
+        s = db.select([Users.username])
+        result = connection.execute(s)
+        for userid in result:
             if result_str == userid:
-                duplicate == True
-                
+                duplicate = True
+
         if duplicate:
             continue
         return result_str 
