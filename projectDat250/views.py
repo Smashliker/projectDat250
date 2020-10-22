@@ -121,7 +121,7 @@ def login():
                 user.authenicated = True
                 db.session.add(user)
                 db.session.commit()
-                login_user(user, remember=True)
+                login_user(user, remember=False)
                 return redirect(url_for('index'))
             else:
                 return render_template("error.html", error="Invalid username or password!")
