@@ -41,7 +41,7 @@ CREATE TABLE tmp (
 
 INSERT INTO "users" 
   ("userid","username", "password")
-VALUES('vvnuwzyy', 'Admin', '$5$rounds=535000$Yi35iVeKoxsg8YM2$WDc2KOGEUIuRzLXsovK5OI.rGGv97lsn1ecl1xLo8D2');
+VALUES('vvnuwzyy', 'Admin', '$5$rounds=535000$XqfJ3C7g/skEPdeB$k6cz4UJl74V1iQhCdBRg75IOa/2M6RpNhAofcVMOfV1');
 
 INSERT INTO post
   (author_id, author_name, created, title, body)
