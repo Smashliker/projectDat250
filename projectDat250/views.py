@@ -23,18 +23,19 @@ def checkIfRepost(postTekst):
     postTekst = postTekst.strip("\n")
     postTekst = postTekst.lower()
 
-    maks = query_db("SELECT * FROM post") #Finner maksverdi
-    maksverdi = maks[-1]["id"]
+    maks = Post.query.all() #Finner maksverdi
+    maksverdi = maks[-1].id
 
     starten = 0
     grense = 50
     if maksverdi > grense:          #Setter startverdi for sjekk
         starten = maksverdi - grense
 
-    postene = query_db(f"SELECT * FROM post LIMIT {starten},{maksverdi}")
+    #postene = query_db(f"SELECT * FROM post LIMIT {starten},{maksverdi}")
+    postene = Post.query.limit(maksverdi)
 
     for post in postene:
-        body = post["body"]
+        body = post.body
         body = body.replace(" ","")
         body = body.strip("\n")
         body = body.lower()
@@ -71,14 +72,15 @@ def checkIfRepost(postTekst):
 @app.route('/')
 def index():
     print(generateUserID())
-    if hasattr(current_user, 'username') == False:
+    if not current_user.is_authenticated:
         return redirect(url_for('login'))
 
     userid = current_user.userid
     venneliste = query_db(f"SELECT * FROM friends WHERE userid = '{userid}'")
+    venneliste = Friends.query.filter_by(userid=userid).all()
     venneIDliste = []
     for pers in venneliste:
-        venneIDliste.append(pers['friendid'])
+        venneIDliste.append(pers.friendid)
     #I koden over finner vi id'ene til vennene til brukeren, hvor brukeren er userid
 
     venneliste = [] 
@@ -108,9 +110,9 @@ def login():
         userid = 0
 
         #Check for the username in the database to find a valid user
-        for user in query_db("SELECT * FROM users"):
-            if user["username"] == request.form["username"]:
-                userid = user["userid"]
+        for user in Users.query.all():
+            if user.username == request.form["username"]:
+                userid = user.userid
 
         #Find/Create the user object by query
         user = Users.query.filter_by(userid=userid).first()
@@ -129,7 +131,6 @@ def login():
     return render_template('login.html', form=form)
 
 @app.route("/logout")
-@login_required
 def logout():
     logout_user()
     return redirect(url_for('index'))
@@ -148,13 +149,13 @@ def newFriend():
     if formen.validate_on_submit():
 
         tempFriendID = None
-        for user in query_db("SELECT * FROM users"):
-            if user["username"] == request.form["friendName"]:
-                tempFriendID = user["userid"]
+        for user in Users.query.all():
+            if user.username == request.form["friendName"]:
+                tempFriendID = user.userid
                 break
         
-        for friend in query_db(f"SELECT * FROM friends WHERE userid='{userid}'"):
-            if tempFriendID == friend["friendid"]:
+        for friend in Friends.query.filter_by(userid=userid).all():
+            if tempFriendID == friend.friendid:
                 addResult = 2
 
         if userid == tempFriendID:
@@ -194,6 +195,7 @@ def createUser():
             #Create Users object and add it to the database
             user = Users(username=username, password=password, userid = userid)
 
+            admin = Users.query.filter_by(username='Admin')
             adminQ = query_db("SELECT * FROM users WHERE username='Admin'")
             adminID = adminQ[0]["userid"]   #TODO evaluer om denne metoden er sikker, eller om den setter superbrukeren i risiko
             query_db(f"INSERT INTO friends (userid,friendid) VALUES('{userid}','{adminID}')") 
@@ -283,8 +285,8 @@ def comment(post_id):
 #Validates username by querying the database and checking if there is anyone else with that exact username (Case Sensitive)
 def validateUsername(wantedName):
     validated = True
-    for user in query_db('SELECT username FROM users'):
-        if wantedName == user["username"]:
+    for user in Users.query.all():
+        if wantedName.lower() == user.username.lower():
             validated = False
             break
     return validated
