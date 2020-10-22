@@ -86,10 +86,6 @@ def load_user(user_id):
     if user_id is not None:
         return Users.query.get(user_id)
 
-#TODO: DO THIS FOR BOTH COMMENTS AND POSTS FOR READABILITY AND MAINATAINABILITY
-class Post(db.Model):
-    id = db.Column(db.Integer, primary_key = True)
-    #author_id = db.Column(db.String, db.ForeignKey(''))
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, TextAreaField, FileField, HiddenField
 from wtforms.validators import DataRequired, EqualTo
@@ -123,7 +119,7 @@ class CommentForm(FlaskForm):
     submit = SubmitField('Comment on post')
 
 class Post(db.Model):
-    __tablename__ = 'users'
+    __tablename__ = 'post'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String)
     body = db.Column(db.String)
@@ -141,6 +137,11 @@ class Comments(db.Model):
     body = db.Column(db.String)
     created = db.Column(db.String)
 
+class Friends(db.Model):
+    __tablename__ = 'friends'
+    id = db.Column(db.Integer, primary_key=True)
+    userid = db.Column(db.String)
+    friendid = db.Column(db.String)
 
 
 import projectDat250.views

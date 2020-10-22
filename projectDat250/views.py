@@ -1,4 +1,4 @@
-from projectDat250 import app, query_db, get_db, get_db, Users, db, LoginForm, FriendForm, SignUpForm, PostForm, CommentForm, Post, Comments, connection
+from projectDat250 import app, query_db, get_db, get_db, Users, db, LoginForm, FriendForm, SignUpForm, PostForm, CommentForm, Post, Comments, Friends
 from flask import Flask, render_template, redirect, url_for, request, session, flash
 from flask_wtf import FlaskForm
 from wtforms import StringField
@@ -113,12 +113,8 @@ def login():
                 userid = user["userid"]
 
         #Find/Create the user object by query
-        #user = Users.query.filter_by(userid=userid).first()
-        s = db.select([Users]).where(Users.userid == userid)
-        user = connection.execute(s)
-        print(user)
-        
-        #If the user exists
+        user = Users.query.filter_by(userid=userid).first()
+
         if user:
             #Verify inputted password with the hashed version in the database
             if sha256_crypt.verify(request.form["password"], user.password):
@@ -165,8 +161,13 @@ def newFriend():
             addResult = 3
 
         elif addResult == None and tempFriendID != None:
-            query_db(f"INSERT INTO friends (userid,friendid) VALUES('{userid}','{tempFriendID}')")
-            get_db().commit()
+            friend = Friends()
+            friend.userid = current_user.userid
+            friend.friendid = tempFriendID
+            db.session.add(friend)
+            db.session.commit()
+            #query_db(f"INSERT INTO friends (userid,friendid) VALUES('{userid}','{tempFriendID}')")
+            #get_db().commit()
             addResult = 0
 
         elif addResult != 2:
@@ -299,11 +300,8 @@ def generateUserID():
             letters += str(x)
         result_str = ''.join(random.choice(letters) for i in range(8))
 
-        s = db.select([Users.username])
-        result = connection.execute(s)
-        for userid in result:
-            if result_str == userid:
-                duplicate = True
+        if Users.query.filter_by(userid=result_str).first() != None:
+            continue
 
         if duplicate:
             continue
