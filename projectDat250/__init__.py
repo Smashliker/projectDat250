@@ -15,6 +15,7 @@ import psycopg2.extras
 
 app = Flask(__name__)
 
+os.environ['DATABASE_URL'] = <URL>
 DATABASE = os.environ['DATABASE_URL']
 
 app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE
