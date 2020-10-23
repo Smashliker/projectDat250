@@ -118,6 +118,7 @@ def login():
         user = Users.query.filter_by(userid=userid).first()
         if user:
             #Verify inputted password with the hashed version in the database
+            print(request.form["password"])
             if sha256_crypt.verify(request.form["password"], user.password):
                 print("lol")
                 #Add to session using flask_login
