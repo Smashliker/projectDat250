@@ -193,7 +193,7 @@ def createUser():
             #Set username and password, and has the password
             username = request.form['username']
             #password = str(sha256_crypt.hash(request.form['password']))
-            password = hashlib.sha512(request.form["password"]).hexdigest().encode('utf-8')
+            password = hashlib.sha512(request.form["password"]).encode('utf-8').hexdigest()
             
             #Create Users object and add it to the database
             user = Users(username=username, password=password, userid = userid)
