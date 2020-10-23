@@ -105,6 +105,7 @@ app.secret_key = os.urandom(16)
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     #Create a WTForm for login
+    print("new request")
     form = LoginForm()
     if form.validate_on_submit():
 
