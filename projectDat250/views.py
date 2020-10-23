@@ -32,7 +32,7 @@ def checkIfRepost(postTekst):
         starten = maksverdi - grense
 
     #postene = query_db(f"SELECT * FROM post LIMIT {starten},{maksverdi}")
-    postene = Post.query.limit(maksverdi)
+    postene = Post.query.limit(grense).all()
 
     for post in postene:
         body = post.body
@@ -216,6 +216,7 @@ def createUser():
     return render_template('createUser.html', form=form)
 
 @app.route('/createPost', methods=['GET', 'POST'])
+@login_required
 def createPost():
     #Create WTForm for posting
     form = PostForm()
@@ -319,5 +320,5 @@ def generateUserID():
 
         if Users.query.filter_by(userid=result_str).first() != None:
             continue
-        
+
         return result_str 
