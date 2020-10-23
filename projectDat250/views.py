@@ -72,7 +72,9 @@ def checkIfRepost(postTekst):
 
 @app.route('/')
 def index():
-    if not current_user.is_authenticated:
+
+    if current_user.is_authenticated == False:
+        print("redirected from index")
         return redirect(url_for('login'))
 
     userid = current_user.userid
