@@ -19,6 +19,13 @@ DATABASE = os.environ['DATABASE_URL']
 
 app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE
 #app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=20)
+# Set the secret key to some random bytes
+app.secret_key = os.urandom(16)
+
+from flask_wtf.csrf import CSRFProtect
+
+csrf = CSRFProtect()
+csrf.init_app(app)
 
 
 limiter = Limiter(
