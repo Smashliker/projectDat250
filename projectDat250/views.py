@@ -104,18 +104,13 @@ app.secret_key = os.urandom(16)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    status = 0
     #Create a WTForm for login
     form = LoginForm()
     if form.validate_on_submit():
 
         #Check for the username in the database to find a valid user
-        for user in Users.query.all():
-            if user.username == request.form["username"]:
-                userid = user.userid
-
         #Find/Create the user object by query
-        user = Users.query.filter_by(userid=userid).first()
+        user = Users.query.filter_by(username=request.form["username"]).first()
         if user:
             #Verify inputted password with the hashed version in the database
             #if sha256_crypt.verify(request.form["password"], user.password):
