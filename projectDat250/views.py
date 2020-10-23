@@ -101,14 +101,12 @@ def index():
 
     return render_template('index.html', venneliste=venneliste, postliste=postliste)
 
-# Set the secret key to some random bytes
-app.secret_key = os.urandom(16)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     #Create a WTForm for login
     print("new request")
-    form = LoginForm()
+    form = LoginForm(csrf_enabled=False)
     print(form.validate_on_submit())
     print(form.errors)
     if form.validate_on_submit():
