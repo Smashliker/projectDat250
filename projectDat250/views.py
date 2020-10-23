@@ -189,7 +189,6 @@ def createUser():
         if validateUsername(request.form['username']) is True:
             #Generate a non-incremental user ID
             userid = generateUserID()
-            print("lol")
             #Set username and password, and has the password
             username = request.form['username']
             #password = str(sha256_crypt.hash(request.form['password']))
