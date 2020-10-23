@@ -104,10 +104,6 @@ app.secret_key = os.urandom(16)
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     status = 0
-    #Logout user if already logged in
-    if current_user.is_authenticated:
-       logout_user
-
     #Create a WTForm for login
     form = LoginForm()
     if form.validate_on_submit():
