@@ -1,4 +1,4 @@
-from projectDat250 import app, query_db, get_db, get_db, Users, db, LoginForm, FriendForm, SignUpForm, PostForm, CommentForm, Post, Comments, Friends, tmpObj
+from projectDat250 import app, Users, db, LoginForm, FriendForm, SignUpForm, PostForm, CommentForm, Post, Comments, Friends, tmpObj
 from flask import Flask, render_template, redirect, url_for, request, session, flash
 from flask_wtf import FlaskForm
 from wtforms import StringField
