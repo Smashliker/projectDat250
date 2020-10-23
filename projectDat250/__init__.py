@@ -10,7 +10,6 @@ from flask_login import UserMixin
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from datetime import timedelta
-from flask_bcrypt import Bcrypt
 
 app = Flask(__name__)
 
@@ -35,7 +34,6 @@ def init_db():
             db.cursor().execute(f.read())
         db.commit()
 
-bcrypt = Bcrypt(app)
 login_manager = flask_login.LoginManager()
 login_manager.init_app(app)
 
