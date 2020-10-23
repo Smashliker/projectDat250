@@ -5,7 +5,8 @@ from wtforms import StringField
 from wtforms.validators import DataRequired
 import string, random
 from flask_login import login_required, logout_user, current_user, login_user
-from passlib.hash import sha256_crypt
+#from passlib.hash import sha256_crypt
+import hashlib
 from werkzeug.utils import secure_filename
 from datetime import datetime, timedelta
 from sqlalchemy import select
@@ -118,8 +119,8 @@ def login():
         user = Users.query.filter_by(userid=userid).first()
         if user:
             #Verify inputted password with the hashed version in the database
-            print(request.form["password"])
-            if sha256_crypt.verify(request.form["password"], user.password):
+            #if sha256_crypt.verify(request.form["password"], user.password):
+            if hashlib.sha512(request.form["password"]).hexdigest() == user.password    
                 print("lol")
                 #Add to session using flask_login
                 user.authenicated = True
@@ -191,7 +192,8 @@ def createUser():
 
             #Set username and password, and has the password
             username = request.form['username']
-            password = str(sha256_crypt.hash(request.form['password']))
+            #password = str(sha256_crypt.hash(request.form['password']))
+            password = hashlib.sha512(request.form["password"]).hexdigest()
             
             #Create Users object and add it to the database
             user = Users(username=username, password=password, userid = userid)
