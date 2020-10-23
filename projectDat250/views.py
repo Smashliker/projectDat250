@@ -108,7 +108,6 @@ def login():
     #Create a WTForm for login
     form = LoginForm()
     if form.validate_on_submit():
-        userid = 0
 
         #Check for the username in the database to find a valid user
         for user in Users.query.all():
