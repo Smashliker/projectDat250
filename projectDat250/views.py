@@ -111,7 +111,7 @@ def login():
     form = LoginForm()
     print(request.form["username"])
     print(request.form["password"])
-    print(form.errors)
+    #print(form.errors)
     if form.validate_on_submit():
         print("Form was validated")
         #Check for the username in the database to find a valid user
