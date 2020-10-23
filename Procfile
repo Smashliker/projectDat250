@@ -1,0 +1,1 @@
+web: python -c "from projectDat250 import init_db; init_db()"; gunicorn projectDat250:app
