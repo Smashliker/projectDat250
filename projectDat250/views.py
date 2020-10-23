@@ -120,7 +120,7 @@ def login():
         if user:
             #Verify inputted password with the hashed version in the database
             #if sha256_crypt.verify(request.form["password"], user.password):
-            if hashlib.sha512(request.form["password"]).hexdigest() == user.password    
+            if hashlib.sha512(request.form["password"]).hexdigest() == user.password:
                 print("lol")
                 #Add to session using flask_login
                 user.authenicated = True
