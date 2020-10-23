@@ -5,16 +5,16 @@
     <span>{{ post['created'] }}</span>
     <p>{{ post['body'] }}</p>
 
-    <img src="static/{{ post['image_path'] }}" alt="">
+    <img src="static/{{ post.image_path }}" alt="">
     <br>
     <br>
 
-    <a href="{{post['id']}}/comment">Comment</a>
+    <a href="{{post.id}}/comment">Comment</a>
 
     {% for comment in comments %}
     <div class="comment">
-        <h5>{{ comment['body'] }}</h5>
-        <h6>Posted by {{ comment['author_name'] }} at {{ comment['created'] }}</h6>
+        <h5>{{ comment.body }}</h5>
+        <h6>Posted by {{ comment.author_name }} at {{ comment.created }}</h6>
     </div>
     {% endfor %}
 

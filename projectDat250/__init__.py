@@ -143,6 +143,11 @@ class Friends(db.Model):
     userid = db.Column(db.String)
     friendid = db.Column(db.String)
 
+class tmpObj(db.Model):
+    __tablename__ = "tmp"
+    userid = db.Column(db.String, primary_key=True)
+    post_id = db.Column(db.String)
+
 
 import projectDat250.views
 

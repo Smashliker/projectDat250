@@ -35,7 +35,7 @@ CREATE TABLE comments (
 );
 
 CREATE TABLE tmp (
-  userid TEXT NOT NULL,
+  userid TEXT NOT NULL PRIMARY KEY,
   post_id INTEGER NOT NULL
 );
 

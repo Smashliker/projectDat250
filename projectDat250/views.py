@@ -1,4 +1,4 @@
-from projectDat250 import app, query_db, get_db, get_db, Users, db, LoginForm, FriendForm, SignUpForm, PostForm, CommentForm, Post, Comments, Friends
+from projectDat250 import app, query_db, get_db, get_db, Users, db, LoginForm, FriendForm, SignUpForm, PostForm, CommentForm, Post, Comments, Friends, tmpObj
 from flask import Flask, render_template, redirect, url_for, request, session, flash
 from flask_wtf import FlaskForm
 from wtforms import StringField
@@ -71,12 +71,10 @@ def checkIfRepost(postTekst):
 
 @app.route('/')
 def index():
-    print(generateUserID())
     if not current_user.is_authenticated:
         return redirect(url_for('login'))
 
     userid = current_user.userid
-    venneliste = query_db(f"SELECT * FROM friends WHERE userid = '{userid}'")
     venneliste = Friends.query.filter_by(userid=userid).all()
     venneIDliste = []
     for pers in venneliste:
@@ -86,11 +84,17 @@ def index():
     venneliste = [] 
     postliste = []
     for ID in venneIDliste: #Merk hvor nyttig det er å concatenate listen på denne måten
-        venneliste += query_db(f"SELECT * FROM users WHERE userid = '{ID}'")
-        postliste += query_db(f"SELECT * FROM post WHERE author_id = '{ID}'")
-    postliste += query_db(f"SELECT * FROM post WHERE author_id = '{userid}'")
-    postliste.sort(reverse=True, key=sortPostKey)
-    venneliste.sort(key=sortFriendKey)
+        #venneliste += query_db(f"SELECT * FROM users WHERE userid = '{ID}'")
+        #postliste += query_db(f"SELECT * FROM post WHERE author_id = '{ID}'")
+        venneliste.append(Users.query.filter_by(userid=ID).first())
+        postliste.append(Post.query.filter_by(author_id=ID).first())
+    #postliste += query_db(f"SELECT * FROM post WHERE author_id = '{userid}'")
+    postliste += Post.query.filter_by(author_id=userid)
+
+    postliste.sort(reverse=True, key=lambda post: post.id)
+    #postliste.sort(reverse=True, key=sortPostKey)
+    venneliste.sort(key=lambda venn: venn.username)
+
 
     return render_template('index.html', venneliste=venneliste, postliste=postliste)
 
@@ -195,11 +199,14 @@ def createUser():
             #Create Users object and add it to the database
             user = Users(username=username, password=password, userid = userid)
 
-            admin = Users.query.filter_by(username='Admin')
-            adminQ = query_db("SELECT * FROM users WHERE username='Admin'")
-            adminID = adminQ[0]["userid"]   #TODO evaluer om denne metoden er sikker, eller om den setter superbrukeren i risiko
-            query_db(f"INSERT INTO friends (userid,friendid) VALUES('{userid}','{adminID}')") 
-            get_db().commit() #Poenget med koden er å legge til en superbruker slik at det alltid er en venn
+            admin = Users.query.filter_by(username='Admin').first()
+            adminID = admin.userid  #TODO evaluer om denne metoden er sikker, eller om den setter superbrukeren i risiko
+            friend = Friends()
+            friend.userid = userid
+            friend.friendid = adminID
+            #query_db(f"INSERT INTO friends (userid,friendid) VALUES('{userid}','{adminID}')") 
+            #get_db().commit() #Poenget med koden er å legge til en superbruker slik at det alltid er en venn
+            db.session.add(friend)
 
             db.session.add(user)
             db.session.commit()
@@ -242,10 +249,12 @@ def createPost():
 @app.route('/<int:post_id>')
 @login_required
 def viewPosts(post_id):
-    post = query_db(f'SELECT * FROM post WHERE id={post_id}')
-    comments = query_db(f"SELECT * FROM comments WHERE post_id={post_id}")
-    comments.sort(reverse=True, key=sortPostKey)
-    return render_template('viewPost.html', post=post[0], comments=comments)
+    post = Post.query.filter_by(id=post_id).first()
+    comments = Comments.query.filter_by(post_id=post_id).all()
+    print(comments)
+    #
+    comments.sort(reverse=True, key=lambda post: post.id)
+    return render_template('viewPost.html', post=post, comments=comments)
 
 @app.route('/<int:post_id>/comment', methods=["GET", "POST"])
 @login_required
@@ -256,8 +265,8 @@ def comment(post_id):
 
         nu = datetime.now()
         tidNu = nu.strftime("%d/%m/%Y  %H:%M:%S")
-
-        tmp = query_db(f"SELECT * FROM tmp WHERE userid='{current_user.userid}'")
+        tmp = tmpObj.query.filter_by(userid=current_user.userid)
+        #tmp = query_db(f"SELECT * FROM tmp WHERE userid='{current_user.userid}'")
         post_id = tmp[0]['post_id']
         
         comment = Comments()
@@ -272,11 +281,17 @@ def comment(post_id):
 
         return redirect(url_for('index'))
 
-    tmpliste = query_db(f"SELECT * FROM tmp WHERE userid='{current_user.userid}'")
+    tmpliste = tmpObj.query.filter_by(userid=current_user.userid).all()
     if len(tmpliste) > 0:
-        query_db(f"UPDATE tmp SET post_id={post_id} WHERE userid='{current_user.userid}'")
+        entry = tmpObj.query.filter_by(userid=current_user.userid)
+        entry.post_id = post_id
+        db.session.commit()
     else:
-        query_db(f"INSERT INTO tmp (userid,post_id) VALUES('{current_user.userid}', {post_id})")
+        entry = tempObj()
+        entry.userid = current_user.userid
+        entry.post_id = post_id
+        db.session.add(entry)
+        db.session.commit()
     get_db().commit()
 
     return render_template('comment.html', form=form)
