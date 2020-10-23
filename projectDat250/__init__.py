@@ -1,6 +1,5 @@
 from flask import Flask, render_template, redirect, url_for, request
 import os
-import sqlite3
 
 import click
 from flask import current_app, g
