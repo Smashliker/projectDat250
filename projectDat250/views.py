@@ -318,7 +318,7 @@ def generateUserID():
             letters += str(x)
         result_str = ''.join(random.choice(letters) for i in range(8))
 
-        if Users.query.filter_by(userid=result_str).first() != None:
+        if Users.query.filter_by(userid=str(result_str)).first() != None:
             continue
 
         return result_str 
