@@ -120,7 +120,7 @@ def login():
         if user:
             #Verify inputted password with the hashed version in the database
             #if sha256_crypt.verify(request.form["password"], user.password):
-            if hashlib.sha512(request.form["password"]).hexdigest() == user.password:
+            if hashlib.sha512(request.form["password"]).hexdigest().encode('utf-8') == user.password:
                 print("lol")
                 #Add to session using flask_login
                 user.authenicated = True
@@ -193,7 +193,7 @@ def createUser():
             #Set username and password, and has the password
             username = request.form['username']
             #password = str(sha256_crypt.hash(request.form['password']))
-            password = hashlib.sha512(request.form["password"]).hexdigest()
+            password = hashlib.sha512(request.form["password"]).hexdigest().encode('utf-8')
             
             #Create Users object and add it to the database
             user = Users(username=username, password=password, userid = userid)
