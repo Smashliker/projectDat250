@@ -26,26 +26,6 @@ limiter = Limiter(
     key_func=get_remote_address,
     default_limits=["3/second"]
 )
-def get_db():
-    db = getattr(g, '_database', None)
-    if db is None:
-        db = g._database = psycopg2.connect(DATABASE)
-    return db
-
-def init_db():
-    with app.app_context():
-        db = get_db()
-        with app.open_resource('schema.sql', mode='r') as f:
-            db.cursor().execute(f.read())
-        db.commit()
-
-def query_db(query, args=(), one=False):
-    cur = get_db().cursor(cursor_factory=psycopg2.extras.DictCursor)
-    cur.execute(query, args)
-    rv = cur.fetchall()
-    cur.close()
-    return (rv[0] if rv else None) if one else rv
-
 
 login_manager = flask_login.LoginManager()
 login_manager.init_app(app)
