@@ -110,7 +110,7 @@ def login():
     print("new request")
     form = LoginForm()
     if form.validate_on_submit():
-
+        print("Form was validated")
         #Check for the username in the database to find a valid user
         #Find/Create the user object by query
         user = Users.query.filter_by(username=request.form["username"]).first()
