@@ -15,8 +15,11 @@ import psycopg2.extras
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+DATABASE = os.environ['DATABASE_URL']
+
+app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=20)
+
 
 limiter = Limiter(
     app,
