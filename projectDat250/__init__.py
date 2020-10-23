@@ -25,8 +25,8 @@ app.config['SECRET_KEY'] = os.urandom(16)
 
 from flask_wtf.csrf import CSRFProtect
 
-csrf = CSRFProtect()
-csrf.init_app(app)
+csrf = CSRFProtect(app)
+#csrf.init_app(app)
 
 
 limiter = Limiter(
