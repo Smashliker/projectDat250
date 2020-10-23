@@ -114,7 +114,8 @@ def login():
         #Check for the username in the database to find a valid user
         #Find/Create the user object by query
         user = Users.query.filter_by(username=request.form["username"]).first()
-        if user:
+        print(user)
+        if user: != None
             #Verify inputted password with the hashed version in the database
             #if sha256_crypt.verify(request.form["password"], user.password):
             print(user.password)
@@ -129,6 +130,7 @@ def login():
                 return redirect(url_for('index'))
             else:
                 return render_template("error.html", error="Invalid username or password!")
+    print("Renders login.html")
     return render_template('login.html', form=form)
 
 @app.route("/logout")
