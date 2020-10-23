@@ -22,10 +22,10 @@ app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE
 # Set the secret key to some random bytes
 app.secret_key = os.urandom(16)
 
-from flask_wtf.csrf import CSRFProtect
+#from flask_wtf.csrf import CSRFProtect
 
-csrf = CSRFProtect()
-csrf.init_app(app)
+#csrf = CSRFProtect()
+#csrf.init_app(app)
 
 
 limiter = Limiter(
