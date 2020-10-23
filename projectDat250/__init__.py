@@ -1,5 +1,5 @@
 from flask import Flask, render_template, redirect, url_for, request
-
+import os
 import sqlite3
 
 import click
@@ -14,7 +14,7 @@ from flask_bcrypt import Bcrypt
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=20)
 
 limiter = Limiter(
