@@ -122,7 +122,7 @@ def login():
             if hashlib.sha512(request.form["password"].encode('utf-8')).hexdigest() == user.password:
                 print("lol")
                 #Add to session using flask_login
-                user.authenicated = True
+                user.authenticated = True
                 db.session.add(user)
                 db.session.commit()
                 login_user(user, remember=False)
