@@ -106,7 +106,7 @@ def index():
 def login():
     #Create a WTForm for login
     print("new request")
-    form = LoginForm(csrf=False)
+    form = LoginForm()
     print(form.validate_on_submit())
     print(form.errors)
     if form.validate_on_submit():
