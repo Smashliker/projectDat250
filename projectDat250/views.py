@@ -120,7 +120,7 @@ def login():
 
         #Find/Create the user object by query
         user = Users.query.filter_by(userid=userid).first()
-
+        print("lol")
         if user:
             #Verify inputted password with the hashed version in the database
             if sha256_crypt.verify(request.form["password"], user.password):
