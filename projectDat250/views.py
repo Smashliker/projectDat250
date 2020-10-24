@@ -274,9 +274,9 @@ def comment(post_id):
 
         nu = datetime.now()
         tidNu = nu.strftime("%d/%m/%Y  %H:%M:%S")
-        tmp = tmpObj.query.filter_by(userid=current_user.userid)
+        tmp = tmpObj.query.filter_by(userid=current_user.userid).first()
         #tmp = query_db(f"SELECT * FROM tmp WHERE userid='{current_user.userid}'")
-        post_id = tmp[0]['post_id']
+        post_id = tmp.post_id
         
         comment = Comments()
         comment.author_id = current_user.userid
