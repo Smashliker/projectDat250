@@ -284,9 +284,8 @@ def comment(post_id):
         return redirect(url_for('viewPosts', post_id=post_id))
     tmpliste = tmpObj.query.filter_by(userid=current_user.userid).all()
     if len(tmpliste) > 0:
-        entry = tmpObj.query.filter_by(userid=current_user.userid)
         tmpObj.query.filter_by(userid=current_user.userid).delete()
-        entry.post_id = post_id
+        entry = tmpObj(userid=current_user.userid, post_id=post_id)
         db.session.add(entry)
         db.session.commit()
     else:
