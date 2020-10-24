@@ -81,7 +81,8 @@ def index():
     userid = current_user.userid
     venneliste = Friends.query.filter_by(userid=userid).all()
     print("Venneliste:")
-    print(venneliste)
+    for venn in venneliste:
+        print(venn.username)
     venneIDliste = []
     for pers in venneliste:
         venneIDliste.append(pers.friendid)
