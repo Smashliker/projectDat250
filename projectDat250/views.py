@@ -259,10 +259,10 @@ def createPost():
 @app.route('/<int:post_id>')
 @login_required
 def viewPosts(post_id):
-    print(post_id)
     post = Post.query.filter_by(id=post_id).first()
     comments = Comments.query.filter_by(post_id=post_id).all()
-    comments.sort(reverse=True, key=lambda post: post.id)
+    if comments != None:
+        comments.sort(reverse=True, key=lambda post: post.id)
     return render_template('viewPost.html', post=post, comments=comments)
 
 @app.route('/<int:post_id>/comment', methods=["GET", "POST"])
@@ -274,9 +274,9 @@ def comment(post_id):
 
         nu = datetime.now()
         tidNu = nu.strftime("%d/%m/%Y  %H:%M:%S")
-        tmp = tmpObj.query.filter_by(userid=current_user.userid)
+        tmp = tmpObj.query.filter_by(userid=current_user.userid).first()
         #tmp = query_db(f"SELECT * FROM tmp WHERE userid='{current_user.userid}'")
-        post_id = tmp[0]['post_id']
+        post_id = tmp.post_id
         
         comment = Comments()
         comment.author_id = current_user.userid
@@ -296,12 +296,11 @@ def comment(post_id):
         entry.post_id = post_id
         db.session.commit()
     else:
-        entry = tempObj()
+        entry = tmpObj()
         entry.userid = current_user.userid
         entry.post_id = post_id
         db.session.add(entry)
         db.session.commit()
-    get_db().commit()
 
     return render_template('comment.html', form=form)
 
