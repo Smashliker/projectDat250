@@ -118,10 +118,10 @@ class tmpObj(db.Model):
     userid = db.Column(db.String, primary_key=True)
     post_id = db.Column(db.Integer)
 
-admin = Users()
-admin.userid = 'vvnuwzyy'
-admin.username = 'Admin'
-admin.password = 'e46416f2250b2f1ac4cac0d4f96bb7bb05761b741d1c1dd40fb3df0e6c23f29a0028950f7a2ae8cd057fef8bf6b48636ac06fc4492c2af0c0f9d357aaf4dcb2b'
+#admin = Users()
+#dmin.userid = 'vvnuwzyy123'
+#admin.username = 'Admin'
+#admin.password = 'e46416f2250b2f1ac4cac0d4f96bb7bb05761b741d1c1dd40fb3df0e6c23f29a0028950f7a2ae8cd057fef8bf6b48636ac06fc4492c2af0c0f9d357aaf4dcb2b'
 
 db.session.add(admin)
 db.session.commit()
