@@ -58,7 +58,7 @@ def load_user(user_id):
 
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, TextAreaField, FileField, HiddenField
-from wtforms.validators import DataRequired, EqualTo, InputRequired
+from wtforms.validators import DataRequired, EqualTo
 from flask_wtf.file import FileField, FileRequired, FileAllowed
 
 #NumberRange(min=0, max=10)]
@@ -74,7 +74,7 @@ class FriendForm(FlaskForm):
     
 class SignUpForm(FlaskForm):
     username = StringField('username', validators=[DataRequired()])
-    password = PasswordField('password', validators=[InputRequired(), EqualTo('confirmPass', message='Passwords must match')])
+    password = PasswordField('password', validators=[DataRequired(), EqualTo('confirmPassword', message='Passwords must match')])
     confirmPass = PasswordField('confirmpass', validators=[DataRequired()])
     submit = SubmitField('Register')
 
