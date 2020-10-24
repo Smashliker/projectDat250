@@ -20,7 +20,8 @@ DATABASE = os.environ['DATABASE_URL']
 app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE
 app.config['WTF_CSRF_SSL_STRICT'] = False
 WTF_CSRF_SSL_STRICT = False
-
+app.config['WTF_CSRF_ENABLED'] = False
+WTF_CSRF_ENABLED = False
 #app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=20)
 # Set the secret key to some random bytes
 app.secret_key = os.urandom(16)
