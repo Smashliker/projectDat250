@@ -73,7 +73,9 @@ def checkIfRepost(postTekst):
 
 @app.route('/')
 def index():
-    check_authentication()
+    if current_user.is_authenticated == False:
+        flash("You are not authenticated")
+        return redirect(url_for('login'))
 
     userid = current_user.userid
     venneliste = Friends.query.filter_by(userid=userid).all()
@@ -138,7 +140,9 @@ def login():
 
 @app.route("/logout")
 def logout():
-    check_authentication()
+    if current_user.is_authenticated == False:
+        flash("You are not authenticated")
+        return redirect(url_for('login'))
     logout_user()
     return redirect(url_for('login'))
 
@@ -148,7 +152,6 @@ def aboutUs():
 
 @app.route('/newFriend', methods=['GET', 'POST'])
 def newFriend():
-    check_authentication()
     if current_user.is_authenticated == False:
         flash("You are not authenticated")
         return redirect(url_for('login'))
@@ -190,7 +193,9 @@ def newFriend():
 
 @app.route('/createUser', methods=['GET', 'POST'])
 def createUser():
-    check_authentication()
+    if current_user.is_authenticated == False:
+        flash("You are not authenticated")
+        return redirect(url_for('login'))
     #Create WTForm for signup
     form = SignUpForm()
     print(form.errors)
@@ -226,7 +231,9 @@ def createUser():
 @app.route('/createPost', methods=['GET', 'POST'])
 @login_required
 def createPost():
-    check_authentication()
+    if current_user.is_authenticated == False:
+        flash("You are not authenticated")
+        return redirect(url_for('login'))
     #Create WTForm for posting
     form = PostForm()
     if form.validate_on_submit():
@@ -259,7 +266,9 @@ def createPost():
 @app.route('/<int:post_id>')
 @login_required
 def viewPosts(post_id):
-    check_authentication()
+    if current_user.is_authenticated == False:
+        flash("You are not authenticated")
+        return redirect(url_for('login'))
     post = Post.query.filter_by(id=post_id).first()
     comments = Comments.query.filter_by(post_id=post_id).all()
     if comments != None:
@@ -269,7 +278,9 @@ def viewPosts(post_id):
 @app.route('/<int:post_id>/comment', methods=["GET", "POST"])
 @login_required
 def comment(post_id):
-    check_authentication()
+    if current_user.is_authenticated == False:
+        flash("You are not authenticated")
+        return redirect(url_for('login'))
     form = CommentForm()
     if form.validate_on_submit():
         splitRequest = request.path.split('/')
@@ -332,9 +343,3 @@ def generateUserID():
             continue
 
         return result_str 
-
-#Check if authenticated, and returns to login with error message if not
-def check_authentication():
-    if current_user.is_authenticated == False:
-        flash("You are not authenticated")
-        return redirect(url_for('login'))
