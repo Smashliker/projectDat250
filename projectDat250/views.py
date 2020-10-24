@@ -259,7 +259,7 @@ def createPost():
 @app.route('/<int:post_id>')
 @login_required
 def viewPosts(post_id):
-    print(post_id)
+    print(Post.query.all())
     post = Post.query.filter_by(id=post_id).first()
     comments = Comments.query.filter_by(post_id=post_id).all()
     comments.sort(reverse=True, key=lambda post: post.id)
