@@ -91,7 +91,7 @@ def index():
         #venneliste += query_db(f"SELECT * FROM users WHERE userid = '{ID}'")
         #postliste += query_db(f"SELECT * FROM post WHERE author_id = '{ID}'")
         venneliste.append(Users.query.filter_by(userid=ID).first())
-        postliste.append(Post.query.filter_by(author_id=ID).first())
+        postliste += Post.query.filter_by(author_id=ID).all()
     #postliste += query_db(f"SELECT * FROM post WHERE author_id = '{userid}'")
     postliste += Post.query.filter_by(author_id=userid)
 
