@@ -127,8 +127,6 @@ def login():
                 print("lol")
                 #Add to session using flask_login
                 user.authenticated = True
-                db.session.add(user)
-                db.session.commit()
                 login_user(user, remember=False)
                 return redirect(url_for('index'))
             else:
