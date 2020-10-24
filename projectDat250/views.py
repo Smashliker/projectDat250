@@ -282,7 +282,6 @@ def comment(post_id):
         db.session.commit()
 
         return redirect(url_for('viewPosts', post_id=post_id))
-        db.engine.
     tmpliste = tmpObj.query.filter_by(userid=current_user.userid).all()
     if len(tmpliste) > 0:
         #entry = tmpObj.query.filter_by(userid=current_user.userid)
