@@ -260,9 +260,9 @@ def createPost():
 @login_required
 def viewPosts(post_id):
     post = Post.query.filter_by(id=post_id).first()
-    print(post)
-    comments = Comments.query.filter_by(post_id=post_id).all()
-    comments.sort(reverse=True, key=lambda post: post.id)
+    comments = Comments.query.filter_by(post_id=int(post_id)).all()
+    if comments != None:
+        comments.sort(reverse=True, key=lambda post: post.id)
     return render_template('viewPost.html', post=post, comments=comments)
 
 @app.route('/<int:post_id>/comment', methods=["GET", "POST"])
