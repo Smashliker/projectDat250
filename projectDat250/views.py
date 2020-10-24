@@ -296,7 +296,7 @@ def comment(post_id):
         entry.post_id = post_id
         db.session.commit()
     else:
-        entry = tempObj()
+        entry = tmpObj()
         entry.userid = current_user.userid
         entry.post_id = post_id
         db.session.add(entry)

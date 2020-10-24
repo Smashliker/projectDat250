@@ -115,8 +115,8 @@ class Friends(db.Model):
 
 class tmpObj(db.Model):
     __tablename__ = "tmp"
-    userid = db.Column(db.String, primary_key=True)
-    post_id = db.Column(db.String)
+    userid = db.Column(db.Integer, primary_key=True)
+    post_id = db.Column(db.Integer)
 
 
 import projectDat250.views
