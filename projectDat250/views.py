@@ -13,7 +13,7 @@ from sqlalchemy import select
 import os
 
 # Set the secret key to some random bytes
-app.secret_key = os.urandom(16)
+app.secret_key = b'\x85\xc3,\x16d\x9c/\xbe\x81\x83W\xd1\xa4-\xec\x9f'
 
 def sortPostKey(x):
     return x["id"]
@@ -140,6 +140,7 @@ def login():
 
 @app.route("/logout")
 def logout():
+    current_user.is_authenticated = False
     logout_user()
     return redirect(url_for('login'))
 
