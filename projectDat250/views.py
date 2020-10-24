@@ -15,12 +15,6 @@ import os
 # Set the secret key to some random bytes
 app.secret_key = "96AA4DB38921EAA483F1A2A33F827"
 
-def sortPostKey(x):
-    return x["id"]
-
-def sortFriendKey(x):
-    return x["username"]
-
 def checkIfRepost(postTekst):
     postTekst = postTekst.replace(" ","") #Fjerner whitespace og gjør alt lowercase
     postTekst = postTekst.strip("\n")
