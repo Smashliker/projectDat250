@@ -95,7 +95,10 @@ def index():
     #postliste += query_db(f"SELECT * FROM post WHERE author_id = '{userid}'")
     postliste += Post.query.filter_by(author_id=userid)
 
+    print("Concatenated list:")
     print(venneliste)
+    print("Queried list:")
+    print(Friends.query.filter_by(userid=userid).all())
     postliste.sort(reverse=True, key=lambda post: post.id)
     #postliste.sort(reverse=True, key=sortPostKey)
     venneliste.sort(key=lambda venn: venn.username)
