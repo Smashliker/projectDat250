@@ -28,7 +28,7 @@ def checkIfRepost(postTekst):
         return False
 
     starten = 0
-    grense = 50
+    grense = 3
     if maksverdi > grense:          #Setter startverdi for sjekk
         starten = maksverdi - grense
 
