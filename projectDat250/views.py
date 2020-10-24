@@ -302,7 +302,7 @@ def comment(post_id):
         db.session.add(entry)
         db.session.commit()
 
-    return render_template('comment.html', form=form)
+    return render_template('comment.html', form=form, post_id=post_id)
 
 
 #Validates username by querying the database and checking if there is anyone else with that exact username (Case Sensitive)
