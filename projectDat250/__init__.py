@@ -74,7 +74,7 @@ class FriendForm(FlaskForm):
     
 class SignUpForm(FlaskForm):
     username = StringField('username', validators=[DataRequired()])
-    password = PasswordField('password', validators=[DataRequired(), EqualTo('confirmpass', message='Passwords must match')])
+    password = PasswordField('password', validators=[DataRequired(), EqualTo('confirmPass', message='Passwords must match')])
     confirmPass = PasswordField(validators=[DataRequired()])
     submit = SubmitField('Register')
 
