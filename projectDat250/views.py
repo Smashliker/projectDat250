@@ -11,7 +11,7 @@ from werkzeug.utils import secure_filename
 from datetime import datetime, timedelta
 from sqlalchemy import select
 import os
-
+from sqlalchemy import update
 
 # Set the secret key to some random bytes
 app.secret_key = "96AA4DB38921EAA483F1A2A33F827"
@@ -286,7 +286,7 @@ def comment(post_id):
     if len(tmpliste) > 0:
         entry = tmpObj.query.filter_by(userid=current_user.userid)
         entry.post_id = post_id
-        Users.query.update(Users).where(userid=current_user.userid).values(post_id=post_id)
+        update('users').where(userid=current_user.userid).values(post_id=post_id)
         #db.session.add(entry)
         db.session.commit()
     else:
