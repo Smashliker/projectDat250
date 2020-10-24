@@ -135,8 +135,6 @@ def login():
                 return redirect(url_for('index'))
             else:
                 return render_template("error.html", error="Invalid username or password!")
-    else:
-        return render_template("error.html", error="Username or password field was empty!")
     print("Renders login.html")
     return render_template('login.html', form=form)
 
