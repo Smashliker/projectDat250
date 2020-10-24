@@ -108,8 +108,8 @@ def login():
     print("new request")
     form = LoginForm()
     print(form.validate_on_submit())
-    print(form.username)
-    print(form.password)
+    print(form.username.value)
+    print(form.password.value)
     print(form.errors)
     if form.validate_on_submit():
         print("Form was validated")
