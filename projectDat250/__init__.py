@@ -102,7 +102,7 @@ class Comments(db.Model):
     __tablename__ = 'comments'
     id = db.Column(db.Integer, primary_key=True)
     author_id = db.Column(db.String)
-    post_id = db.Column(db.String)
+    post_id = db.Column(db.Integer)
     author_name = db.Column(db.String)
     body = db.Column(db.String)
     created = db.Column(db.String)
