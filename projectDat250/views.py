@@ -12,6 +12,7 @@ from datetime import datetime, timedelta
 from sqlalchemy import select
 import os
 
+
 # Set the secret key to some random bytes
 app.secret_key = "96AA4DB38921EAA483F1A2A33F827"
 
@@ -127,8 +128,6 @@ def login():
                 print("lol")
                 #Add to session using flask_login
                 user.authenticated = True
-                db.session.add(user)
-                db.session.commit()
                 login_user(user, remember=False)
                 return redirect(url_for('index'))
             else:
@@ -283,11 +282,12 @@ def comment(post_id):
         db.session.commit()
 
         return redirect(url_for('viewPosts', post_id=post_id))
-
     tmpliste = tmpObj.query.filter_by(userid=current_user.userid).all()
     if len(tmpliste) > 0:
         entry = tmpObj.query.filter_by(userid=current_user.userid)
         entry.post_id = post_id
+        Users.query.update(Users).where(userid=current_user.userid).values(post_id=post_id)
+        #db.session.add(entry)
         db.session.commit()
     else:
         entry = tmpObj()
