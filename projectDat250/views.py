@@ -4,7 +4,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField
 from wtforms.validators import DataRequired
 import string, random
-from flask_login import login_required, logout_user, current_user, login_user
+from flask_login import , logout_user, current_user, login_user
 #from passlib.hash import sha256_crypt
 import hashlib
 from werkzeug.utils import secure_filename
@@ -229,7 +229,6 @@ def createUser():
     return render_template('createUser.html', form=form)
 
 @app.route('/createPost', methods=['GET', 'POST'])
-@login_required
 def createPost():
     if current_user.is_authenticated == False:
         flash("You are not authenticated")
@@ -264,7 +263,6 @@ def createPost():
 
 
 @app.route('/<int:post_id>')
-@login_required
 def viewPosts(post_id):
     if current_user.is_authenticated == False:
         flash("You are not authenticated")
@@ -276,7 +274,6 @@ def viewPosts(post_id):
     return render_template('viewPost.html', post=post, comments=comments)
 
 @app.route('/<int:post_id>/comment', methods=["GET", "POST"])
-@login_required
 def comment(post_id):
     if current_user.is_authenticated == False:
         flash("You are not authenticated")
