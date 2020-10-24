@@ -80,9 +80,6 @@ def index():
 
     userid = current_user.userid
     venneliste = Friends.query.filter_by(userid=userid).all()
-    print("Venneliste:")
-    for venn in venneliste:
-        print(venn.username)
     venneIDliste = []
     for pers in venneliste:
         venneIDliste.append(pers.friendid)
@@ -98,6 +95,7 @@ def index():
     #postliste += query_db(f"SELECT * FROM post WHERE author_id = '{userid}'")
     postliste += Post.query.filter_by(author_id=userid)
 
+    print(venneliste)
     postliste.sort(reverse=True, key=lambda post: post.id)
     #postliste.sort(reverse=True, key=sortPostKey)
     venneliste.sort(key=lambda venn: venn.username)
