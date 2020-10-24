@@ -284,9 +284,10 @@ def comment(post_id):
         return redirect(url_for('viewPosts', post_id=post_id))
     tmpliste = tmpObj.query.filter_by(userid=current_user.userid).all()
     if len(tmpliste) > 0:
-        #entry = tmpObj.query.filter_by(userid=current_user.userid)
-        #entry.post_id = post_id
-        Users.query.update('users').where(userid=current_user.userid).values(post_id=post_id)
+        entry = tmpObj.query.filter_by(userid=current_user.userid)
+        entry.post_id = post_id
+        #Users.query.update('users').where(userid=current_user.userid).values(post_id=post_id)
+        db.session.add(entry)
         db.session.commit()
     else:
         entry = tmpObj()
