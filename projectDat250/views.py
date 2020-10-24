@@ -109,7 +109,7 @@ def login():
     form = LoginForm()
     print(form.validate_on_submit())
     print("Username: " + request.form["username"])
-    print("Password: " + reuqest.form["password"])
+    print("Password: " + request.form["password"])
     print(form.errors)
     if form.validate_on_submit():
         print("Form was validated")
