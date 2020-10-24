@@ -1,5 +1,5 @@
 from projectDat250 import app, Users, db, LoginForm, FriendForm, SignUpForm, PostForm, CommentForm, Post, Comments, Friends, tmpObj
-from flask import Flask, render_template, redirect, url_for, request, session, flash
+from flask import Flask, render_template, redirect, url_for, request, session, flash, Response
 from flask_wtf import FlaskForm
 from wtforms import StringField
 from wtforms.validators import DataRequired
@@ -102,8 +102,9 @@ def index():
     #postliste.sort(reverse=True, key=sortPostKey)
     venneliste.sort(key=lambda venn: venn.username)
 
-
-    return render_template('index.html', venneliste=venneliste, postliste=postliste)
+    response = Response(render_template('index.html', venneliste=venneliste, postliste=postliste))
+    response.headers["Content-Security-Policy"] = "default-src 'self'"
+    return response
 
 
 @app.route('/login', methods=['GET', 'POST'])
