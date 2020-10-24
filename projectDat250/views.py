@@ -13,7 +13,7 @@ from sqlalchemy import select
 import os
 
 # Set the secret key to some random bytes
-app.secret_key = b'\x85\xc3,\x16d\x9c/\xbe\x81\x83W\xd1\xa4-\xec\x9f'
+app.secret_key = "96AA4DB38921EAA483F1A2A33F827"
 
 def sortPostKey(x):
     return x["id"]
