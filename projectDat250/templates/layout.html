@@ -10,6 +10,7 @@
     <div id="wrapper">
         <header>
             <h1>AntiRepost</h1>
+            {% if current_user.is_authenticated %}
             <nav>
                 <p>Logged in as: {{current_user.username}}</p>
                 <ul>
@@ -19,6 +20,7 @@
                 </ul>
                 <p><a id="logout" href="logout">Logout</a></p>
             </nav>
+            {% endif %}
         </header>
         {% block body %}{% endblock %}
         <footer>
