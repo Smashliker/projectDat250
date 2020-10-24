@@ -6,18 +6,6 @@
 
 {% block body %}
 <div id="wrapper">
-    <header>
-        <h1>AntiRepost</h1>
-        <nav>
-            <p>Logged in as: {{current_user.username}}</p>
-            <ul>
-                <li><a href="createPost">Post</a></li>
-                <li><a href="aboutUs">About Us</a></li>
-                <li><a href="newFriend">Add Friend</a></li>
-            </ul>
-            <p><a id="logout" href="logout">Logout</a></p>
-        </nav>
-    </header>
     <div id="posts">
         <h2>Posts:</h2>
         {% for post in postliste%}
