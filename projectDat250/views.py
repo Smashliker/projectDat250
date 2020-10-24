@@ -31,7 +31,7 @@ def checkIfRepost(postTekst):
     if len(maks) != 0:
         maksverdi = maks[-1].id
     else:
-        maksverdi = 0
+        return False
 
     starten = 0
     grense = 50
@@ -39,7 +39,7 @@ def checkIfRepost(postTekst):
         starten = maksverdi - grense
 
     #postene = query_db(f"SELECT * FROM post LIMIT {starten},{maksverdi}")
-    postene = Post.query.limit(grense).all()
+    postene = Post.query.all()[starten:maksverdi]
 
     for post in postene:
         body = post.body
