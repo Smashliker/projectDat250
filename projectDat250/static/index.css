@@ -74,7 +74,7 @@ a:hover, input[type=submit]:hover {
   }
 
 
-#posts {
+#main {
     grid-column: 3 / 10;
     grid-row: 2;
 }

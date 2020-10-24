@@ -5,32 +5,27 @@
 {% endblock %}
 
 {% block body %}
-<div id="wrapper">
-    <div id="posts">
-        <h2>Posts:</h2>
-        {% for post in postliste%}
-            <div class="post">
-                <a class="post-a" href="{{post["id"]}}">
-                    <img src="static/{{ post['image_path'] }}" alt="">
-                    <h3>{{ post['title'] }}</h3>
-                    <h5>Posted by {{ post['author_name'] }} at {{ post['created'] }}</h5>
-                    <p>{{ post['body'] }}</p>
-                </a>
-            </div>
-        {% endfor %}
-    </div>
+<div id="main">
+    <h2>Posts:</h2>
+    {% for post in postliste%}
+        <div class="post">
+            <a class="post-a" href="{{post["id"]}}">
+                <img src="static/{{ post['image_path'] }}" alt="">
+                <h3>{{ post['title'] }}</h3>
+                <h5>Posted by {{ post['author_name'] }} at {{ post['created'] }}</h5>
+                <p>{{ post['body'] }}</p>
+            </a>
+        </div>
+    {% endfor %}
+</div>
 
-    <div id="friendlist">
-        <h2>Friendlist:</h2><br\ >
-        {% for pers in venneliste %}
-        <h3>{{pers['username']}}</h3>
-        {% endfor %}
-        <br>
-        <a href="newFriend">Add Friend</a>
-    </div>
-   <footer>
-       Made by Ove Oftedal and Benjamin Mydland
-    </footer>
+<div id="friendlist">
+    <h2>Friendlist:</h2><br\ >
+    {% for pers in venneliste %}
+    <h3>{{pers['username']}}</h3>
+    {% endfor %}
+    <br>
+    <a href="newFriend">Add Friend</a>
 </div>
 {% endblock %}
 
