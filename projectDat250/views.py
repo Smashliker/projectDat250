@@ -301,7 +301,6 @@ def comment(post_id):
         entry.post_id = post_id
         db.session.add(entry)
         db.session.commit()
-    get_db().commit()
 
     return render_template('comment.html', form=form)
 
