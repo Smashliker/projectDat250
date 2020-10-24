@@ -4,7 +4,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField
 from wtforms.validators import DataRequired
 import string, random
-from flask_login import , logout_user, current_user, login_user
+from flask_login import logout_user, current_user, login_user
 #from passlib.hash import sha256_crypt
 import hashlib
 from werkzeug.utils import secure_filename
