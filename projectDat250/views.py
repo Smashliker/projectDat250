@@ -140,7 +140,7 @@ def login():
 
 @app.route("/logout")
 def logout():
-    current_user.is_authenticated = False
+    #current_user.is_authenticated = False
     logout_user()
     return redirect(url_for('login'))
 
