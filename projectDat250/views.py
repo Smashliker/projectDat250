@@ -108,15 +108,15 @@ def login():
     print("new request")
     form = LoginForm()
     print(form.validate_on_submit())
-    print("Username: " + request.form["username"])
-    print("Password: " + request.form["password"])
+    #print("Username: " + request.form["username"])
+    #print("Password: " + request.form["password"])
     print(form.errors)
     if form.validate_on_submit():
         print("Form was validated")
         #Check for the username in the database to find a valid user
         #Find/Create the user object by query
         user = Users.query.filter_by(username=request.form["username"]).first()
-        print("User" + user)
+        #print("User" + user)
         if user != None:
             #Verify inputted password with the hashed version in the database
             #if sha256_crypt.verify(request.form["password"], user.password):
