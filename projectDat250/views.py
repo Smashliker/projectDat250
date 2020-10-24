@@ -288,11 +288,7 @@ def comment(post_id):
         db.session.add(comment)
         db.session.commit()
 
-        post = Post.query.filter_by(id=post_id).first()
-        comments = Comments.query.filter_by(post_id=post_id).all()
-        if comments != None:
-            comments.sort(reverse=True, key=lambda post: post.id)
-        return render_template('viewPost.html', post=post, comments=comments)
+        return redirect(url_for('viewPost', post_id=post_id))
 
     tmpliste = tmpObj.query.filter_by(userid=current_user.userid).all()
     if len(tmpliste) > 0:
