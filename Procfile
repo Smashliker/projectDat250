@@ -1,1 +1,1 @@
-web: python -c "from projectDat250 import db; db.drop_all(); gunicorn projectDat250:app
+web: python -c "from projectDat250 import db"; db.drop_all(); gunicorn projectDat250:app
