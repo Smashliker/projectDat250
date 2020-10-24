@@ -188,6 +188,7 @@ def newFriend():
 def createUser():
     #Create WTForm for signup
     form = SignUpForm()
+    print(form.errors)
     if form.validate_on_submit():
         #Validate usernamee by query database to check if someone else has already claimed the username
         if validateUsername(request.form['username']) is True:

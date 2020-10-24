@@ -77,7 +77,7 @@ class SignUpForm(FlaskForm):
     password = PasswordField('password', validators=[
         DataRequired(), 
         EqualTo('confirmPass', message='Passwords must match'),
-        Length(min=8, max=50)
+        Length(min=8, max=50, message="Password is too short")
         ])
     confirmPass = PasswordField("Confirm Password")
     submit = SubmitField('Register')
