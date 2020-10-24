@@ -260,6 +260,7 @@ def createPost():
 @login_required
 def viewPosts(post_id):
     posts = Post.query.all()
+    print("post id:")
     print(posts[0].id)
     post = Post.query.filter_by(id=post_id).first()
     comments = Comments.query.filter_by(post_id=post_id).all()
