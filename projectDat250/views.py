@@ -208,7 +208,7 @@ def createUser():
             #friend.friendid = adminID
             #query_db(f"INSERT INTO friends (userid,friendid) VALUES('{userid}','{adminID}')") 
             #get_db().commit() #Poenget med koden er å legge til en superbruker slik at det alltid er en venn
-            db.session.add(friend)
+            #db.session.add(friend)
 
             db.session.add(user)
             db.session.commit()
