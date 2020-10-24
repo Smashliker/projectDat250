@@ -108,9 +108,9 @@ def login():
     print("new request")
     form = LoginForm()
     print(form.validate_on_submit())
-    print(form.username.value)
-    print(form.password.value)
     print(form.errors)
+    print(form.username.data)
+    print(form.password.data)
     if form.validate_on_submit():
         print("Form was validated")
         #Check for the username in the database to find a valid user
