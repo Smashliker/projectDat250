@@ -287,7 +287,7 @@ def comment(post_id):
         entry = tmpObj.query.filter_by(userid=current_user.userid)
         entry.post_id = post_id
         #Users.query.update('users').where(userid=current_user.userid).values(post_id=post_id)
-        db.session.add(entry)
+        #db.session.add(entry)
         db.session.commit()
     else:
         entry = tmpObj()
