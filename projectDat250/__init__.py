@@ -18,13 +18,7 @@ app = Flask(__name__)
 DATABASE = os.environ['DATABASE_URL']
 
 app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE
-app.config['WTF_CSRF_SSL_STRICT'] = False
-WTF_CSRF_SSL_STRICT = False
-app.config['WTF_CSRF_ENABLED'] = False
-WTF_CSRF_ENABLED = False
 #app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=20)
-# Set the secret key to some random bytes
-app.secret_key = os.urandom(16)
 
 
 #from flask_wtf.csrf import CSRFProtect
@@ -70,37 +64,27 @@ from flask_wtf.file import FileField, FileRequired, FileAllowed
 #NumberRange(min=0, max=10)]
 
 class LoginForm(FlaskForm):
-    class Meta():
-        csrf = False
     username = StringField('username', validators=[DataRequired()])
     password = PasswordField('password', validators=[DataRequired()])
     submit = SubmitField('Log In')
 
 class FriendForm(FlaskForm):
-    class Meta():
-        csrf = False
     friendName = StringField('Friend name', validators=[DataRequired()])
     submit = SubmitField('Add Friend')
     
 class SignUpForm(FlaskForm):
-    class Meta():
-        csrf = False
     username = StringField('username', validators=[DataRequired()])
     password = PasswordField('password', validators=[DataRequired()])
     confirmPass = PasswordField('confirmpass', validators=[DataRequired(), EqualTo('password', message='Passwords must match')])
     submit = SubmitField('Register')
 
 class PostForm(FlaskForm):
-    class Meta():
-        csrf = False
     title = StringField('title', validators=[DataRequired()])
     body = TextAreaField('body')
     photo = FileField(validators=[FileAllowed(['jpg', 'jpeg', 'png'], 'Images only!')])
     submit = SubmitField('Create Post')
 
 class CommentForm(FlaskForm):
-    class Meta():
-        csrf = False
     body = StringField('body', validators=[DataRequired()])
     submit = SubmitField('Comment on post')
 
