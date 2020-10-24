@@ -27,7 +27,11 @@ def checkIfRepost(postTekst):
     postTekst = postTekst.lower()
 
     maks = Post.query.all() #Finner maksverdi
-    maksverdi = maks[-1].id
+
+    if len(maks) != 0:
+        maksverdi = maks[-1].id
+    else:
+        maksverdi = 0
 
     starten = 0
     grense = 50
