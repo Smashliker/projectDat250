@@ -286,6 +286,7 @@ def comment(post_id):
     if len(tmpliste) > 0:
         entry = tmpObj.query.filter_by(userid=current_user.userid)
         db.session.delete(entry)
+        db.session.commit()
         entry.post_id = post_id
         db.session.add(entry)
         db.session.commit()
