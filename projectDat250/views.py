@@ -228,7 +228,7 @@ def createPost():
         nu = datetime.now()
         tidNu = nu.strftime("%d/%m/%Y  %H:%M:%S")
         if checkIfRepost(request.form["body"]):
-            return "ERROR: post has been deemed a repost!"
+            return render_template('error.html', error="Post has been deemed a repost!")
         post = Post()
         post.author_id = current_user.userid
         post.author_name = current_user.username
