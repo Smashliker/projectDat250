@@ -1,6 +1,7 @@
 {% extends 'layout.html' %}
 
 {% block body %}
+<div id="main">
     <a href="/">Back</a>
     <h2>{{ post['title'] }}</h2>
     <span>{{ post['created'] }}</span>
@@ -18,8 +19,7 @@
         <h6>Posted by {{ comment.author_name }} at {{ comment.created }}</h6>
     </div>
     {% endfor %}
-
-</form>
+</div>
 
 
 {% endblock %}

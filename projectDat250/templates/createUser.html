@@ -1,24 +1,26 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-<h2>Create User</h2>
-<form method="POST" action="/createUser">
-    {{ form.csrf_token }}
-    <fieldset class="username">
-        {{ form.username(placeholder='username') }}
-    </fieldset>
-    <fieldset>
-        {{ form.password(placeholder='password') }}
-    </fieldset>
-    <fieldset>
-        {{ form.confirmPass(placeholder='repeat password') }}
-    </fieldset>
-    <fieldset>
-        {{ form.submit }}
-    </fieldset>
-
-    <a href="login">Go back to login</a>
-
-</form>
+<div id="main">
+    <h2>Create User</h2>
+    <form method="POST" action="/createUser">
+        {{ form.csrf_token }}
+        <fieldset class="username">
+            {{ form.username(placeholder='username') }}
+        </fieldset>
+        <fieldset>
+            {{ form.password(placeholder='password') }}
+        </fieldset>
+        <fieldset>
+            {{ form.confirmPass(placeholder='repeat password') }}
+        </fieldset>
+        <fieldset>
+            {{ form.submit }}
+        </fieldset>
+    
+        <a href="login">Go back to login</a>
+    
+    </form>
+</div>
 
 {% endblock %}

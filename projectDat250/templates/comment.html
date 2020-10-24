@@ -1,17 +1,19 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-<h2>Post Comment</h2>
-<form method="POST">
-    {{ form.csrf_token }}
-    <fieldset>
-        {{ form.body(placeholder='body') }}
-    </fieldset>
-    <fieldset>
-        {{ form.submit }}
-    </fieldset>
-    <a href="/{{ post_id }}">Back</a>
-
-</form>
+<div id="main">
+    <h2>Post Comment</h2>
+    <form method="POST">
+        {{ form.csrf_token }}
+        <fieldset>
+            {{ form.body(placeholder='body') }}
+        </fieldset>
+        <fieldset>
+            {{ form.submit }}
+        </fieldset>
+        <a href="/{{ post_id }}">Back</a>
+    
+    </form>
+</div>
 
 {% endblock %}

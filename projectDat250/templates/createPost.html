@@ -2,28 +2,30 @@
 
 {% block body %}
 
-<form method="POST" enctype="multipart/form-data" action="/createPost">
-    {{ form.csrf_token }}
-
-    <a href="/">Go back</a>
-
-    <fieldset class="title">
-        {{ form.title.label }}
-        {{ form.title(placeholder='title') }}
-    </fieldset>
-
-    <fieldset>
-        {{ form.body.label }}
-        {{ form.body }}
-    </fieldset>
-
-    <fieldset>
-        {{ form.photo }}
-    </fieldset>
-
-    <div class="submit-button">
-        {{ form.submit }}
-    </div>
-
-</form>
+<div id="main">
+    <form method="POST" enctype="multipart/form-data" action="/createPost">
+        {{ form.csrf_token }}
+    
+        <a href="/">Go back</a>
+    
+        <fieldset class="title">
+            {{ form.title.label }}
+            {{ form.title(placeholder='title') }}
+        </fieldset>
+    
+        <fieldset>
+            {{ form.body.label }}
+            {{ form.body }}
+        </fieldset>
+    
+        <fieldset>
+            {{ form.photo }}
+        </fieldset>
+    
+        <div class="submit-button">
+            {{ form.submit }}
+        </div>
+    
+    </form>
+</div>
 {% endblock %}
