@@ -58,7 +58,7 @@ def load_user(user_id):
 
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, TextAreaField, FileField, HiddenField
-from wtforms.validators import DataRequired, EqualTo
+from wtforms.validators import DataRequired, EqualTo, InputRequired
 from flask_wtf.file import FileField, FileRequired, FileAllowed
 
 #NumberRange(min=0, max=10)]
