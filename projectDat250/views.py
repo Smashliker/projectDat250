@@ -80,6 +80,8 @@ def index():
 
     userid = current_user.userid
     venneliste = Friends.query.filter_by(userid=userid).all()
+    print("Venneliste:")
+    print(venneliste)
     venneIDliste = []
     for pers in venneliste:
         venneIDliste.append(pers.friendid)
@@ -188,7 +190,7 @@ def newFriend():
 def createUser():
     #Create WTForm for signup
     form = SignUpForm()
-    print(form.errors)
+    print(form.url.errors)
     if form.validate_on_submit():
         #Validate usernamee by query database to check if someone else has already claimed the username
         if validateUsername(request.form['username']) is True:
