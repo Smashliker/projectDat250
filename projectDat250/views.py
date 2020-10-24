@@ -15,12 +15,6 @@ import os
 # Set the secret key to some random bytes
 app.secret_key = "96AA4DB38921EAA483F1A2A33F827"
 
-def sortPostKey(x):
-    return x["id"]
-
-def sortFriendKey(x):
-    return x["username"]
-
 def checkIfRepost(postTekst):
     postTekst = postTekst.replace(" ","") #Fjerner whitespace og gjør alt lowercase
     postTekst = postTekst.strip("\n")
@@ -31,15 +25,15 @@ def checkIfRepost(postTekst):
     if len(maks) != 0:
         maksverdi = maks[-1].id
     else:
-        maksverdi = 0
+        return False
 
     starten = 0
-    grense = 50
+    grense = 3
     if maksverdi > grense:          #Setter startverdi for sjekk
         starten = maksverdi - grense
 
     #postene = query_db(f"SELECT * FROM post LIMIT {starten},{maksverdi}")
-    postene = Post.query.limit(grense).all()
+    postene = Post.query.all()[starten:maksverdi]
 
     for post in postene:
         body = post.body
