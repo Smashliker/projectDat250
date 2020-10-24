@@ -12,6 +12,8 @@ from datetime import datetime, timedelta
 from sqlalchemy import select
 import os
 
+# Set the secret key to some random bytes
+app.secret_key = os.urandom(16)
 
 def sortPostKey(x):
     return x["id"]
