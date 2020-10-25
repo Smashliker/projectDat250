@@ -189,7 +189,7 @@ input:focus {
 }
 
 
-* {
+body {
     display: initial;
     animation-name: fade-in;
     animation-iteration-count: 1;
