@@ -80,19 +80,18 @@ def index():
     venneliste = Friends.query.filter_by(userid=userid).all()
     venneIDliste = []
     for pers in venneliste:
-        venneIDliste.append(pers.friendid)
-    #I koden over finner vi id'ene til vennene til brukeren, hvor brukeren er userid
+        venneIDliste.append(pers.friendid) #We find the IDs of the friends of the user here
 
     venneliste = [] 
     postliste = []
-    for ID in venneIDliste: #Merk hvor nyttig det er å concatenate listen på denne måten
-        venneliste.append(Users.query.filter_by(userid=ID).first())
-        postliste += Post.query.filter_by(author_id=ID).all()
+    for ID in venneIDliste:
+        venneliste.append(Users.query.filter_by(userid=ID).first()) #We create a list of friends
+        postliste += Post.query.filter_by(author_id=ID).all()       #and posts, related to the user
 
     postliste += Post.query.filter_by(author_id=userid)
 
-    postliste.sort(reverse=True, key=lambda post: post.id)
-    venneliste.sort(key=lambda venn: venn.username)
+    postliste.sort(reverse=True, key=lambda post: post.id) #Sort by recency
+    venneliste.sort(key=lambda venn: venn.username)        #Sort alphabetically
 
     return render_template('index.html', venneliste=venneliste, postliste=postliste)
 
@@ -133,23 +132,23 @@ def newFriend():
     userid = current_user.userid
     formen = FriendForm()
 
-    addResult = None   #0 indikerer at brukeren ble lagt til vennelisten, 1 at brukeren ikke ble funnet, 2 at brukeren allerede er i vennelisten, 3 at vennen er lik bruker, og None at det er usikkert
-    if formen.validate_on_submit():
+    addResult = None  #0: user was added, 1: user was not found, 2: user already in friendlist, 3: friend=user, None: unsure
+    if formen.validate_on_submit(): 
 
         tempFriendID = None
         for user in Users.query.all():
             if user.username == request.form["friendName"]:
-                tempFriendID = user.userid
+                tempFriendID = user.userid                  #Find ID of the attempted friend
                 break
         
         for friend in Friends.query.filter_by(userid=userid).all():
-            if tempFriendID == friend.friendid:
+            if tempFriendID == friend.friendid: #If ID already in friendlist
                 addResult = 2
 
-        if userid == tempFriendID:
+        if userid == tempFriendID:  #If ID is userid
             addResult = 3
 
-        elif addResult == None and tempFriendID != None:
+        elif addResult == None and tempFriendID != None: #If ID is valid
             friend = Friends()
             friend.userid = current_user.userid
             friend.friendid = tempFriendID
@@ -157,7 +156,7 @@ def newFriend():
             db.session.commit()
             addResult = 0
 
-        elif addResult != 2:
+        elif addResult != 2: #If ID was invalid
             addResult = 1
         
 
@@ -265,13 +264,13 @@ def comment(post_id):
 
         return redirect(url_for('viewPosts', post_id=post_id))
         
-    tmpliste = tmpObj.query.filter_by(userid=current_user.userid).all()
-    if len(tmpliste) > 0:
+    tmpliste = tmpObj.query.filter_by(userid=current_user.userid).all() #The tmp-table keeps track of the post each user looked at last, to be able to comment correctly
+    if len(tmpliste) > 0:   #If userid in tmp: update the post_id
         tmpObj.query.filter_by(userid=current_user.userid).delete()
         entry = tmpObj(userid=current_user.userid, post_id=post_id)
         db.session.add(entry)
         db.session.commit()
-    else:
+    else:                   #If not: add userid and post_id to tmp
         entry = tmpObj()
         entry.userid = current_user.userid
         entry.post_id = post_id
