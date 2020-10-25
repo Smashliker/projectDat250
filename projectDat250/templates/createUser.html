@@ -21,15 +21,17 @@
         <fieldset>
             {{ form.submit }}
         </fieldset>
+        <fieldset>
+            {% if form.errors %}
+            {% for error in form.errors %}
+                <span>{{ error }}</span>
+            {% endfor %}
+            {% endif %}
+        </fieldset>
         
         <a href="login">Go back to login</a>
     
     </form>
-    {% if form.errors %}
-    {% for error in form.errors %}
-        <span>{{ error }}</span>
-    {% endfor %}
-    {% endif %}
 </div>
 
 {% endblock %}
