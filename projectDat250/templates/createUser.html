@@ -7,7 +7,7 @@
 {% block body %}
 <div id="main">
     <h2>Create User</h2>
-    <form method="POST" action="/createUser" novalidate>
+    <form method="POST" action="/createUser">
         {{ form.csrf_token }}
         <fieldset class="username">
             {{ form.username(placeholder='username') }}

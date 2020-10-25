@@ -78,7 +78,8 @@ class SignUpForm(FlaskForm):
 
 class PostForm(FlaskForm):
     title = StringField('title', validators=[DataRequired()])
-    body = TextAreaField('body', validators=[Length(min=0, max=500, message="Post is too large")])
+    body = TextAreaField('body', validators=[
+        Length(min=0, max=500, message="Post is too large")])
     photo = FileField(validators=[FileAllowed(['jpg', 'jpeg', 'png'], 'Images only!')])
     submit = SubmitField('Create Post')
 
