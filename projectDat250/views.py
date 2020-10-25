@@ -94,10 +94,6 @@ def index():
     #postliste += query_db(f"SELECT * FROM post WHERE author_id = '{userid}'")
     postliste += Post.query.filter_by(author_id=userid)
 
-    print("Concatenated list:")
-    print(venneliste)
-    print("Queried list:")
-    print(Friends.query.filter_by(userid=userid).all())
     postliste.sort(reverse=True, key=lambda post: post.id)
     #postliste.sort(reverse=True, key=sortPostKey)
     venneliste.sort(key=lambda venn: venn.username)
@@ -110,33 +106,21 @@ def index():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     #Create a WTForm for login
-    print("new request")
     form = LoginForm()
-    print(form.validate_on_submit())
-    print(form.errors)
-    print(form.username.data)
-    print(form.password.data)
     if form.validate_on_submit():
-        print("Form was validated")
         #Check for the username in the database to find a valid user
         #Find/Create the user object by query
         user = Users.query.filter_by(username=form.username.data).first()
-        print("User: ")
-        print(user)
         if user != None:
             #Verify inputted password with the hashed version in the database
             #if sha256_crypt.verify(request.form["password"], user.password):
-            print(user.password)
-            print(hashlib.sha512(form.password.data.encode('utf-8')).hexdigest())
             if hashlib.sha512(form.password.data.encode('utf-8')).hexdigest() == user.password:
-                print("lol")
                 #Add to session using flask_login
                 user.authenticated = True
                 login_user(user, remember=False)
                 return redirect(url_for('index'))
             else:
                 return render_template("error.html", error="Invalid username or password!")
-    print("Renders login.html")
     return render_template('login.html', form=form)
 
 @app.route("/logout")
@@ -196,6 +180,7 @@ def newFriend():
 def createUser():
     #Create WTForm for signup
     form = SignUpForm()
+    print("Errors: ")
     print(form.errors)
     if form.validate_on_submit():
         if form.password.data != form.confirmPass.data:
@@ -230,7 +215,7 @@ def createUser():
         else:
             return render_template('error.html', error="User already exists!")
         return redirect(url_for('login'))
-    return render_template('createUser.html', form=form, error=form.errors)
+    return render_template('createUser.html', form=form, errors=form.errors)
 
 @app.route('/createPost', methods=['GET', 'POST'])
 def createPost():
