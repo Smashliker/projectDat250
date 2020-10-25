@@ -2,6 +2,11 @@
 
 {% block body %}
 
+{% block head %}
+<title>Add Friend</title>
+{% endblock %}
+
+
 <div id="main">
     <form method="POST" action="/newFriend">
         {{ form.csrf_token }}

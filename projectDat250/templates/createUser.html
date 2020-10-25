@@ -6,7 +6,7 @@
     <form method="POST" action="/createUser">
         {% if errors %}
         {% for error in errors %}
-            <span>{{ error.message }}</span>
+            <span>{{ error }}</span>
         {% endfor %}
         {% endif %}
         {{ form.csrf_token }}
