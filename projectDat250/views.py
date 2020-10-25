@@ -168,8 +168,6 @@ def newFriend():
 def createUser():
     #Create WTForm for signup
     form = SignUpForm()
-    print("Errors: ")
-    print(form.errors)
     if form.validate_on_submit():
         if form.password.data != form.confirmPass.data:
             flash("Password fields must match")
@@ -203,8 +201,6 @@ def createUser():
         else:
             return render_template('error.html', error="User already exists!")
         return redirect(url_for('login'))
-    for error in form.errors:
-        print(error)
     return render_template('createUser.html', form=form, errors=form.errors)
 
 @app.route('/createPost', methods=['GET', 'POST'])
