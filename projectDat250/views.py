@@ -229,7 +229,7 @@ def createUser():
 @app.route('/createPost', methods=['GET', 'POST'])
 def createPost():
     if current_user.is_authenticated == False:
-        flash("You are not authenticated")
+        flash("You need to be logged in to create a post")
         return redirect(url_for('login'))
     #Create WTForm for posting
     form = PostForm()
@@ -263,7 +263,7 @@ def createPost():
 @app.route('/<int:post_id>')
 def viewPosts(post_id):
     if current_user.is_authenticated == False:
-        flash("You are not authenticated")
+        flash("You need to be logged in to view posts")
         return redirect(url_for('login'))
     post = Post.query.filter_by(id=post_id).first()
     comments = Comments.query.filter_by(post_id=post_id).all()
@@ -274,7 +274,7 @@ def viewPosts(post_id):
 @app.route('/<int:post_id>/comment', methods=["GET", "POST"])
 def comment(post_id):
     if current_user.is_authenticated == False:
-        flash("You are not authenticated")
+        flash("You need to be logged in to comment on posts)
         return redirect(url_for('login'))
     form = CommentForm()
     if form.validate_on_submit():
