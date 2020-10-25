@@ -137,6 +137,10 @@ input[type=submit] {
 #login-createuser {
     font-size: 1.3em !important;
 }
+#login-nav {
+    padding-top: 2em;
+}
+
 /*
 input:focus {
     border: 0.2em;
