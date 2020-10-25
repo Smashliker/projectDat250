@@ -187,15 +187,6 @@ def createUser():
             #Create Users object and add it to the database
             user = Users(username=username, password=password, userid = userid)
 
-            #admin = Users.query.filter_by(username='Admin').first()
-            #adminID = admin.userid  #TODO evaluer om denne metoden er sikker, eller om den setter superbrukeren i risiko
-            #friend = Friends()
-            #friend.userid = userid
-            #friend.friendid = adminID
-            #query_db(f"INSERT INTO friends (userid,friendid) VALUES('{userid}','{adminID}')") 
-            #get_db().commit() #Poenget med koden er å legge til en superbruker slik at det alltid er en venn
-            #db.session.add(friend)
-
             db.session.add(user)
             db.session.commit()
         else:
