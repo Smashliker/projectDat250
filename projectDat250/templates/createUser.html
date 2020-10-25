@@ -23,8 +23,10 @@
         </fieldset>
         <fieldset>
             {% if form.errors %}
-            {% for error in form.errors %}
+            {% for field in form.errors %}
+            {% for error in form.errors[field] %}
                 <span>{{ error }}</span>
+            {% endfor %}
             {% endfor %}
             {% endif %}
         </fieldset>
