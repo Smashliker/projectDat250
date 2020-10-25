@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/index.css">
+    
+<title>Login</title>
+
+</head>
+<body>
+    <div id="wrapper">
+        <header>
+            <h1>AntiRepost</h1>
+            
+        </header>
+        
+            
+            <div class=flashes>
+            
+                You are not authenticated
+            
+            </div>
+            
+            
+        
+<div id="main">
+    <form method="POST" action="/login">
+        <h2>Log In</h2>
+        <input id="csrf_token" name="csrf_token" type="hidden" value="ImQ0YjczMGY2NGQyYmYwNmVjNmFlZDllZmMyZTM4MDY2M2JmOGJhNDUi.X5W_SA.jO9TwGEpUf7DYdgYYxFtnZMo-8Q">
+    
+        <fieldset class="username">
+            <input id="username" name="username" placeholder="username" required type="text" value="">
+        </fieldset>
+    
+        <fieldset>
+            <input id="password" name="password" placeholder="password" required type="password" value="">
+        </fieldset>
+    
+        <div class="submit-button">
+            <input id="submit" name="submit" type="submit" value="Log In">
+        </div>
+        <div id="login-nav">
+            <a id="login-createuser" href="createUser">Not Already Registered? Signup here!</a>
+            <a href="aboutUs">About us</a>
+        </div>
+    </form>
+</div>
+
+        <footer>
+            Made by Ove Oftedal and Benjamin Mydland
+        </footer>
+    </div>
+</body>
+</html>

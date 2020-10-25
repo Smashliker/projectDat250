@@ -72,6 +72,7 @@ def checkIfRepost(postTekst):
 
 @app.route('/')
 def index():
+    #Check if user is authenticated/logged in
     if current_user.is_authenticated == False:
         flash("You are not authenticated")
         return redirect(url_for('login'))
@@ -79,6 +80,8 @@ def index():
     userid = current_user.userid
     venneliste = Friends.query.filter_by(userid=userid).all()
     venneIDliste = []
+
+    #Get userid to all in friendlist
     for pers in venneliste:
         venneIDliste.append(pers.friendid) #We find the IDs of the friends of the user here
 
@@ -195,63 +198,87 @@ def createUser():
 
 @app.route('/createPost', methods=['GET', 'POST'])
 def createPost():
+    #Check if user is authenticated/logged in
     if current_user.is_authenticated == False:
         flash("You need to be logged in to create a post")
         return redirect(url_for('login'))
     #Create WTForm for posting
     form = PostForm()
+
+    #Check if form is valid based on validators in class
     if form.validate_on_submit():
+        #Get uploaded photo data
         f = form.photo.data
+
+        #Get current time
         nu = datetime.now()
         tidNu = nu.strftime("%d/%m/%Y  %H:%M:%S")
         if checkIfRepost(request.form["body"]):
             return render_template('error.html', error="Post has been deemed a repost!")
+        
+        #Create the post object, and add all attributes needed
         post = Post()
         post.author_id = current_user.userid
         post.author_name = current_user.username
         post.created = tidNu
         post.title = request.form["title"]
         post.body = request.form["body"]
+
+        #Check if user wants to upload an image
         if f != None:
+            #Create image path for saving
             filename = secure_filename(f.filename)
             f.save(os.path.join(
                 app.root_path, 'static', filename
             ))
             post.image_path = filename
+
+        #commit the post object to the database
         db.session.add(post)
         db.session.commit()
         #Add post to post table in database
         return redirect(url_for('index'))
     else:
+        #Return error message if missing user inputs
         render_template("error.html", error="Missing title or body")
     return render_template('createPost.html', form=form)
 
 
 @app.route('/<int:post_id>')
 def viewPosts(post_id):
+    #Check if user is authenticated/logged in
     if current_user.is_authenticated == False:
         flash("You need to be logged in to view posts")
         return redirect(url_for('login'))
+    #Get wanted post 
     post = Post.query.filter_by(id=post_id).first()
+
+    #Get comments associated with the post
     comments = Comments.query.filter_by(post_id=post_id).all()
+    #Check if there are comments, and sort them if they exist
     if comments != None:
         comments.sort(reverse=True, key=lambda post: post.id)
+    
     return render_template('viewPost.html', post=post, comments=comments)
 
 @app.route('/<int:post_id>/comment', methods=["GET", "POST"])
 def comment(post_id):
+    #Check if user is authenticated/logged in
     if current_user.is_authenticated == False:
         flash("You need to be logged in to comment on posts")
         return redirect(url_for('login'))
+
+    #Create WTForm
     form = CommentForm()
     if form.validate_on_submit():
-        splitRequest = request.path.split('/')
-
+        
+        #Get current time
         nu = datetime.now()
         tidNu = nu.strftime("%d/%m/%Y  %H:%M:%S")
         tmp = tmpObj.query.filter_by(userid=current_user.userid).first()
         post_id = tmp.post_id
         
+        #Create comment object
         comment = Comments()
         comment.author_id = current_user.userid
         comment.author_name = current_user.username
@@ -259,11 +286,13 @@ def comment(post_id):
         comment.body = request.form['body']
         comment.created = tidNu
 
+        #Commit comment object to database
         db.session.add(comment)
         db.session.commit()
 
         return redirect(url_for('viewPosts', post_id=post_id))
         
+
     tmpliste = tmpObj.query.filter_by(userid=current_user.userid).all() #The tmp-table keeps track of the post each user looked at last, to be able to comment correctly
     if len(tmpliste) > 0:   #If userid in tmp: update the post_id
         tmpObj.query.filter_by(userid=current_user.userid).delete()
@@ -289,18 +318,21 @@ def validateUsername(wantedName):
     else:
         return False
 
-#Generate a user id by adding random letters together
-#TODO: Include numbers in the generation as well
-#TODO: FIX SO IT WORKS AS INTENDED (CAN GET SAME USER ID)
+#Generate a user id by adding random letters and integers together
+#Also checks if generated userid exists, and if not generate a new one
 def generateUserID():
-    duplicate = False
     while True:
+        #Gets all ASCII characters in lowercase
         letters = string.ascii_lowercase
+        #Adds numbers to the string
         for x in range(9):
             letters += str(x)
+        #Join letters string randomly to create a unique userid
         result_str = ''.join(random.choice(letters) for i in range(16))
 
+        #If userid already exists in database, resume while loop
         if Users.query.filter_by(userid=str(result_str)).first() != None:
             continue
-
+        
+        #Returns if userid was not found in database
         return result_str 

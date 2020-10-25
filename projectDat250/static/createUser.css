@@ -1,0 +1,15 @@
+
+#main {
+    display: flex;
+    justify-content: space-between;
+}
+#nav-create-user, #requirements {
+    width: 20vw;
+    display: flex;
+}
+#nav-create-user {
+    align-items: center;
+}
+#requirements h4 {
+    padding: 1em;
+}
