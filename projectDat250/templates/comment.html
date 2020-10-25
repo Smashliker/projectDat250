@@ -13,13 +13,16 @@
             {{ form.body(placeholder='body') }}
         </fieldset>
         <fieldset>
-            {% if form.errors %}
-            {% for field in form.errors %}
-            {% for error in form.errors[field] %}
-                <span>{{ error }}</span>
-            {% endfor %}
-            {% endfor %}
-            {% endif %}
+            <ul>
+                {% if form.errors %}
+                Something went wrong!
+                {% for field in form.errors %}
+                {% for error in form.errors[field] %}
+                <li>{{ error }}</li>
+                {% endfor %}
+                {% endfor %}
+                {% endif %}
+            </ul>
         </fieldset>
         <fieldset>
             {{ form.submit }}

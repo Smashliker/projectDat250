@@ -19,11 +19,9 @@
             {{ form.confirmPass(placeholder='repeat password') }}
         </fieldset>
         <fieldset>
-            {{ form.submit }}
-        </fieldset>
-        <fieldset>
             <ul>
                 {% if form.errors %}
+                Something went wrong!
                 {% for field in form.errors %}
                 {% for error in form.errors[field] %}
                 <li>{{ error }}</li>
@@ -31,6 +29,9 @@
                 {% endfor %}
                 {% endif %}
             </ul>
+        </fieldset>
+        <fieldset>
+            {{ form.submit }}
         </fieldset>
         
         <a href="login">Go back to login</a>
