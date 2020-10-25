@@ -178,3 +178,20 @@ input:focus {
 .comment {
     padding-top: 2em;
 }
+
+@keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+* {
+    display: initial;
+    animation-name: fade-in;
+    animation-iteration-count: 1;
+    animation-duration: 0.1s;
+    animation-timing-function: ease-in-out;
+    animation-direction: forwards;
+}
