@@ -223,7 +223,7 @@ def createUser():
             db.session.commit()
         else:
             return render_template('error.html', error="User already exists!")
-        return redirect(url_for('index'))
+        return redirect(url_for('login'))
     return render_template('createUser.html', form=form)
 
 @app.route('/createPost', methods=['GET', 'POST'])
