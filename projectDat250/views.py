@@ -274,7 +274,7 @@ def viewPosts(post_id):
 @app.route('/<int:post_id>/comment', methods=["GET", "POST"])
 def comment(post_id):
     if current_user.is_authenticated == False:
-        flash("You need to be logged in to comment on posts)
+        flash("You need to be logged in to comment on posts")
         return redirect(url_for('login'))
     form = CommentForm()
     if form.validate_on_submit():
