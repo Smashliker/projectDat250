@@ -118,9 +118,6 @@ def login():
 
 @app.route("/logout")
 def logout():
-    if current_user.is_authenticated == False:
-        flash("You are not authenticated")
-        return redirect(url_for('login'))
     logout_user()
     return redirect(url_for('login'))
 

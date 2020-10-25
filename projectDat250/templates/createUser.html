@@ -2,12 +2,16 @@
 
 {% block head %}
 <title>Create User</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='createUser.css') }}">
 {% endblock %}
 
 {% block body %}
 <div id="main">
-    <h2>Create User</h2>
+    <div id="nav-create-user">
+        <a href="login">Go back to login</a>
+    </div>
     <form method="POST" action="/createUser">
+        <h2>Create User</h2>
         {{ form.csrf_token }}
         <fieldset class="username">
             {{ form.username(placeholder='username') }}
@@ -33,10 +37,16 @@
         <fieldset>
             {{ form.submit }}
         </fieldset>
-        
-        <a href="login">Go back to login</a>
+
     
     </form>
+    <div id="requirements">
+        <h4>Password Requirements:</h4>
+        <ul>
+            <li>Password must be between 8 and 50 characters and/or numbers</li>
+            <li>Must Contain at least 1 number and 1 capital letter</li>
+        </ul>
+    </div>
 </div>
 
 {% endblock %}

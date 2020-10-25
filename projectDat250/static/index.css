@@ -75,7 +75,7 @@ a:hover, input[type=submit]:hover {
 
 
 #main {
-    grid-column: 3 / 10;
+    grid-column: 3 / 11;
     grid-row: 2;
 }
 #friendlist {
@@ -196,4 +196,15 @@ body {
     animation-duration: 0.1s;
     animation-timing-function: ease-in-out;
     animation-direction: forwards;
+}
+
+#nav-create-user, #requirements {
+    width: 20vw;
+    display: flex;
+}
+#nav-create-user {
+    align-items: center;
+}
+#requirements h4 {
+    padding: 1em;
 }
