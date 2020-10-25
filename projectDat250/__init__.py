@@ -52,7 +52,7 @@ def load_user(user_id):
 
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, TextAreaField, FileField, HiddenField
-from wtforms.validators import DataRequired, EqualTo, Length, NoneOf
+from wtforms.validators import DataRequired, EqualTo, Length, NoneOf, Regexp
 from flask_wtf.file import FileField, FileRequired, FileAllowed
 
 #NumberRange(min=0, max=10)]
@@ -73,7 +73,8 @@ class SignUpForm(FlaskForm):
         DataRequired(), 
         EqualTo('confirmPass', message='Passwords must match'),
         Length(min=8, max=50, message='Password is too short'),
-        NoneOf(weakPasswords, message='Weak password detected')
+        NoneOf(weakPasswords, message='Weak password detected'),
+        Regexp("\d.*[A-Z]|[A-Z].*\d", message='Password must contain at least 1 capital letter and 1 number')
         ])
     confirmPass = PasswordField("Confirm Password")
     submit = SubmitField('Register')
