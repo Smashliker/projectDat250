@@ -103,7 +103,7 @@ def index():
     venneliste.sort(key=lambda venn: venn.username)
 
     response = Response(render_template('index.html', venneliste=venneliste, postliste=postliste))
-    response.headers["Content-Security-Policy"] = "default-src 'self'"
+    #response.headers["Content-Security-Policy"] = "default-src 'self'"
     return response
 
 
