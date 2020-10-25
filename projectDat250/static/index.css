@@ -134,11 +134,11 @@ input[type=submit] {
     color: #efefef;
     opacity: 0.6;
 }
-#login-createuser {
-    font-size: 1.3em !important;
-}
 #login-nav {
     padding-top: 2em;
+}
+#login-nav a {
+    font-size: 1em;
 }
 
 /*
