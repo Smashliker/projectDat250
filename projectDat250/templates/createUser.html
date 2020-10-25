@@ -4,6 +4,11 @@
 <div id="main">
     <h2>Create User</h2>
     <form method="POST" action="/createUser">
+        {% if errors %}
+        {% for error in errors %}
+            <span>{{ error }}</span>
+        {% endfor %}
+        {% endif %}
         {{ form.csrf_token }}
         <fieldset class="username">
             {{ form.username(placeholder='username') }}
@@ -17,7 +22,7 @@
         <fieldset>
             {{ form.submit }}
         </fieldset>
-    
+        
         <a href="login">Go back to login</a>
     
     </form>
