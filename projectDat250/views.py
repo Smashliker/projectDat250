@@ -194,9 +194,6 @@ def newFriend():
 
 @app.route('/createUser', methods=['GET', 'POST'])
 def createUser():
-    if current_user.is_authenticated == False:
-        flash("You are not authenticated")
-        return redirect(url_for('login'))
     #Create WTForm for signup
     form = SignUpForm()
     print(form.errors)
