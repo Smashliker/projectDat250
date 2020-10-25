@@ -9,7 +9,7 @@
     <h2>Create User</h2>
     <form method="POST" action="/createUser" novalidate>
         {% if errors %}
-        {% for error in errors %}
+        {% for error in form.errors %}
             <span>{{ error }}</span>
         {% endfor %}
         {% endif %}
