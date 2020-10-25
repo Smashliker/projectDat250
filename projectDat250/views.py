@@ -215,8 +215,8 @@ def createUser():
         else:
             return render_template('error.html', error="User already exists!")
         return redirect(url_for('login'))
-        for error in form.errors:
-            print(error)
+    for error in form.errors:
+        print(error)
     return render_template('createUser.html', form=form, errors=form.errors)
 
 @app.route('/createPost', methods=['GET', 'POST'])
