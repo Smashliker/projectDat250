@@ -181,7 +181,7 @@ def createUser():
     #Create WTForm for signup
     form = SignUpForm()
     print("Errors: ")
-    print(form.errors)
+    print(form.errors.message)
     if form.validate_on_submit():
         if form.password.data != form.confirmPass.data:
             flash("Password fields must match")
