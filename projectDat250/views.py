@@ -315,7 +315,7 @@ def generateUserID():
         letters = string.ascii_lowercase
         for x in range(9):
             letters += str(x)
-        result_str = ''.join(random.choice(letters) for i in range(8))
+        result_str = ''.join(random.choice(letters) for i in range(16))
 
         if Users.query.filter_by(userid=str(result_str)).first() != None:
             continue
