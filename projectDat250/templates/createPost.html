@@ -26,7 +26,15 @@
         <fieldset>
             {{ form.photo }}
         </fieldset>
-    
+        <fieldset>
+            {% if form.errors %}
+            {% for field in form.errors %}
+            {% for error in form.errors[field] %}
+                <span>{{ error }}</span>
+            {% endfor %}
+            {% endfor %}
+            {% endif %}
+        </fieldset>
         <div class="submit-button">
             {{ form.submit }}
         </div>

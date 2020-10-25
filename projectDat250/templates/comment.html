@@ -13,10 +13,19 @@
             {{ form.body(placeholder='body') }}
         </fieldset>
         <fieldset>
+            {% if form.errors %}
+            {% for field in form.errors %}
+            {% for error in form.errors[field] %}
+                <span>{{ error }}</span>
+            {% endfor %}
+            {% endfor %}
+            {% endif %}
+        </fieldset>
+        <fieldset>
             {{ form.submit }}
         </fieldset>
         <a href="/{{ post_id }}">Back</a>
-    
+        
     </form>
 </div>
 
