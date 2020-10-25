@@ -300,11 +300,11 @@ def comment(post_id):
 #Validates username by querying the database and checking if there is anyone else with that exact username (Case Sensitive)
 def validateUsername(wantedName):
     validated = True
-    for user in Users.query.all():
-        if wantedName.lower() == user.username.lower():
-            validated = False
-            break
-    return validated
+    query = Users.query.filter_by(username=wantedName).first()
+    if query is None:
+        return True
+    else:
+        return False
 
 #Generate a user id by adding random letters together
 #TODO: Include numbers in the generation as well
