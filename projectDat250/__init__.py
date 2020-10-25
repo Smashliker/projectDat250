@@ -80,7 +80,7 @@ class PostForm(FlaskForm):
     title = StringField('title', validators=[DataRequired()])
     body = TextAreaField('body', validators=[
         Length(min=0, max=500, message="Post body is too large")])
-    photo = FileField(validators=[FileAllowed(['jpg', 'jpeg', 'png'], 'Images only!')])
+    photo = FileField(validators=[FileAllowed(['jpg', 'jpeg', 'png'], 'Images only (jpg, jpeg, or png!')])
     submit = SubmitField('Create Post')
 
 class CommentForm(FlaskForm):
