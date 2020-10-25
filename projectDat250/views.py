@@ -17,20 +17,20 @@ from sqlalchemy import update
 app.secret_key = "96AA4DB38921EAA483F1A2A33F827"
 
 def checkIfRepost(postTekst):
-    postTekst = postTekst.replace(" ","") #Fjerner whitespace og gjør alt lowercase
-    postTekst = postTekst.strip("\n")
+    postTekst = postTekst.replace(" ","") 
+    postTekst = postTekst.strip("\n")       #Here we remove spaces, makes the text lowercase, etc
     postTekst = postTekst.lower()
 
-    maks = Post.query.all() #Finner maksverdi
+    maks = Post.query.all()     #Take out all the posts
 
     if len(maks) != 0:
-        maksverdi = maks[-1].id
+        maksverdi = maks[-1].id #Take the largest id as the max
     else:
         return False
 
     starten = 0
     grense = 50
-    if maksverdi > grense:          #Setter startverdi for sjekk
+    if maksverdi > grense:          #Dynamically change the values so that only the 50 newest are checked
         starten = maksverdi - grense
 
     postene = Post.query.all()[starten:maksverdi]
@@ -45,24 +45,24 @@ def checkIfRepost(postTekst):
         plag = 0
         prosentPlag = 0.0
 
-        if len(body) < 10 or len(postTekst) < 10:   #Hvis en av strengene ikke passer inn i 9/10 forholdet vi har, bruk en enklere sammenlikning
+        if len(body) < 10 or len(postTekst) < 10:   #If one of the bodies doesn't fit nicely into the 9/10 ratio, we use a simpler check
             if body == postTekst:
                 return True
             
         else:
             prosentGrense = 0.90
 
-            if len(body) >= len(postTekst): #Dette sikrer at metoden ikke monopoliserer visse bokstaver
+            if len(body) >= len(postTekst): #This if-else duo makes sure certain letters can't be monopolized
                 lengden = len(body)
             else:
                 lengden = len(postTekst)
 
             for ordet in body:
-                if i >= len(postTekst): #Siden postene kan ha forskjellig lengde, sjekker denne at vi ikke får error
+                if i >= len(postTekst): #Break loop if body is at its end
                     break
 
-                if postTekst[i] == ordet: #ved at én bokstav er lik:
-                    plag += 1
+                if postTekst[i] == ordet:       #If one letter is alike:
+                    plag += 1                   #Increment the plagiarism
                     prosentPlag = plag/lengden
                     if prosentPlag >= prosentGrense:
                         return True
