@@ -186,7 +186,9 @@ input:focus {
     to {
       opacity: 1;
     }
-  }
+}
+
+
 * {
     display: initial;
     animation-name: fade-in;
