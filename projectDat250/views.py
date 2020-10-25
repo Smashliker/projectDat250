@@ -197,11 +197,14 @@ def createUser():
     #Create WTForm for signup
     form = SignUpForm()
     print(form.errors)
+    if form.password.data != form.confirmPass.data:
+        flash("Password fields must match")
+        return render_template('createUser.html', form=form)
+    if len(form.password.data) < 8 or len(form.password.data) > 50:
+        flask("Password must be between 8 and 50 characters and numbers")
+        return render_template('createUser.html', form=form)
     if form.validate_on_submit():
         #Validate usernamee by query database to check if someone else has already claimed the username
-        if form.password.data != form.confirmPass.data:
-            flash("Password fields must match")
-            return render_template('createUser.html', form=form)
         if validateUsername(request.form['username']) is True:
             #Generate a non-incremental user ID
             userid = generateUserID()
