@@ -199,6 +199,9 @@ def createUser():
     print(form.errors)
     if form.validate_on_submit():
         #Validate usernamee by query database to check if someone else has already claimed the username
+        if form.password.data != form.confirmPass.data:
+            flash("Password fields must match")
+            return render_template('createUser.html', form=form)
         if validateUsername(request.form['username']) is True:
             #Generate a non-incremental user ID
             userid = generateUserID()
