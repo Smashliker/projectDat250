@@ -33,7 +33,6 @@ def checkIfRepost(postTekst):
     if maksverdi > grense:          #Setter startverdi for sjekk
         starten = maksverdi - grense
 
-    #postene = query_db(f"SELECT * FROM post LIMIT {starten},{maksverdi}")
     postene = Post.query.all()[starten:maksverdi]
 
     for post in postene:
@@ -87,20 +86,15 @@ def index():
     venneliste = [] 
     postliste = []
     for ID in venneIDliste: #Merk hvor nyttig det er å concatenate listen på denne måten
-        #venneliste += query_db(f"SELECT * FROM users WHERE userid = '{ID}'")
-        #postliste += query_db(f"SELECT * FROM post WHERE author_id = '{ID}'")
         venneliste.append(Users.query.filter_by(userid=ID).first())
         postliste += Post.query.filter_by(author_id=ID).all()
-    #postliste += query_db(f"SELECT * FROM post WHERE author_id = '{userid}'")
+
     postliste += Post.query.filter_by(author_id=userid)
 
     postliste.sort(reverse=True, key=lambda post: post.id)
-    #postliste.sort(reverse=True, key=sortPostKey)
     venneliste.sort(key=lambda venn: venn.username)
 
-    response = Response(render_template('index.html', venneliste=venneliste, postliste=postliste))
-    #response.headers["Content-Security-Policy"] = "default-src 'self'"
-    return response
+    return render_template('index.html', venneliste=venneliste, postliste=postliste)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -113,7 +107,6 @@ def login():
         user = Users.query.filter_by(username=form.username.data).first()
         if user != None:
             #Verify inputted password with the hashed version in the database
-            #if sha256_crypt.verify(request.form["password"], user.password):
             if hashlib.sha512(form.password.data.encode('utf-8')).hexdigest() == user.password:
                 #Add to session using flask_login
                 user.authenticated = True
@@ -165,8 +158,6 @@ def newFriend():
             friend.friendid = tempFriendID
             db.session.add(friend)
             db.session.commit()
-            #query_db(f"INSERT INTO friends (userid,friendid) VALUES('{userid}','{tempFriendID}')")
-            #get_db().commit()
             addResult = 0
 
         elif addResult != 2:
@@ -276,7 +267,6 @@ def comment(post_id):
         nu = datetime.now()
         tidNu = nu.strftime("%d/%m/%Y  %H:%M:%S")
         tmp = tmpObj.query.filter_by(userid=current_user.userid).first()
-        #tmp = query_db(f"SELECT * FROM tmp WHERE userid='{current_user.userid}'")
         post_id = tmp.post_id
         
         comment = Comments()
