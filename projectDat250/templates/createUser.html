@@ -8,7 +8,7 @@
 <div id="main">
     <h2>Create User</h2>
     <form method="POST" action="/createUser" novalidate>
-        {% if errors %}
+        {% if form.errors %}
         {% for error in form.errors %}
             <span>{{ error }}</span>
         {% endfor %}
